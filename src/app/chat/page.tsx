@@ -1,5 +1,6 @@
-import Header from '@/components/Header';
-import Sidebar from '@/components/Sidebar';
+import Header from '@/components/shared/Header';
+import Sidebar from '@/components/shared/Sidebar';
+import Footer from '@/components/shared/Footer';
 
 const chatList = [
     { id: 1, name: "Bessie Cooper", lastMsg: "Let’s play now!", time: "2d", online: true, img: "/assets/img/msg-sender1.png" },
@@ -14,9 +15,9 @@ export default function ChatPage() {
     return (
         <>
             <Header />
-            <main className="main-container container-fluid d-flex pt-md-20 pt-sm-15 pt-10 px-0 position-relative">
+            <main className="main-container container-fluid d-flex pt-32 px-0 position-relative mb-10 pb-20">
                 <Sidebar />
-                <article className="main-content mt-10">
+                <article className="main-content mt-lg-10 mt-6">
                     <section className="chat-section">
                         <div className="row gx-6">
                             <div className="col-lg-4 col-md-6 col-sm-8 position-relative">
@@ -49,7 +50,7 @@ export default function ChatPage() {
                                                     <a href="#" className="d-between">
                                                         <div className="d-flex align-items-center gap-3">
                                                             <div className="msg-sender-list-thumb position-relative">
-                                                                <img className="w-100 rounded-circle" src={chat.img} alt="user thumb" />
+                                                                 <img className="w-100 rounded-circle" src={chat.img} alt="user thumb" />
                                                                 <div className={`online-dot ${chat.online ? 'online' : 'offline'}`}></div>
                                                             </div>
                                                             <div className="msg-list-user-info">
@@ -136,6 +137,9 @@ export default function ChatPage() {
                     </section>
                 </article>
             </main>
+            <Footer />
         </>
     );
 }
+;
+

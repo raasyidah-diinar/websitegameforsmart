@@ -1,7 +1,7 @@
-import Header from '@/components/Header';
-import Sidebar from '@/components/Sidebar';
-import Footer from '@/components/Footer';
-import CTA from '@/components/CTA';
+import Header from '@/components/shared/Header';
+import Sidebar from '@/components/shared/Sidebar';
+import Footer from '@/components/shared/Footer';
+import CTA from '@/components/shared/CTA';
 
 export default function ProfilePage() {
     const gamingAccounts = [
@@ -20,14 +20,14 @@ export default function ProfilePage() {
     return (
         <>
             <Header />
-            <main className="main-container container-fluid d-flex pt-md-20 pt-sm-10 px-0 position-relative">
+            <main className="main-container container-fluid d-flex pt-32 px-0 position-relative mb-10">
                 <Sidebar />
-                <article className="main-content mt-10">
+                <article className="main-content mt-lg-10 mt-6">
                     <section className="profile-banner-section">
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-12">
-                                    <div className="parallax-banner-area parallax-container">
+                                    <div className="parallax-banner-area parallax-container" style={{ height: '450px' }}>
                                         <div className="change-banner-btn position-absolute py-1 px-2 rounded bgn-4 top-0 end-0 mt-sm-10 mt-15 me-10 z-2">
                                             <i className="ti ti-camera fs-2xl"></i>
                                         </div>
@@ -139,9 +139,9 @@ export default function ProfilePage() {
                     </section>
 
                     <CTA />
-                    <Footer />
                 </article>
             </main>
+            <Footer />
         </>
     );
 }

@@ -1,10 +1,7 @@
-import Header from '@/components/Header';
-import Sidebar from '@/components/Sidebar';
-import Banner from '@/components/Banner';
-import TournamentSection from '@/components/TournamentSection';
-import GamesSection from '@/components/GamesSection';
-import CTA from '@/components/CTA';
-import Footer from '@/components/Footer';
+import Banner from '@/components/features/home/sections/Banner';
+import TournamentSection from '@/components/features/home/sections/TournamentSection';
+import GamesSection from '@/components/features/home/sections/GamesSection';
+import CTA from '@/components/shared/CTA';
 
 export const metadata = {
     title: 'Home | GameForSmart 2026',
@@ -13,18 +10,11 @@ export const metadata = {
 
 export default function Home() {
     return (
-        <>
-            <Header />
-            <main className="main-container container-fluid d-flex pt-20 px-0 position-relative">
-                <Sidebar />
-                <article className="main-content">
-                    <Banner />
-                    <GamesSection />
-                    <TournamentSection />
-                    <CTA />
-                    <Footer />
-                </article>
-            </main>
-        </>
+        <article className="main-content mt-4 animate-fade-in-up flex-1 min-w-0">
+            <Banner />
+            <GamesSection />
+            <TournamentSection />
+            <CTA />
+        </article>
     );
 }

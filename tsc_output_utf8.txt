@@ -1,0 +1,8 @@
+﻿src/components/features/about/AboutView.tsx(2,20): error TS2307: Cannot find module './Header' or its corresponding type declarations.
+src/components/features/about/AboutView.tsx(3,21): error TS2307: Cannot find module './Sidebar' or its corresponding type declarations.
+src/components/features/about/AboutView.tsx(4,25): error TS2307: Cannot find module './Breadcrumbs' or its corresponding type declarations.
+src/components/features/about/AboutView.tsx(5,20): error TS2307: Cannot find module './Footer' or its corresponding type declarations.
+src/components/features/contact/ContactView.tsx(2,20): error TS2307: Cannot find module './Header' or its corresponding type declarations.
+src/components/features/contact/ContactView.tsx(3,21): error TS2307: Cannot find module './Sidebar' or its corresponding type declarations.
+src/components/features/contact/ContactView.tsx(4,25): error TS2307: Cannot find module './Breadcrumbs' or its corresponding type declarations.
+src/components/features/contact/ContactView.tsx(5,20): error TS2307: Cannot find module './Footer' or its corresponding type declarations.

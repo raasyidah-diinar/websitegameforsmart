@@ -1,7 +1,8 @@
-import Header from '@/components/Header';
-import Sidebar from '@/components/Sidebar';
-import TeamCard from '@/components/TeamCard';
-import CTA from '@/components/CTA';
+import Header from '@/components/shared/Header';
+import Sidebar from '@/components/shared/Sidebar';
+import TeamCard from '@/components/features/teams/components/TeamCard';
+import CTA from '@/components/shared/CTA';
+import Footer from '@/components/shared/Footer';
 
 const teams = [
     { id: 1, name: "S2 E-SPORT", logo: "/assets/img/team-logo1.png", playersCount: "3 players", language: "English", slots: "04/12", members: ["/assets/img/player1.png", "/assets/img/player2.png", "/assets/img/player3.png", "/assets/img/player4.png", "plus"] },
@@ -19,7 +20,7 @@ export default function TeamsPage() {
     return (
         <>
             <Header />
-            <main className="main-container container-fluid d-flex pt-sm-20 pt-15 px-0 position-relative">
+            <main className="main-container container-fluid d-flex pt-32 px-0 position-relative mb-10">
                 <Sidebar />
                 <article className="main-content mt-lg-10 mt-6">
                     <section className="teams-section">
@@ -29,8 +30,8 @@ export default function TeamsPage() {
                                     <h2 className="display-four tcn-1 cursor-scale growUp title-anim">Teams</h2>
                                 </div>
                                 <div className="col-12">
-                                    <div className="parallax-banner-area parallax-container">
-                                        <img className="w-100 rounded-5 parallax-img" src="/assets/img/team-banner.png" alt="team banner" />
+                                    <div className="parallax-banner-area parallax-container" style={{ height: '450px' }}>
+                                        <img className="w-100 h-100 rounded-5 parallax-img object-fit-cover" src="/assets/img/team-banner.png" alt="team banner" />
                                     </div>
                                 </div>
                             </div>
@@ -59,6 +60,7 @@ export default function TeamsPage() {
                     <CTA />
                 </article>
             </main>
+            <Footer />
         </>
     );
 }

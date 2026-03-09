@@ -1,7 +1,7 @@
-import Header from '@/components/Header';
-import Sidebar from '@/components/Sidebar';
-import CTA from '@/components/CTA';
-import Footer from '@/components/Footer';
+import Header from '@/components/shared/Header';
+import Sidebar from '@/components/shared/Sidebar';
+import CTA from '@/components/shared/CTA';
+import Footer from '@/components/shared/Footer';
 
 export const metadata = {
     title: 'FAQ | GameForSmart 2026',
@@ -45,7 +45,7 @@ export default function FAQPage() {
     return (
         <>
             <Header />
-            <main className="main-container container-fluid d-flex pt-sm-20 pt-15 px-0 position-relative">
+            <main className="main-container container-fluid d-flex pt-32 px-0 position-relative mb-10">
                 <Sidebar />
                 <article className="main-content mt-lg-10 mt-6">
                     <section className="faq-section pb-120">
@@ -98,9 +98,9 @@ export default function FAQPage() {
                         </div>
                     </section>
                     <CTA />
-                    <Footer />
                 </article>
             </main>
+            <Footer />
         </>
     );
 }

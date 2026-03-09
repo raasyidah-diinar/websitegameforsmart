@@ -42,14 +42,14 @@ export default function Banner() {
                     slidesPerView: 1,
                     spaceBetween: 0,
                     loop: true,
-                    speed: 1200,
+                    speed: 800,
                     parallax: true,
                     mousewheel: {
                         invert: false,
                         releaseOnEdges: true,
                     },
                     autoplay: {
-                        delay: 5000,
+                        delay: 3200,
                         disableOnInteraction: false,
                     },
                     pagination: {
@@ -83,13 +83,13 @@ export default function Banner() {
     }, []);
 
     return (
-        <section className="banner-section pb-6 pt-lg-1 pt-sm-1 mt-lg-8 mt-4">
-            <div className="container-fluid px-lg-12 px-md-10 px-6">
-                <div className="row g-3 align-items-stretch hover-none" style={{ minHeight: '360px', height: 'auto' }}>
-                    <div className="col-xxl-9 col-xl-8 col-lg-7 d-flex align-items-stretch">
-                        <div className="swiper banner-swiper position-relative flex-fill w-100 h-100 overflow-hidden shadow-lg border border-secondary border-opacity-10" style={{ borderRadius: '40px', backgroundColor: '#0b1117', height: '100%', minHeight: '360px' }} data-observer="true" data-observe-parents="true">
+        <section className="banner-section pb-6">
+            <div className="container-fluid px-lg-15 px-md-10 px-6">
+                <div className="row g-3 align-items-stretch" style={{ height: '405px' }}>
+                    <div className="col-xxl-9 col-xl-8 col-lg-7 d-flex">
+                        <div className="swiper banner-swiper position-relative w-100 h-100 overflow-hidden shadow-lg border border-secondary border-opacity-10 flex-fill" style={{ borderRadius: '40px', backgroundColor: '#0b1117', height: '100% !important' }} data-observer="true" data-observe-parents="true">
                             <div className="banner-bg-img position-absolute w-100 h-100" style={{ opacity: '0.4' }}>
-                                <img className="w-100 h-100 object-fit-cover" src="/assets/img/hero-banner-bg.png" alt="banner" />
+                                <img className="w-100 h-100 object-fit-cover" src="/assets/img/hero-banner-bg.png" alt="banner" style={{ objectPosition: 'center top', transform: 'translateY(25%) scale(1.2)' }} />
                             </div>
                             <div className="banner-swiper-pagination"></div>
                             <div className="swiper-wrapper h-100">
@@ -98,7 +98,7 @@ export default function Banner() {
                                     <div className="banner-content h-100 d-flex align-items-center">
                                         <div className="row justify-content-center gy-3 align-items-center w-100">
                                             <div className="col-lg-6 col-md-8 col-11">
-                                                <div className="hero-content ps-lg-12 ps-6">
+                                                <div className="hero-content ps-lg-15 ps-6">
                                                     <p data-swiper-parallax="-200" className="tcn-1 mb-lg-4 mb-3 opacity-75 fw-medium fs-six text-uppercase tracking-wider">
                                                         READY • SET • PLAY
                                                     </p>
@@ -121,11 +121,11 @@ export default function Banner() {
                                                         alt="Mascot"
                                                         className="float-mascot"
                                                         style={{
-                                                            height: '450px',
+                                                            height: '520px',
                                                             width: 'auto',
                                                             zIndex: 20,
                                                             filter: 'drop-shadow(0 0 60px rgba(0, 209, 255, 0.4))',
-                                                            transform: 'scale(1.35) translateY(5px)',
+                                                            transform: 'scale(1.4) translateY(5px)',
                                                             objectFit: 'contain',
                                                             display: 'block',
                                                             opacity: 1
@@ -141,7 +141,7 @@ export default function Banner() {
                                     <div className="banner-content h-100 d-flex align-items-center">
                                         <div className="row justify-content-center gy-3 align-items-center w-100">
                                             <div className="col-lg-6 col-md-8 col-11">
-                                                <div className="hero-content ps-lg-12 ps-6">
+                                                <div className="hero-content ps-lg-15 ps-6">
                                                     <p data-swiper-parallax="-200" className="tcn-1 mb-lg-4 mb-3 opacity-75 fw-medium fs-six text-uppercase tracking-wider">
                                                         LEVEL UP • SKILL ONLY
                                                     </p>
@@ -164,12 +164,12 @@ export default function Banner() {
                                                         alt="Mascot"
                                                         className="float-mascot"
                                                         style={{
-                                                            height: '400px',
+                                                            height: '460px',
                                                             width: 'auto',
                                                             zIndex: 20,
                                                             filter: 'drop-shadow(0 0 30px rgba(255, 140, 0, 0.3))',
                                                             borderRadius: '30px',
-                                                            transform: 'scale(1.1) translateY(5px)',
+                                                            transform: 'scale(1.2) translateY(5px)',
                                                             objectFit: 'contain',
                                                             display: 'block',
                                                             opacity: 1
@@ -185,7 +185,7 @@ export default function Banner() {
                                     <div className="banner-content h-100 d-flex align-items-center">
                                         <div className="row justify-content-center gy-3 align-items-center w-100">
                                             <div className="col-lg-6 col-md-8 col-11">
-                                                <div className="hero-content ps-lg-12 ps-6">
+                                                <div className="hero-content ps-lg-15 ps-6">
                                                     <p data-swiper-parallax="-200" className="tcn-1 mb-lg-4 mb-3 opacity-75 fw-medium fs-six text-uppercase tracking-wider">
                                                         SPEED RUN • NO LAG
                                                     </p>
@@ -208,11 +208,11 @@ export default function Banner() {
                                                         alt="Mascot"
                                                         className="float-mascot"
                                                         style={{
-                                                            height: '450px',
+                                                            height: '520px',
                                                             width: 'auto',
                                                             zIndex: 20,
                                                             filter: 'drop-shadow(0 0 60px rgba(0, 209, 255, 0.4))',
-                                                            transform: 'scale(1.35) rotate(-5deg) translateY(5px)',
+                                                            transform: 'scale(1.4) rotate(-5deg) translateY(5px)',
                                                             objectFit: 'contain',
                                                             display: 'block',
                                                             opacity: 1
@@ -228,7 +228,7 @@ export default function Banner() {
                                     <div className="banner-content h-100 d-flex align-items-center">
                                         <div className="row justify-content-center gy-3 align-items-center w-100">
                                             <div className="col-lg-6 col-md-8 col-11">
-                                                <div className="hero-content ps-lg-12 ps-6">
+                                                <div className="hero-content ps-lg-15 ps-6">
                                                     <p data-swiper-parallax="-200" className="tcn-1 mb-lg-4 mb-3 opacity-75 fw-medium fs-six text-uppercase tracking-wider">
                                                         EPIC LOOT • MVP STATUS
                                                     </p>
@@ -251,12 +251,12 @@ export default function Banner() {
                                                         alt="Mascot"
                                                         className="float-mascot"
                                                         style={{
-                                                            height: '400px',
+                                                            height: '460px',
                                                             width: 'auto',
                                                             zIndex: 20,
                                                             filter: 'drop-shadow(0 0 30px rgba(255, 140, 0, 0.3))',
                                                             borderRadius: '30px',
-                                                            transform: 'scale(1.1) translateY(5px)',
+                                                            transform: 'scale(1.2) translateY(5px)',
                                                             objectFit: 'contain',
                                                             display: 'block',
                                                             opacity: 1
@@ -270,8 +270,8 @@ export default function Banner() {
                             </div>
                         </div>
                     </div>
-                    <div className="col-xxl-3 col-xl-4 col-lg-5 d-flex align-items-stretch">
-                        <div className="card-area flex-fill d-flex flex-column w-100 overflow-hidden shadow-lg border border-secondary border-opacity-10 px-0" style={{ backgroundColor: '#0b1117', borderRadius: '40px', height: '100%', minHeight: '100%' }}>
+                    <div className="col-xxl-3 col-xl-4 col-lg-5 d-flex">
+                        <div className="card-area w-100 h-100 d-flex flex-column overflow-hidden shadow-lg border border-secondary border-opacity-10 px-0" style={{ backgroundColor: '#0b1117', borderRadius: '40px' }}>
                             <div className="card-header pt-4 px-4 pb-2">
                                 <h3 className="tcn-1 dot-icon mb-0 fs-six fw-bold text-uppercase d-flex align-items-center">
                                     <span className="d-flex gap-1 me-2">
@@ -282,8 +282,8 @@ export default function Banner() {
                                 </h3>
                             </div>
                             <div className="card-items d-flex flex-column flex-grow-1 overflow-auto custom-scrollbar">
-                                {winnersData.slice(0, 4).map((winner, i, arr) => (
-                                    <div key={winner.id} className="winner-list-item px-4 py-4 transition flex-grow-1 d-flex flex-column justify-content-center" style={{ borderBottom: i < arr.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none', cursor: 'pointer' }}>
+                                {winnersData.slice(0, 5).map((winner, i, arr) => (
+                                    <div key={winner.id} className="winner-list-item px-4 py-3 transition d-flex flex-column justify-content-center" style={{ borderBottom: i < arr.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none', cursor: 'pointer' }}>
                                         <div className="d-flex align-items-center justify-content-between">
                                             <div className="d-flex align-items-center gap-3">
                                                 <div className="card-img-area rounded-circle overflow-hidden border border-2 border-dark d-flex align-items-center justify-content-center" style={{ width: '42px', height: '42px', minWidth: '42px', backgroundColor: winner.img ? 'transparent' : 'rgba(255,255,255,0.1)' }}>

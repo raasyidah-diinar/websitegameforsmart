@@ -7,10 +7,14 @@ import "./globals.css";
 import "../assets/css/bootstrap.css";
 import "../assets/css/style.css";
 
-import Preloader from "@/components/Preloader";
-import NotificationArea from "@/components/NotificationArea";
-import ConnectWalletModal from "@/components/ConnectWalletModal";
-import UserAccountPopup from "@/components/UserAccountPopup";
+import Preloader from "@/components/shared/Preloader";
+import NotificationArea from "@/components/shared/NotificationArea";
+import ConnectWalletModal from "@/components/shared/ConnectWalletModal";
+import UserAccountPopup from "@/components/shared/UserAccountPopup";
+import ScriptInitializer from "@/components/shared/ScriptInitializer";
+import Header from "@/components/shared/Header";
+import Sidebar from "@/components/shared/Sidebar";
+import Footer from "@/components/shared/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +24,7 @@ export const metadata: Metadata = {
 };
 
 import { SearchProvider } from "@/context/SearchContext";
+import { SidebarProvider } from "@/context/SidebarContext";
 
 export default function RootLayout({
     children,
@@ -32,14 +37,20 @@ export default function RootLayout({
                 <link rel="shortcut icon" href="/assets/img/gameforsmartlogo.png" type="image/x-icon" />
             </head>
             <body className={inter.className}>
-                <SearchProvider>
-                    <Preloader />
-                    <div className="cursor"></div>
-                    <NotificationArea />
-                    <ConnectWalletModal />
-                    <UserAccountPopup />
-                    {children}
-                </SearchProvider>
+                <SidebarProvider>
+                    <SearchProvider>
+                        <Preloader />
+                        <ScriptInitializer />
+                        <div className="cursor"></div>
+                        <ConnectWalletModal />
+                        <Header />
+                        <main className="main-container container-fluid d-flex pt-32 px-0 position-relative mb-10">
+                            <Sidebar />
+                            {children}
+                        </main>
+                        <Footer />
+                    </SearchProvider>
+                </SidebarProvider>
 
                 {/* Legacy Scripts */}
                 <Script src="/assets/js/jquery.min.js" strategy="beforeInteractive" />
