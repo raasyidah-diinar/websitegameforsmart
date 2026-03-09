@@ -96,17 +96,41 @@ function getStepIcon(idx: number): string {
     return icons[idx % icons.length];
 }
 
+const cardStyle: React.CSSProperties = {
+    background: 'rgba(255,255,255,0.03)',
+    border: '1px solid rgba(255,255,255,0.12)',
+    boxShadow: '0 1px 0 0 rgba(255,255,255,0.06) inset',
+};
+
+const cardHoverStyle: React.CSSProperties = {
+    background: 'rgba(255,255,255,0.055)',
+    border: '1px solid rgba(255,255,255,0.22)',
+    boxShadow: '0 1px 0 0 rgba(255,255,255,0.08) inset',
+};
+
+const inputStyle: React.CSSProperties = {
+    background: 'rgba(0,0,0,0.25)',
+    border: '1px solid rgba(255,255,255,0.1)',
+};
+
+const inputFocusStyle: React.CSSProperties = {
+    background: 'rgba(0,0,0,0.3)',
+    border: '1px solid rgba(255,107,53,0.4)',
+};
+
 export default function GameDetailContent({ game }: GameDetailContentProps) {
     const [activeTab, setActiveTab] = useState('detail');
     const [modalRating, setModalRating] = useState(0);
     const [hoverRating, setHoverRating] = useState(0);
     const [helpfulMap, setHelpfulMap] = useState<Record<number, boolean>>({});
+    const [hoveredCard, setHoveredCard] = useState<number | null>(null);
     const [sortBy, setSortBy] = useState<'terbaru' | 'tertinggi' | 'terendah'>('terbaru');
     const [filterStar, setFilterStar] = useState<number | null>(null);
     const [reviewName, setReviewName] = useState('');
     const [reviewEmail, setReviewEmail] = useState('');
     const [reviewText, setReviewText] = useState('');
     const [submitted, setSubmitted] = useState(false);
+    const [focusedField, setFocusedField] = useState<string | null>(null);
 
     const scrollRef = useRef<HTMLDivElement>(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -148,9 +172,7 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
     return (
         <article className="main-content mt-4 animate-fade-in-up flex-1 min-w-0">
 
-            {/* ══════════════════════════════════════
-                HERO SECTION
-            ══════════════════════════════════════ */}
+            {/* HERO */}
             <div className="container-fluid px-lg-15 px-md-10 px-6">
                 <div className="row g-3 hover-none">
                     <div className="col-12 d-flex align-items-stretch">
@@ -158,7 +180,6 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                             className="relative w-full h-[550px] overflow-hidden shadow-lg border border-secondary border-opacity-10 flex-fill"
                             style={{ borderRadius: '40px' }}
                         >
-                            {/* Back Button */}
                             <div className="absolute top-6 left-10 z-20">
                                 <Link
                                     href="/games"
@@ -169,7 +190,6 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                 </Link>
                             </div>
 
-                            {/* Background Media */}
                             <div className="absolute inset-0 z-0 overflow-hidden">
                                 {game.videoUrl ? (
                                     <iframe
@@ -190,18 +210,12 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                         frameBorder="0"
                                     />
                                 ) : (
-                                    <Image
-                                        src={game.image}
-                                        alt={game.title}
-                                        fill
-                                        className="object-cover opacity-60 brightness-50 scale-100"
-                                    />
+                                    <Image src={game.image} alt={game.title} fill className="object-cover opacity-60 brightness-50 scale-100" />
                                 )}
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#000000] via-transparent to-transparent"></div>
                                 <div className="absolute inset-0 bg-gradient-to-r from-[#000000]/80 via-[#000000]/20 to-transparent"></div>
                             </div>
 
-                            {/* Hero Content */}
                             <div className="relative z-10 h-full flex flex-col justify-center ps-lg-15 px-md-10 px-6 pt-14">
                                 <h1
                                     className="hero-title tcn-1 mb-lg-5 mb-4"
@@ -220,9 +234,7 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                     <div className="flex-shrink-0 flex items-center bg-white/[0.03] backdrop-blur-md border border-white/10 !rounded-full h-[48px] px-8 gap-8">
                                         <div className="flex items-center gap-2 border-r border-white/10 pr-8 h-1/2">
                                             <i className="ti ti-device-gamepad-2 text-[#FF6B35] text-lg"></i>
-                                            <span className="text-white/90 font-bold text-[9px] uppercase tracking-wide whitespace-nowrap">
-                                                {game.platform.replace('Mobile & ', '')}
-                                            </span>
+                                            <span className="text-white/90 font-bold text-[9px] uppercase tracking-wide whitespace-nowrap">{game.platform.replace('Mobile & ', '')}</span>
                                         </div>
                                         <div className="flex items-center gap-2 border-r border-white/10 pr-8 h-1/2">
                                             <i className="ti ti-star-filled text-[#FFB800] text-md"></i>
@@ -240,9 +252,7 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                 </div>
             </div>
 
-            {/* ══════════════════════════════════════
-                TABS NAVIGATION
-            ══════════════════════════════════════ */}
+            {/* TABS */}
             <div className="pl-lg-15 pl-md-10 pl-6 pr-0 mt-12 border-b border-white/5">
                 <div className="flex justify-center gap-10">
                     {[
@@ -265,24 +275,19 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                 </div>
             </div>
 
-            {/* ══════════════════════════════════════
-                MAIN CONTENT AREA
-            ══════════════════════════════════════ */}
+            {/* CONTENT */}
             <div className="pl-lg-15 pl-md-10 pl-6 pr-6 pr-lg-20 py-12">
 
-                {/* ── TAB: DETAIL ── */}
+                {/* TAB: DETAIL */}
                 {activeTab === 'detail' && (
                     <div className="max-w-[1600px] grid grid-cols-1 lg:grid-cols-12 gap-4 animate-fade-in relative">
 
-                        {/* Left Column */}
+                        {/* Left */}
                         <div className="lg:col-span-9 space-y-16 pl-lg-10">
 
-                            {/* Screenshots Gallery */}
                             {game.screenshots && game.screenshots.length > 0 && (
                                 <section className="space-y-10 group/gallery relative">
-                                    <h2 className="text-lg font-bold text-white tracking-wide border-l-4 border-[#FF6B35] pl-4">
-                                        Tampilan Permainan
-                                    </h2>
+                                    <h2 className="text-lg font-bold text-white tracking-wide border-l-4 border-[#FF6B35] pl-4">Tampilan Permainan</h2>
                                     <div className="relative mt-8 gallery-wrapper overflow-visible">
                                         <button
                                             onClick={() => { if (scrollRef.current) scrollRef.current.scrollBy({ left: -300, behavior: 'smooth' }); }}
@@ -315,17 +320,13 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                 </section>
                             )}
 
-                            {/* About */}
                             <section className="space-y-6">
                                 <h2 className="text-lg font-bold text-white tracking-wide border-l-4 border-[#FF6B35] pl-4">Tentang Game Ini</h2>
                                 <p className="text-white/70 text-base leading-relaxed max-w-3xl pl-5 mt-4">{game.description}</p>
                                 {game.features && game.features.length > 0 && (
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 pl-5">
                                         {game.features.map((feature: any, idx: number) => (
-                                            <div
-                                                key={idx}
-                                                className="flex items-start gap-4 p-5 bg-white/[0.03] border border-white/5 rounded-2xl hover:border-[#FF6B35]/30 transition-colors"
-                                            >
+                                            <div key={idx} className="flex items-start gap-4 p-5 bg-white/[0.03] border border-white/5 rounded-2xl hover:border-[#FF6B35]/30 transition-colors">
                                                 <div className="w-10 h-10 flex-shrink-0 bg-[#FF6B35]/10 rounded-xl flex items-center justify-center text-[#FF6B35]">
                                                     <i className={`${feature.icon || 'ti ti-circle-check'} text-xl`}></i>
                                                 </div>
@@ -339,27 +340,17 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                 )}
                             </section>
 
-                            {/* Rules */}
                             <section className="space-y-8">
                                 <div className="flex items-center gap-4">
                                     <h2 className="text-lg font-bold text-white tracking-wide border-l-4 border-[#FF6B35] pl-4">Aturan & Cara Bermain</h2>
                                     <div className="flex-1 h-px bg-gradient-to-r from-white/10 to-transparent"></div>
-                                    <span className="text-[10px] font-bold tracking-widest text-[#FF6B35] bg-[#FF6B35]/10 border border-[#FF6B35]/20 px-3 py-1 rounded-full uppercase">
-                                        {game.rules.length} Aturan
-                                    </span>
+                                    <span className="text-[10px] font-bold tracking-widest text-[#FF6B35] bg-[#FF6B35]/10 border border-[#FF6B35]/20 px-3 py-1 rounded-full uppercase">{game.rules.length} Aturan</span>
                                 </div>
                                 <div className="relative pl-5 mt-4">
-                                    <div
-                                        className="absolute left-[19px] top-0 w-px bg-gradient-to-b from-[#FF6B35] via-[#FF6B35]/30 to-transparent"
-                                        style={{ height: `calc(100% - 32px)` }}
-                                    ></div>
+                                    <div className="absolute left-[19px] top-0 w-px bg-gradient-to-b from-[#FF6B35] via-[#FF6B35]/30 to-transparent" style={{ height: 'calc(100% - 32px)' }}></div>
                                     <div className="space-y-3">
                                         {game.rules.map((rule: string, idx: number) => (
-                                            <div
-                                                key={idx}
-                                                className="relative flex items-start gap-5 group"
-                                                style={{ animationDelay: `${idx * 80}ms` }}
-                                            >
+                                            <div key={idx} className="relative flex items-start gap-5 group" style={{ animationDelay: `${idx * 80}ms` }}>
                                                 <div
                                                     className="relative z-10 flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-[11px] transition-all duration-300"
                                                     style={{
@@ -380,17 +371,9 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                                 >
                                                     <div className="flex items-start gap-3">
                                                         <div className="flex-shrink-0 mt-0.5">
-                                                            <i
-                                                                className={`${getStepIcon(idx)} text-base`}
-                                                                style={{ color: idx === 0 ? '#FF6B35' : 'rgba(255,107,53,0.5)' }}
-                                                            ></i>
+                                                            <i className={`${getStepIcon(idx)} text-base`} style={{ color: idx === 0 ? '#FF6B35' : 'rgba(255,107,53,0.5)' }}></i>
                                                         </div>
-                                                        <p
-                                                            className="text-sm leading-relaxed"
-                                                            style={{ color: idx === 0 ? 'rgba(255,255,255,0.90)' : 'rgba(255,255,255,0.60)' }}
-                                                        >
-                                                            {rule}
-                                                        </p>
+                                                        <p className="text-sm leading-relaxed" style={{ color: idx === 0 ? 'rgba(255,255,255,0.90)' : 'rgba(255,255,255,0.60)' }}>{rule}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -406,7 +389,7 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                             </section>
                         </div>
 
-                        {/* Right Column — Similar Games */}
+                        {/* Right — Similar Games */}
                         <aside className="lg:col-span-3 space-y-10 animate-fade-in-right flex flex-col items-end">
                             <div className="w-full max-w-[320px]">
                                 <div className="flex items-center justify-between mb-10">
@@ -425,9 +408,7 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                                     <Image src={rg.image} alt={rg.title} fill className="object-cover" />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <h4 className="text-white font-bold text-[13px] truncate group-hover/item:text-[#FF6B35] transition-colors leading-tight mb-1">
-                                                        {rg.title}
-                                                    </h4>
+                                                    <h4 className="text-white font-bold text-[13px] truncate group-hover/item:text-[#FF6B35] transition-colors leading-tight mb-1">{rg.title}</h4>
                                                     <p className="text-white/40 text-[10px] uppercase font-black tracking-widest truncate">{rg.subtitle || rg.genre}</p>
                                                     <div className="flex items-center gap-1.5 mt-1.5">
                                                         <span className="text-white/60 text-[11px] font-black">{rg.rating}</span>
@@ -442,37 +423,32 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                     </div>
                 )}
 
-                {/* ══════════════════════════════════════
-                    TAB: ULASAN
-                ══════════════════════════════════════ */}
+                {/* TAB: ULASAN */}
                 {activeTab === 'ulasan' && (
                     <div className="animate-fade-in grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
 
-                        {/* ── LEFT: Review List ────────────────── */}
+                        {/* LEFT — Review List */}
                         <div className="lg:col-span-8 space-y-6">
 
-                            {/* Section Header */}
-                            <div className="flex items-end justify-between pb-6 border-b border-white/[0.04]">
+                            {/* Header */}
+                            <div className="flex items-end justify-between pb-6" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
                                 <div>
-                                    <p className="text-[10px] font-black tracking-[0.3em] text-[#FF6B35]/60 uppercase mb-2">
-                                        Suara Komunitas
-                                    </p>
+                                    <p className="text-[10px] font-black tracking-[0.3em] text-[#FF6B35]/60 uppercase mb-2">Suara Komunitas</p>
                                     <h2 className="text-2xl font-black text-white tracking-tight leading-none">
                                         {totalReviews.toLocaleString()}{' '}
                                         <span className="text-white/20 font-light">Ulasan</span>
                                     </h2>
                                 </div>
-                                {/* Sort Controls */}
-                                <div className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/[0.05]">
+                                {/* Sort */}
+                                <div className="flex items-center gap-1 p-1 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)' }}>
                                     {(['terbaru', 'tertinggi', 'terendah'] as const).map(opt => (
                                         <button
                                             key={opt}
                                             onClick={() => setSortBy(opt)}
                                             className={`px-3.5 py-1.5 rounded-lg text-[10px] font-black tracking-widest uppercase transition-all ${
-                                                sortBy === opt
-                                                    ? 'bg-white/10 text-white shadow-sm'
-                                                    : 'text-white/20 hover:text-white/50'
+                                                sortBy === opt ? 'text-white' : 'text-white/30 hover:text-white/60'
                                             }`}
+                                            style={sortBy === opt ? { background: 'rgba(255,255,255,0.12)' } : {}}
                                         >
                                             {opt}
                                         </button>
@@ -482,25 +458,26 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
 
                             {/* Filter Pills */}
                             <div className="flex items-center gap-2 flex-wrap">
-                                <span className="text-[9px] font-black text-white/20 uppercase tracking-[0.2em] mr-1">Filter:</span>
+                                <span className="text-[9px] font-black text-white/25 uppercase tracking-[0.2em] mr-1">Filter:</span>
                                 {[5, 4, 3, 2, 1].map(s => (
                                     <button
                                         key={s}
                                         onClick={() => setFilterStar(filterStar === s ? null : s)}
-                                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black border transition-all duration-200 ${
-                                            filterStar === s
-                                                ? 'bg-[#FF6B35] border-[#FF6B35] text-white shadow-[0_4px_16px_rgba(255,107,53,0.3)]'
-                                                : 'border-white/[0.07] text-white/30 hover:border-white/20 hover:text-white/60'
+                                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black transition-all duration-200 ${
+                                            filterStar === s ? 'text-white' : 'text-white/40 hover:text-white/70'
                                         }`}
+                                        style={filterStar === s
+                                            ? { background: '#FF6B35', border: '1px solid #FF6B35', boxShadow: '0 4px 16px rgba(255,107,53,0.3)' }
+                                            : { background: 'transparent', border: '1px solid rgba(255,255,255,0.18)' }
+                                        }
                                     >
-                                        <i className="ti ti-star-filled text-[9px]"></i>
-                                        {s}
+                                        <i className="ti ti-star-filled text-[9px]"></i>{s}
                                     </button>
                                 ))}
                                 {filterStar && (
                                     <button
                                         onClick={() => setFilterStar(null)}
-                                        className="text-[10px] text-white/20 hover:text-[#FF6B35] transition-colors ml-1 flex items-center gap-1"
+                                        className="text-[10px] text-white/25 hover:text-[#FF6B35] transition-colors ml-1 flex items-center gap-1"
                                     >
                                         <i className="ti ti-x text-[10px]"></i> Reset
                                     </button>
@@ -514,195 +491,185 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                         <i className="ti ti-mood-empty text-4xl block mb-4 opacity-30"></i>
                                         Tidak ada ulasan untuk filter ini.
                                     </div>
-                                ) : (
-                                    sortedReviews.map((review, idx) => (
+                                ) : sortedReviews.map((review, idx) => (
+                                    <div
+                                        key={idx}
+                                        className="relative p-6 rounded-3xl overflow-hidden transition-all duration-300"
+                                        style={hoveredCard === idx ? cardHoverStyle : cardStyle}
+                                        onMouseEnter={() => setHoveredCard(idx)}
+                                        onMouseLeave={() => setHoveredCard(null)}
+                                    >
+                                        {/* Reviewer color glow on hover */}
                                         <div
-                                            key={idx}
-                                            className="group/review relative p-6 rounded-3xl border border-white/[0.04] bg-white/[0.015] hover:bg-white/[0.03] hover:border-white/[0.08] transition-all duration-500 overflow-hidden"
-                                        >
-                                            {/* Per-reviewer accent glow */}
-                                            <div
-                                                className="absolute inset-0 opacity-0 group-hover/review:opacity-100 transition-opacity duration-700 pointer-events-none"
-                                                style={{
-                                                    background: `radial-gradient(ellipse at top left, ${review.color}08 0%, transparent 65%)`,
-                                                }}
-                                            ></div>
+                                            className="absolute inset-0 pointer-events-none transition-opacity duration-500"
+                                            style={{
+                                                opacity: hoveredCard === idx ? 1 : 0,
+                                                background: `radial-gradient(ellipse at top left, ${review.color}0D 0%, transparent 60%)`,
+                                            }}
+                                        ></div>
 
-                                            <div className="relative z-10">
-                                                {/* Top Row */}
-                                                <div className="flex items-start justify-between gap-4 mb-4">
-                                                    <div className="flex items-center gap-3.5">
-                                                        {/* Avatar with verified badge */}
-                                                        <div className="relative flex-shrink-0">
-                                                            <div
-                                                                className="w-10 h-10 rounded-2xl flex items-center justify-center text-white font-black text-[11px]"
-                                                                style={{
-                                                                    background: `linear-gradient(135deg, ${review.color}55, ${review.color}22)`,
-                                                                    border: `1px solid ${review.color}30`,
-                                                                }}
-                                                            >
-                                                                {review.avatar}
-                                                            </div>
-                                                            {review.verified && (
-                                                                <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-[#0a0a0a] flex items-center justify-center">
-                                                                    <i className="ti ti-check text-white" style={{ fontSize: '7px' }}></i>
-                                                                </div>
-                                                            )}
+                                        {/* Top shimmer line */}
+                                        <div
+                                            className="absolute top-0 left-8 right-8 h-px"
+                                            style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)' }}
+                                        ></div>
+
+                                        <div className="relative z-10">
+                                            {/* Top Row */}
+                                            <div className="flex items-start justify-between gap-4 mb-4">
+                                                <div className="flex items-center gap-3.5">
+                                                    <div className="relative flex-shrink-0">
+                                                        <div
+                                                            className="w-10 h-10 rounded-2xl flex items-center justify-center text-white font-black text-[11px]"
+                                                            style={{
+                                                                background: `linear-gradient(135deg, ${review.color}55, ${review.color}22)`,
+                                                                border: `1px solid ${review.color}40`,
+                                                            }}
+                                                        >
+                                                            {review.avatar}
                                                         </div>
-                                                        <div>
-                                                            <span className="text-white font-bold text-sm block leading-tight">{review.name}</span>
-                                                            <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                                                                <span className="text-white/25 text-[10px]">{review.date}</span>
-                                                                <span className="text-white/10">·</span>
-                                                                <span className="text-white/25 text-[10px] flex items-center gap-1">
-                                                                    <i className="ti ti-device-gamepad-2 text-[9px]"></i>
-                                                                    {review.platform}
-                                                                </span>
-                                                                <span className="text-white/10">·</span>
-                                                                <span className="text-white/25 text-[10px] flex items-center gap-1">
-                                                                    <i className="ti ti-clock text-[9px]"></i>
-                                                                    {review.playtime}
-                                                                </span>
+                                                        {review.verified && (
+                                                            <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-[#0d0d0d] flex items-center justify-center">
+                                                                <i className="ti ti-check text-white" style={{ fontSize: '7px' }}></i>
                                                             </div>
-                                                        </div>
+                                                        )}
                                                     </div>
-
-                                                    {/* Stars */}
-                                                    <div className="flex flex-col items-end gap-1 flex-shrink-0">
-                                                        <div className="flex items-center gap-0.5">
-                                                            {[1, 2, 3, 4, 5].map(s => (
-                                                                <i
-                                                                    key={s}
-                                                                    className={`ti ${
-                                                                        s <= review.rating
-                                                                            ? 'ti-star-filled text-yellow-400'
-                                                                            : 'ti-star text-white/[0.07]'
-                                                                    } text-sm`}
-                                                                ></i>
-                                                            ))}
+                                                    <div>
+                                                        <span className="text-white font-bold text-sm block leading-tight">{review.name}</span>
+                                                        <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                                                            <span className="text-white/35 text-[10px]">{review.date}</span>
+                                                            <span className="text-white/15">·</span>
+                                                            <span className="text-white/35 text-[10px] flex items-center gap-1">
+                                                                <i className="ti ti-device-gamepad-2 text-[9px]"></i>{review.platform}
+                                                            </span>
+                                                            <span className="text-white/15">·</span>
+                                                            <span className="text-white/35 text-[10px] flex items-center gap-1">
+                                                                <i className="ti ti-clock text-[9px]"></i>{review.playtime}
+                                                            </span>
                                                         </div>
-                                                        <span className="text-[9px] font-black text-white/20 tracking-widest">
-                                                            {review.rating}.0 / 5
-                                                        </span>
                                                     </div>
                                                 </div>
 
-                                                {/* Review Text — indented to align with name */}
-                                                <p className="text-white/55 text-[13px] leading-[1.8] mb-5 pl-[3.375rem]">
-                                                    {review.text}
-                                                </p>
-
-                                                {/* Action Row */}
-                                                <div className="flex items-center gap-2 pl-[3.375rem] pt-4 border-t border-white/[0.03]">
-                                                    <span className="text-[9px] text-white/15 font-black uppercase tracking-[0.2em] mr-2">
-                                                        Membantu?
-                                                    </span>
-                                                    <button
-                                                        onClick={() => toggleHelpful(idx)}
-                                                        className={`flex items-center gap-1.5 text-[10px] font-bold px-3.5 py-1.5 rounded-full border transition-all duration-200 ${
-                                                            helpfulMap[idx]
-                                                                ? 'bg-[#FF6B35]/10 border-[#FF6B35]/30 text-[#FF6B35]'
-                                                                : 'border-white/[0.05] text-white/20 hover:border-white/15 hover:text-white/40'
-                                                        }`}
-                                                    >
-                                                        <i className="ti ti-thumb-up text-xs"></i>
-                                                        Ya ({helpfulMap[idx] ? review.likes + 1 : review.likes})
-                                                    </button>
-                                                    <button className="flex items-center gap-1.5 text-[10px] font-bold px-3.5 py-1.5 rounded-full border border-white/[0.04] text-white/15 hover:border-white/10 hover:text-white/30 transition-all">
-                                                        <i className="ti ti-thumb-down text-xs"></i> Tidak
-                                                    </button>
-                                                    <button className="ml-auto flex items-center gap-1.5 text-[9px] font-bold text-white/10 hover:text-white/30 transition-colors">
-                                                        <i className="ti ti-flag text-xs"></i> Laporkan
-                                                    </button>
+                                                {/* Stars */}
+                                                <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                                                    <div className="flex items-center gap-0.5">
+                                                        {[1, 2, 3, 4, 5].map(s => (
+                                                            <i key={s} className={`ti ${s <= review.rating ? 'ti-star-filled text-yellow-400' : 'ti-star text-white/10'} text-sm`}></i>
+                                                        ))}
+                                                    </div>
+                                                    <span className="text-[9px] font-black text-white/25 tracking-widest">{review.rating}.0 / 5</span>
                                                 </div>
                                             </div>
+
+                                            {/* Review Text */}
+                                            <p className="text-white/65 text-[13px] leading-[1.8] mb-5 pl-[3.375rem]">{review.text}</p>
+
+                                            {/* Actions */}
+                                            <div
+                                                className="flex items-center gap-2 pl-[3.375rem] pt-4"
+                                                style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
+                                            >
+                                                <span className="text-[9px] text-white/20 font-black uppercase tracking-[0.2em] mr-2">Membantu?</span>
+                                                <button
+                                                    onClick={() => toggleHelpful(idx)}
+                                                    className="flex items-center gap-1.5 text-[10px] font-bold px-3.5 py-1.5 rounded-full transition-all duration-200"
+                                                    style={helpfulMap[idx]
+                                                        ? { background: 'rgba(255,107,53,0.1)', border: '1px solid rgba(255,107,53,0.4)', color: '#FF6B35' }
+                                                        : { background: 'transparent', border: '1px solid rgba(255,255,255,0.14)', color: 'rgba(255,255,255,0.3)' }
+                                                    }
+                                                >
+                                                    <i className="ti ti-thumb-up text-xs"></i>
+                                                    Ya ({helpfulMap[idx] ? review.likes + 1 : review.likes})
+                                                </button>
+                                                <button
+                                                    className="flex items-center gap-1.5 text-[10px] font-bold px-3.5 py-1.5 rounded-full transition-all"
+                                                    style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.22)' }}
+                                                >
+                                                    <i className="ti ti-thumb-down text-xs"></i> Tidak
+                                                </button>
+                                                <button className="ml-auto flex items-center gap-1.5 text-[9px] font-bold text-white/15 hover:text-white/35 transition-colors">
+                                                    <i className="ti ti-flag text-xs"></i> Laporkan
+                                                </button>
+                                            </div>
                                         </div>
-                                    ))
-                                )}
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
-                        {/* ── RIGHT: Rating Summary + Review Form ── */}
+                        {/* RIGHT — Rating Summary + Form */}
                         <div className="lg:col-span-4 space-y-4 lg:sticky lg:top-[140px]">
 
-                            {/* Rating Summary Card */}
-                            <div className="p-6 rounded-3xl border border-white/[0.05] bg-white/[0.015] space-y-6">
-                                {/* Big Score */}
+                            {/* Rating Summary */}
+                            <div className="p-6 rounded-3xl space-y-6" style={cardStyle}>
+                                {/* Top shimmer */}
+                                <div className="absolute top-0 left-8 right-8 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent)' }}></div>
+
                                 <div className="flex items-center gap-5">
                                     <div className="relative">
                                         <span className="text-[72px] font-black text-white leading-none tracking-tighter">4.5</span>
-                                        <span className="absolute -top-1 -right-5 text-[14px] font-black text-white/20 leading-none">/5</span>
+                                        <span className="absolute -top-1 -right-5 text-[14px] font-black text-white/25 leading-none">/5</span>
                                     </div>
                                     <div className="space-y-2">
                                         <div className="flex gap-0.5">
                                             {[1, 2, 3, 4, 5].map(s => (
-                                                <i
-                                                    key={s}
-                                                    className={`ti ${s <= 4 ? 'ti-star-filled' : 'ti-star-half-filled'} text-yellow-400 text-base`}
-                                                ></i>
+                                                <i key={s} className={`ti ${s <= 4 ? 'ti-star-filled' : 'ti-star-half-filled'} text-yellow-400 text-base`}></i>
                                             ))}
                                         </div>
-                                        <p className="text-[10px] font-bold text-white/25 tracking-wider">
-                                            {totalReviews.toLocaleString()} total ulasan
-                                        </p>
+                                        <p className="text-[10px] font-bold text-white/30 tracking-wider">{totalReviews.toLocaleString()} total ulasan</p>
                                     </div>
                                 </div>
 
-                                {/* Rating Bars */}
                                 <div className="space-y-2.5">
                                     {ratingBars.map(({ star, count, percent }) => (
                                         <button
                                             key={star}
                                             onClick={() => setFilterStar(filterStar === star ? null : star)}
-                                            className={`w-full flex items-center gap-3 transition-all duration-200 ${
-                                                filterStar === star ? 'opacity-100' : 'opacity-40 hover:opacity-75'
-                                            }`}
+                                            className="w-full flex items-center gap-3 transition-all duration-200"
+                                            style={{ opacity: filterStar === null || filterStar === star ? 1 : 0.35 }}
                                         >
                                             <span className="text-[11px] font-black text-white/60 w-2.5 text-right shrink-0">{star}</span>
                                             <i className="ti ti-star-filled text-yellow-400 text-[9px] shrink-0"></i>
-                                            <div className="flex-1 h-[3px] bg-white/[0.05] rounded-full overflow-hidden">
+                                            <div className="flex-1 h-[3px] rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
                                                 <div
-                                                    className={`h-full rounded-full transition-all duration-700 ${
-                                                        filterStar === star ? 'bg-[#FF6B35]' : 'bg-white/20'
-                                                    }`}
-                                                    style={{ width: `${percent}%` }}
+                                                    className="h-full rounded-full transition-all duration-700"
+                                                    style={{
+                                                        width: `${percent}%`,
+                                                        background: filterStar === star ? '#FF6B35' : 'rgba(255,255,255,0.32)',
+                                                    }}
                                                 ></div>
                                             </div>
-                                            <span className="text-[10px] font-bold text-white/20 w-10 text-right shrink-0">
+                                            <span className="text-[10px] font-bold text-white/25 w-10 text-right shrink-0">
                                                 {count >= 1000 ? `${(count / 1000).toFixed(1)}k` : count}
                                             </span>
                                         </button>
                                     ))}
                                 </div>
 
-                                {/* Badges */}
-                                <div className="pt-2 border-t border-white/[0.04] flex flex-wrap gap-2">
+                                <div className="pt-2 flex flex-wrap gap-2" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
                                     {[
-                                        { icon: 'ti-shield-check', label: 'Terverifikasi', color: '#4CAF50', bg: 'rgba(76,175,80,0.06)', border: 'rgba(76,175,80,0.15)' },
-                                        { icon: 'ti-star', label: 'Top Rated', color: '#FFB800', bg: 'rgba(255,184,0,0.06)', border: 'rgba(255,184,0,0.15)' },
-                                        { icon: 'ti-device-gamepad-2', label: 'In-game', color: '#FF6B35', bg: 'rgba(255,107,53,0.06)', border: 'rgba(255,107,53,0.15)' },
+                                        { icon: 'ti-shield-check', label: 'Terverifikasi', color: '#4CAF50', bg: 'rgba(76,175,80,0.07)', border: 'rgba(76,175,80,0.22)' },
+                                        { icon: 'ti-star', label: 'Top Rated', color: '#FFB800', bg: 'rgba(255,184,0,0.07)', border: 'rgba(255,184,0,0.22)' },
+                                        { icon: 'ti-device-gamepad-2', label: 'In-game', color: '#FF6B35', bg: 'rgba(255,107,53,0.07)', border: 'rgba(255,107,53,0.22)' },
                                     ].map(({ icon, label, color, bg, border }) => (
                                         <div
                                             key={label}
                                             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-black tracking-widest uppercase"
                                             style={{ background: bg, border: `1px solid ${border}`, color }}
                                         >
-                                            <i className={`ti ${icon} text-[9px]`}></i>
-                                            {label}
+                                            <i className={`ti ${icon} text-[9px]`}></i>{label}
                                         </div>
                                     ))}
                                 </div>
                             </div>
 
-                            {/* Review Form Card */}
-                            <div className="p-6 rounded-3xl border border-white/[0.05] bg-white/[0.015]">
-                                <p className="text-[9px] font-black tracking-[0.25em] text-white/25 uppercase mb-5">
-                                    Tulis Ulasanmu
-                                </p>
+                            {/* Review Form */}
+                            <div className="p-6 rounded-3xl" style={cardStyle}>
+                                <p className="text-[9px] font-black tracking-[0.25em] text-white/30 uppercase mb-5">Tulis Ulasanmu</p>
 
                                 {submitted ? (
                                     <div className="flex flex-col items-center gap-3 py-10 text-center">
-                                        <div className="w-14 h-14 rounded-2xl bg-[#FF6B35]/10 border border-[#FF6B35]/20 flex items-center justify-center">
+                                        <div className="w-14 h-14 rounded-2xl bg-[#FF6B35]/10 flex items-center justify-center" style={{ border: '1px solid rgba(255,107,53,0.25)' }}>
                                             <i className="ti ti-check text-[#FF6B35] text-2xl"></i>
                                         </div>
                                         <p className="text-white font-bold text-sm tracking-tight">Ulasan terkirim!</p>
@@ -716,9 +683,9 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                     </div>
                                 ) : (
                                     <div className="space-y-4">
-                                        {/* Star Rating Picker */}
+                                        {/* Star Picker */}
                                         <div className="space-y-2">
-                                            <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.2em]">Rating *</p>
+                                            <p className="text-[9px] font-black text-white/25 uppercase tracking-[0.2em]">Rating *</p>
                                             <div className="flex items-center gap-2">
                                                 {[1, 2, 3, 4, 5].map(s => (
                                                     <button
@@ -728,72 +695,53 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                                         onClick={() => setModalRating(s)}
                                                         className="transition-transform hover:scale-125 active:scale-95"
                                                     >
-                                                        <i
-                                                            className={`ti ${
-                                                                s <= (hoverRating || modalRating) ? 'ti-star-filled' : 'ti-star'
-                                                            } text-2xl transition-colors ${
-                                                                s <= (hoverRating || modalRating)
-                                                                    ? 'text-yellow-400'
-                                                                    : 'text-white/[0.07]'
-                                                            }`}
-                                                        ></i>
+                                                        <i className={`ti ${s <= (hoverRating || modalRating) ? 'ti-star-filled' : 'ti-star'} text-2xl transition-colors ${s <= (hoverRating || modalRating) ? 'text-yellow-400' : 'text-white/10'}`}></i>
                                                     </button>
                                                 ))}
                                                 {modalRating > 0 && (
-                                                    <span className="text-[10px] text-[#FF6B35] font-black ml-1 tracking-wide">
+                                                    <span className="text-[10px] text-[#FF6B35] font-black ml-1">
                                                         {['', 'Sangat Buruk', 'Kurang', 'Lumayan', 'Bagus', 'Sempurna!'][modalRating]}
                                                     </span>
                                                 )}
                                             </div>
                                         </div>
 
-                                        {/* Name + Email fields */}
+                                        {/* Name + Email */}
                                         {[
-                                            {
-                                                label: 'Nama *',
-                                                type: 'text',
-                                                placeholder: 'Nama kamu',
-                                                value: reviewName,
-                                                setter: setReviewName,
-                                            },
-                                            {
-                                                label: 'Email *',
-                                                type: 'email',
-                                                placeholder: 'mail@example.com',
-                                                value: reviewEmail,
-                                                setter: setReviewEmail,
-                                            },
-                                        ].map(({ label, type, placeholder, value, setter }) => (
-                                            <div key={label} className="space-y-1.5">
-                                                <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.2em]">{label}</p>
+                                            { label: 'Nama *', type: 'text', placeholder: 'Nama kamu', value: reviewName, setter: setReviewName, field: 'name' },
+                                            { label: 'Email *', type: 'email', placeholder: 'mail@example.com', value: reviewEmail, setter: setReviewEmail, field: 'email' },
+                                        ].map(({ label, type, placeholder, value, setter, field }) => (
+                                            <div key={field} className="space-y-1.5">
+                                                <p className="text-[9px] font-black text-white/25 uppercase tracking-[0.2em]">{label}</p>
                                                 <input
                                                     type={type}
                                                     placeholder={placeholder}
                                                     value={value}
                                                     onChange={e => setter(e.target.value)}
-                                                    className="w-full bg-black/20 border border-white/[0.05] rounded-xl px-4 py-2.5 text-[12px] text-white placeholder-white/10 outline-none focus:border-[#FF6B35]/30 focus:bg-black/30 transition-all"
+                                                    onFocus={() => setFocusedField(field)}
+                                                    onBlur={() => setFocusedField(null)}
+                                                    className="w-full rounded-xl px-4 py-2.5 text-[12px] text-white placeholder-white/15 outline-none transition-all"
+                                                    style={focusedField === field ? inputFocusStyle : inputStyle}
                                                 />
                                             </div>
                                         ))}
 
                                         {/* Textarea */}
                                         <div className="space-y-1.5">
-                                            <p className="text-[9px] font-black text-white/20 uppercase tracking-[0.2em]">Ulasan *</p>
+                                            <p className="text-[9px] font-black text-white/25 uppercase tracking-[0.2em]">Ulasan *</p>
                                             <textarea
                                                 placeholder="Ceritakan pengalamanmu..."
                                                 value={reviewText}
                                                 onChange={e => setReviewText(e.target.value)}
+                                                onFocus={() => setFocusedField('review')}
+                                                onBlur={() => setFocusedField(null)}
                                                 rows={4}
-                                                className="w-full bg-black/20 border border-white/[0.05] rounded-xl px-4 py-2.5 text-[12px] text-white placeholder-white/10 outline-none focus:border-[#FF6B35]/30 focus:bg-black/30 transition-all resize-none"
+                                                className="w-full rounded-xl px-4 py-2.5 text-[12px] text-white placeholder-white/15 outline-none transition-all resize-none"
+                                                style={focusedField === 'review' ? inputFocusStyle : inputStyle}
                                             />
                                             <div className="flex justify-end">
-                                                <span
-                                                    className={`text-[9px] font-black tracking-wide ${
-                                                        reviewText.length > 20 ? 'text-white/25' : 'text-white/10'
-                                                    }`}
-                                                >
-                                                    {reviewText.length}
-                                                    <span className="text-white/10">/500</span>
+                                                <span className={`text-[9px] font-black tracking-wide ${reviewText.length > 20 ? 'text-white/30' : 'text-white/12'}`}>
+                                                    {reviewText.length}<span className="text-white/12">/500</span>
                                                 </span>
                                             </div>
                                         </div>
@@ -811,9 +759,7 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                             <i className="ti ti-send text-sm"></i>
                                             Kirim Ulasan
                                         </button>
-                                        <p className="text-[9px] text-center text-white/15 tracking-wide">
-                                            Email tidak akan ditampilkan publik.
-                                        </p>
+                                        <p className="text-[9px] text-center text-white/15 tracking-wide">Email tidak akan ditampilkan publik.</p>
                                     </div>
                                 )}
                             </div>
