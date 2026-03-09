@@ -10,11 +10,13 @@ export const metadata = {
 
 export default function Home() {
     return (
-        <article className="main-content mt-4 animate-fade-in-up flex-1 min-w-0">
-            <Banner />
-            <GamesSection />
-            <TournamentSection />
+        <div className="main-content animate-fade-in-up flex-1" style={{ minWidth: 0, overflow: 'visible', width: '100%' }}>
+            <article>
+                <Banner />
+                <GamesSection />
+                <TournamentSection />
+            </article>
             <CTA />
-        </article>
+        </div>
     );
 }

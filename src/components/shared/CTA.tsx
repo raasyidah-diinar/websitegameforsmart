@@ -19,7 +19,7 @@ function AgreeCheckbox() {
             }}>
                 {checked && (
                     <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                        <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                 )}
             </div>
@@ -35,15 +35,8 @@ function AgreeCheckbox() {
 
 export default function CTA() {
     return (
-        <div className="call-to-action pt-120 pb-120 bgn-4 w-100" id="cta">
-            <style jsx>{`
-                .call-to-action {
-                    position: relative;
-                    z-index: 5;
-                    /* Extend left by exactly the sidebar width to fill behind it */
-                    margin-left: -110px;
-                    width: calc(100% + 110px) !important;
-                }
+        <>
+            <style>{`
                 .cta-pill-container {
                     background: white;
                     border-radius: 100px;
@@ -77,6 +70,7 @@ export default function CTA() {
                     text-transform: uppercase;
                     font-size: 14px;
                     letter-spacing: 0.5px;
+                    cursor: pointer;
                 }
                 .cta-submit-btn:hover {
                     background: #ff5a2d !important;
@@ -98,32 +92,69 @@ export default function CTA() {
                     .cta-pill-container { flex-direction: column; border-radius: 20px; padding: 15px; }
                     .cta-submit-btn { width: 100%; margin-top: 10px; }
                 }
+                #cta-card {
+                    position: relative;
+                    overflow: hidden;
+                    margin: 0;
+                    margin-left: -110px;
+                    margin-bottom: -100px;
+                    width: 100vw;
+                    padding: 80px 40px 160px 40px;
+                    border-radius: 0;
+                    background: rgb(14, 16, 18);
+                    border: none;
+                    border-top: 1px solid rgba(255, 140, 0, 0.18);
+                    box-shadow:
+                        0 0 60px rgba(255, 100, 0, 0.07),
+                        0 0 120px rgba(255, 80, 0, 0.04),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+                }
+                #cta-card::before {
+                    content: '';
+                    position: absolute;
+                    top: -120px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 600px;
+                    height: 400px;
+                    background: radial-gradient(ellipse at center, rgba(255, 100, 0, 0.12) 0%, transparent 70%);
+                    pointer-events: none;
+                }
+                @media (max-width: 768px) {
+                    #cta-card {
+                        margin-left: 0;
+                        width: 100%;
+                        padding: 60px 24px 120px;
+                    }
+                }
             `}</style>
-            <div className="container-fluid px-lg-15 px-md-10 px-6">
-                <div className="row justify-content-center">
-                    <div className="col-lg-8 text-center">
-                        <h2 className="display-two mb-6 stay-title title-anim">Stay Up To Date</h2>
-                        <p className="stay-subtitle mb-10 mx-auto max-600">
-                            Get the latest gaming news, tournament updates, and exclusive<br className="d-none d-md-block" /> content delivered straight to your inbox.
-                        </p>
-                        
-                        <div className="cta-pill-container">
-                            <input 
-                                type="email" 
-                                placeholder="Enter your email address" 
-                                className="cta-input" 
-                            />
-                            <button type="submit" className="cta-submit-btn">
-                                Submit
-                            </button>
+
+            {/* Newsletter CTA section */}
+            <div id="cta-card">
+                <div className="container-fluid">
+                    <div className="row justify-content-center">
+                        <div className="col-lg-8 text-center">
+                            <h2 className="display-two mb-6 stay-title title-anim">Stay Up To Date</h2>
+                            <p className="stay-subtitle mb-10 mx-auto max-600">
+                                Get the latest gaming news, tournament updates, and exclusive<br className="d-none d-md-block" /> content delivered straight to your inbox.
+                            </p>
+
+                            <div className="cta-pill-container">
+                                <input
+                                    type="email"
+                                    placeholder="Enter your email address"
+                                    className="cta-input"
+                                />
+                                <button type="submit" className="cta-submit-btn">
+                                    Submit
+                                </button>
+                            </div>
+
+                            <AgreeCheckbox />
                         </div>
-
-                        {/* Agree Checkbox */}
-                        <AgreeCheckbox />
-
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }

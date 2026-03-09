@@ -77,7 +77,7 @@ export default function Sidebar() {
           flex-shrink: 0 !important;
           display: block !important;
           background: transparent !important;
-          margin-bottom: 60px !important; /* Forces it to stop before the very end */
+          margin-bottom: 0 !important; /* Forces it to stick until the very bottom */
         }
 
         .sidebar-menu-capsule {

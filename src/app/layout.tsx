@@ -44,15 +44,16 @@ export default function RootLayout({
                         <div className="cursor"></div>
                         <ConnectWalletModal />
                         <Header />
-                        <main className="main-container container-fluid d-flex pt-32 px-0 position-relative mb-10">
-                            <Sidebar />
-                            {children}
+                        <main className="main-container container-fluid d-flex flex-column pt-32 px-0 position-relative" style={{ overflow: 'visible' }}>
+                            <div className="d-flex w-100 flex-wrap" style={{ alignItems: 'flex-start', flex: 1 }}>
+                                <Sidebar />
+                                {children}
+                            </div>
                         </main>
                         <Footer />
                     </SearchProvider>
                 </SidebarProvider>
 
-                {/* Legacy Scripts */}
                 <Script src="/assets/js/jquery.min.js" strategy="beforeInteractive" />
                 <Script src="/assets/js/bootstrap.bundle.min.js" strategy="afterInteractive" />
                 <Script src="/assets/js/gsap.min.js" strategy="afterInteractive" />

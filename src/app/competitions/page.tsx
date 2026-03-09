@@ -1,10 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import Header from '@/components/shared/Header';
-import Sidebar from '@/components/shared/Sidebar';
 import TournamentCard from '@/components/features/tournaments/components/TournamentCard';
-import Breadcrumbs from '@/components/shared/Breadcrumbs';
-import Footer from '@/components/shared/Footer';
 const tournamentsData = [
     {
         id: 21,
@@ -75,74 +71,68 @@ export default function TournamentsPage() {
     });
 
     return (
-        <>
-            <Header />
-            <main className="main-container container-fluid d-flex pt-32 px-0 position-relative mb-10">
-                <Sidebar />
-                <article className="main-content mt-lg-10 mt-6">
-                    <section className="tournament-banner mb-lg-15 mb-sm-10 mb-4 pb-lg-10 pb-sm-6">
-                        <div className="container-fluid">
-                            <div className="parallax-banner-area parallax-container" style={{ height: '450px' }}>
-                                <img className="w-100 h-100 rounded-5 parallax-img object-fit-cover" src="/assets/img/tournament-banner.png" alt="tournament banner" />
-                            </div>
+        <div className="main-content animate-fade-in-up flex-1" style={{ minWidth: 0, overflow: 'visible' }}>
+            <article style={{ flex: 1 }}>
+                <section className="tournament-banner mb-lg-15 mb-sm-10 mb-4 pb-lg-10 pb-sm-6">
+                    <div className="container-fluid">
+                        <div className="parallax-banner-area parallax-container" style={{ height: '450px' }}>
+                            <img className="w-100 h-100 rounded-5 parallax-img object-fit-cover" src="/assets/img/tournament-banner.png" alt="tournament banner" />
                         </div>
-                    </section>
+                    </div>
+                </section>
 
-                    <section ref={sectionRef} className="tournament-section pb-120">
-                        <div className="tournament-wrapper alt">
-                            <div className="container-fluid px-lg-15 px-md-10 px-6">
-                                <Breadcrumbs />
-                                <div className="row justify-content-between align-items-end mb-8">
-                                    <div className="col">
-                                        <h1 className="display-four tcn-1 cursor-scale growUp title-anim text-uppercase">Competition</h1>
-                                    </div>
+                <section ref={sectionRef} className="tournament-section pb-120">
+                    <div className="tournament-wrapper alt">
+                        <div className="container-fluid px-lg-15 px-md-10 px-6">
+                            <div className="row justify-content-between align-items-end mb-8">
+                                <div className="col">
+                                    <h1 className="display-four tcn-1 cursor-scale growUp title-anim text-uppercase">Competition</h1>
                                 </div>
-                                <div className="singletab tournaments-tab">
-                                    <div className="d-between gap-6 flex-wrap mb-lg-15 mb-sm-10 mb-6">
-                                        <ul className="tablinks d-flex flex-wrap align-items-center gap-3">
-                                            {['All', 'Active', 'Upcoming', 'Finished'].map((tab) => (
-                                                <li key={tab} className={`nav-links ${activeTab === tab ? 'active' : ''}`}>
-                                                    <button
-                                                        className="tablink py-sm-3 py-2 px-sm-8 px-6 rounded-pill tcn-1"
-                                                        onClick={(e) => {
-                                                            e.preventDefault();
-                                                            e.stopPropagation();
-                                                            setActiveTab(tab);
-                                                        }}
+                            </div>
+                            <div className="singletab tournaments-tab">
+                                <div className="d-between gap-6 flex-wrap mb-lg-15 mb-sm-10 mb-6">
+                                    <ul className="tablinks d-flex flex-wrap align-items-center gap-3">
+                                        {['All', 'Active', 'Upcoming', 'Finished'].map((tab) => (
+                                            <li key={tab} className={`nav-links ${activeTab === tab ? 'active' : ''}`}>
+                                                <button
+                                                    className="tablink py-sm-3 py-2 px-sm-8 px-6 rounded-pill tcn-1"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        e.stopPropagation();
+                                                        setActiveTab(tab);
+                                                    }}
+                                                >
+                                                    {tab}
+                                                </button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div className="tournament-tab-contents">
+                                    <div className="tournament-tab-item active">
+                                        <div className="row justify-content-md-start justify-content-center g-6">
+                                            {filteredTournaments.length > 0 ? (
+                                                filteredTournaments.map((tournament) => (
+                                                    <div
+                                                        key={`${activeTab}-${tournament.id}`}
+                                                        className={`col-xxl-3 col-lg-4 col-md-6 col-sm-8 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}
                                                     >
-                                                        {tab}
-                                                    </button>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                    <div className="tournament-tab-contents">
-                                        <div className="tournament-tab-item active">
-                                            <div className="row justify-content-md-start justify-content-center g-6">
-                                                {filteredTournaments.length > 0 ? (
-                                                    filteredTournaments.map((tournament) => (
-                                                        <div
-                                                            key={`${activeTab}-${tournament.id}`}
-                                                            className={`col-xxl-3 col-lg-4 col-md-6 col-sm-8 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}
-                                                        >
-                                                            <TournamentCard {...tournament} isDetailed />
-                                                        </div>
-                                                    ))
-                                                ) : (
-                                                    <div className="col-12 text-center py-20">
-                                                        <h3 className="tcn-1">Belum ada Competition</h3>
+                                                        <TournamentCard {...tournament} isDetailed />
                                                     </div>
-                                                )}
-                                            </div>
+                                                ))
+                                            ) : (
+                                                <div className="col-12 text-center py-20">
+                                                    <h3 className="tcn-1">Belum ada Competition</h3>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </section>
-                </article>
-            </main>
-            <Footer />
-        </>
+                    </div>
+                </section>
+            </article>
+        </div>
     );
 }
