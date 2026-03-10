@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import Image from 'next/image';
 import { TournamentInfo, allItemsData } from '@/data/allItemsData';
@@ -130,9 +131,27 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
     const [reviewEmail, setReviewEmail] = useState('');
     const [reviewText, setReviewText] = useState('');
     const [submitted, setSubmitted] = useState(false);
+    const [showAllFeatures, setShowAllFeatures] = useState(false);
     const [focusedField, setFocusedField] = useState<string | null>(null);
     const [isLightboxOpen, setIsLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    // Body scroll lock for lightbox
+    useEffect(() => {
+        if (isLightboxOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [isLightboxOpen]);
 
     const scrollRef = useRef<HTMLDivElement>(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -174,25 +193,37 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
     const openLightbox = (index: number) => {
         setLightboxIndex(index);
         setIsLightboxOpen(true);
-        document.body.style.overflow = 'hidden';
     };
 
     const closeLightbox = () => {
         setIsLightboxOpen(false);
-        document.body.style.overflow = 'auto';
     };
 
     const nextLightboxImage = () => {
-        if (game.screenshots) {
-            setLightboxIndex((prev) => (prev + 1) % game.screenshots!.length);
+        const screenshots = game.screenshots;
+        if (screenshots) {
+            setLightboxIndex((prev) => (prev + 1) % screenshots.length);
         }
     };
 
     const prevLightboxImage = () => {
-        if (game.screenshots) {
-            setLightboxIndex((prev) => (prev - 1 + game.screenshots!.length) % game.screenshots!.length);
+        const screenshots = game.screenshots;
+        if (screenshots) {
+            setLightboxIndex((prev) => (prev - 1 + screenshots.length) % screenshots.length);
         }
     };
+
+    // Keyboard navigation for lightbox
+    useEffect(() => {
+        if (!isLightboxOpen) return;
+        const handleKey = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') nextLightboxImage();
+            if (e.key === 'ArrowLeft') prevLightboxImage();
+        };
+        window.addEventListener('keydown', handleKey);
+        return () => window.removeEventListener('keydown', handleKey);
+    }, [isLightboxOpen]);
 
     return (
         <article className="main-content mt-4 animate-fade-in-up flex-1 min-w-0">
@@ -364,6 +395,12 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                                     onClick={() => openLightbox(idx)}
                                                 >
                                                     <Image src={ss} alt={`Screenshot ${idx + 1}`} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                                                    {/* Hover overlay hint */}
+                                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
+                                                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-12 h-12 rounded-full bg-black/50 border border-white/20 flex items-center justify-center">
+                                                            <i className="ti ti-zoom-in text-white text-xl"></i>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             ))}
                                         </div>
@@ -438,10 +475,14 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                     </div>
                                 </div>
                             </section>
+
+
                         </div>
 
-                        {/* Right — Similar Games */}
-                        <aside className="lg:col-span-3 space-y-10 animate-fade-in-right flex flex-col items-end">
+                        {/* Right — Sidebar */}
+                        <aside className="lg:col-span-3 space-y-12 animate-fade-in-right flex flex-col items-end">
+
+
                             <div className="w-full max-w-[320px]">
                                 <div className="flex items-center justify-between mb-10">
                                     <h2 className="text-lg font-bold text-white" style={{ fontSize: '25px' }}>Game serupa</h2>
@@ -550,7 +591,6 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                         onMouseEnter={() => setHoveredCard(idx)}
                                         onMouseLeave={() => setHoveredCard(null)}
                                     >
-                                        {/* Reviewer color glow on hover */}
                                         <div
                                             className="absolute inset-0 pointer-events-none transition-opacity duration-500"
                                             style={{
@@ -558,15 +598,12 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                                 background: `radial-gradient(ellipse at top left, ${review.color}0D 0%, transparent 60%)`,
                                             }}
                                         ></div>
-
-                                        {/* Top shimmer line */}
                                         <div
                                             className="absolute top-0 left-8 right-8 h-px"
                                             style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)' }}
                                         ></div>
 
                                         <div className="relative z-10">
-                                            {/* Top Row */}
                                             <div className="flex items-start justify-between gap-4 mb-4">
                                                 <div className="flex items-center gap-3.5">
                                                     <div className="relative flex-shrink-0">
@@ -601,7 +638,6 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                                     </div>
                                                 </div>
 
-                                                {/* Stars */}
                                                 <div className="flex flex-col items-end gap-1 flex-shrink-0">
                                                     <div className="flex items-center gap-0.5">
                                                         {[1, 2, 3, 4, 5].map(s => (
@@ -612,10 +648,8 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                                 </div>
                                             </div>
 
-                                            {/* Review Text */}
                                             <p className="text-white/65 text-[13px] leading-[1.8] mb-5 pl-[3.375rem]">{review.text}</p>
 
-                                            {/* Actions */}
                                             <div
                                                 className="flex items-center gap-2 pl-[3.375rem] pt-4"
                                                 style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
@@ -646,6 +680,50 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                     </div>
                                 ))}
                             </div>
+
+                            {/* 💬 KOMENTAR & DISKUSI */}
+                            <div className="pt-12 mt-12 border-t border-white/5">
+                                <div className="flex items-center justify-between mb-8">
+                                    <div>
+                                        <h3 className="text-xl font-black text-white tracking-tight">Diskusi Komunitas</h3>
+                                        <p className="text-white/30 text-[11px] mt-1">Bergabung dalam percakapan dengan pemain lain</p>
+                                    </div>
+                                    <button className="px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black tracking-widest text-white/60 uppercase hover:text-white transition-colors">Semua Topik</button>
+                                </div>
+                                
+                                <div className="space-y-4">
+                                    {[
+                                        { user: 'Rian_Gamer', comment: 'Adakah tips buat ngalahin boss di level 5? Susah banget kontrolnya pas lagi lari.', replies: 3, time: '2 jam yang lalu' },
+                                        { user: 'Siska_A', comment: 'Gila sih grafisnya smooth parah buat game web kayak gini. Love it!', replies: 1, time: '5 jam yang lalu' },
+                                    ].map((item, i) => (
+                                        <div key={i} className="p-6 rounded-[28px] bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-all group">
+                                            <div className="flex items-start gap-4">
+                                                <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-white/10 relative">
+                                                    <Image src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${item.user}`} fill alt="user" />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <div className="flex items-center justify-between mb-2">
+                                                        <span className="text-sm font-bold text-white tracking-tight">{item.user}</span>
+                                                        <span className="text-[10px] text-white/20">{item.time}</span>
+                                                    </div>
+                                                    <p className="text-sm text-white/50 leading-relaxed mb-4">{item.comment}</p>
+                                                    <div className="flex items-center gap-6">
+                                                        <button className="flex items-center gap-2 text-[10px] font-black text-[#FF6B35] uppercase tracking-widest hover:brightness-125 transition-all">
+                                                            <i className="ti ti-message-2 text-base"></i> Balas ({item.replies})
+                                                        </button>
+                                                        <button className="flex items-center gap-2 text-[10px] font-black text-white/20 uppercase tracking-widest hover:text-white/40 transition-all">
+                                                            <i className="ti ti-heart text-base"></i> Suka
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                    <button className="w-full py-4 rounded-[28px] border-2 border-dashed border-white/5 text-[11px] font-black text-white/20 uppercase tracking-[0.2em] hover:border-[#FF6B35]/20 hover:text-[#FF6B35]/40 transition-all">
+                                        Muat Lebih Banyak Diskusi
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
                         {/* RIGHT — Rating Summary + Form */}
@@ -653,7 +731,6 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
 
                             {/* Rating Summary */}
                             <div className="p-6 rounded-3xl space-y-6" style={cardStyle}>
-                                {/* Top shimmer */}
                                 <div className="absolute top-0 left-8 right-8 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent)' }}></div>
 
                                 <div className="flex items-center gap-5">
@@ -697,22 +774,30 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                     ))}
                                 </div>
 
-                                <div className="pt-2 flex flex-wrap gap-2" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-                                    {[
-                                        { icon: 'ti-shield-check', label: 'Terverifikasi', color: '#4CAF50', bg: 'rgba(76,175,80,0.07)', border: 'rgba(76,175,80,0.22)' },
-                                        { icon: 'ti-star', label: 'Top Rated', color: '#FFB800', bg: 'rgba(255,184,0,0.07)', border: 'rgba(255,184,0,0.22)' },
-                                        { icon: 'ti-device-gamepad-2', label: 'In-game', color: '#FF6B35', bg: 'rgba(255,107,53,0.07)', border: 'rgba(255,107,53,0.22)' },
-                                    ].map(({ icon, label, color, bg, border }) => (
-                                        <div
-                                            key={label}
-                                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-black tracking-widest uppercase"
-                                            style={{ background: bg, border: `1px solid ${border}`, color }}
-                                        >
-                                            <i className={`ti ${icon} text-[9px]`}></i>{label}
-                                        </div>
-                                    ))}
+                                    {/* Detailed Rating Breakdown (Sosial & Komunitas) */}
+                                    <div className="pt-6 space-y-4" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                                        <p className="text-[9px] font-black text-white/25 uppercase tracking-[0.2em]">Breakdown Kategori</p>
+                                        {[
+                                            { label: 'Gameplay', score: 4.8, icon: 'ti-device-gamepad-2' },
+                                            { label: 'Grafis', score: 4.2, icon: 'ti-brush' },
+                                            { label: 'Audio', score: 4.5, icon: 'ti-volume' },
+                                            { label: 'Kontrol', score: 4.7, icon: 'ti-target-arrow' },
+                                        ].map((cat) => (
+                                            <div key={cat.label} className="space-y-1.5">
+                                                <div className="flex items-center justify-between">
+                                                    <div className="flex items-center gap-2">
+                                                        <i className={`ti ${cat.icon} text-white/20 text-xs`}></i>
+                                                        <span className="text-[10px] font-bold text-white/60">{cat.label}</span>
+                                                    </div>
+                                                    <span className="text-[10px] font-black text-[#FF6B35]">{cat.score}</span>
+                                                </div>
+                                                <div className="h-[2px] w-full bg-white/5 rounded-full overflow-hidden">
+                                                    <div className="h-full bg-[#FF6B35]/40 rounded-full" style={{ width: `${(cat.score / 5) * 100}%` }}></div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
 
                             {/* Review Form */}
                             <div className="p-6 rounded-3xl" style={cardStyle}>
@@ -734,7 +819,6 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                     </div>
                                 ) : (
                                     <div className="space-y-4">
-                                        {/* Star Picker */}
                                         <div className="space-y-2">
                                             <p className="text-[9px] font-black text-white/25 uppercase tracking-[0.2em]">Rating *</p>
                                             <div className="flex items-center gap-2">
@@ -757,7 +841,6 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                             </div>
                                         </div>
 
-                                        {/* Name + Email */}
                                         {[
                                             { label: 'Nama *', type: 'text', placeholder: 'Nama kamu', value: reviewName, setter: setReviewName, field: 'name' },
                                             { label: 'Email *', type: 'email', placeholder: 'mail@example.com', value: reviewEmail, setter: setReviewEmail, field: 'email' },
@@ -777,7 +860,6 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                             </div>
                                         ))}
 
-                                        {/* Textarea */}
                                         <div className="space-y-1.5">
                                             <p className="text-[9px] font-black text-white/25 uppercase tracking-[0.2em]">Ulasan *</p>
                                             <textarea
@@ -797,7 +879,6 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                             </div>
                                         </div>
 
-                                        {/* Submit */}
                                         <button
                                             onClick={() => {
                                                 if (modalRating && reviewName && reviewEmail && reviewText.length > 10) {
@@ -818,57 +899,95 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                     </div>
                 )}
             </div>
-            {/* LIGHTBOX MODAL */}
-            {isLightboxOpen && game.screenshots && (
-                <div 
-                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-xl animate-zoom-in"
+
+            {/* LIGHTBOX MODAL — Rendered via Portal to escape stacking context and cover Sidebar */}
+            {mounted && isLightboxOpen && game.screenshots && createPortal(
+                <div
+                    className="fixed inset-0 z-[99999999] flex items-center justify-center bg-black/98 backdrop-blur-3xl"
                     onClick={closeLightbox}
                 >
-                    {/* Close Button */}
-                    <button 
-                        className="absolute top-8 left-8 z-[10000] w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-[#FF6B35] text-white rounded-full transition-all group"
-                        onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
+                    {/* Tombol Close — pojok kiri atas LAYAR */}
+                    <button
+                        className="fixed top-8 left-8 z-[100000000] w-12 h-12 flex items-center justify-center rounded-full transition-all group shadow-2xl"
+                        style={{
+                            background: 'rgba(255,255,255,0.1)',
+                            border: '1px solid rgba(255,255,255,0.15)',
+                            backdropFilter: 'blur(12px)',
+                        }}
+                        onClick={closeLightbox}
+                        onMouseEnter={e => (e.currentTarget.style.background = '#FF6B35')}
+                        onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.1)')}
                     >
-                        <i className="ti ti-x text-2xl group-hover:rotate-90 transition-transform"></i>
+                        <i className="ti ti-x text-white text-2xl"></i>
                     </button>
 
-                    {/* Navigation - Prev */}
-                    <button 
-                        className="absolute left-6 top-1/2 -translate-y-1/2 z-[10000] w-14 h-14 flex items-center justify-center bg-white/5 hover:bg-[#FF6B35] text-white rounded-full transition-all group"
-                        onClick={(e) => { e.stopPropagation(); prevLightboxImage(); }}
-                    >
-                        <i className="ti ti-chevron-left text-3xl group-hover:-translate-x-1 transition-transform"></i>
-                    </button>
-
-                    {/* Image Container */}
-                    <div 
-                        className="relative w-[90vw] h-[80vh] flex items-center justify-center"
+                    {/* Image wrapper */}
+                    <div
+                        className="relative animate-zoom-in"
+                        style={{ width: 'min(92vw, 1100px)', aspectRatio: '16/9' }}
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <div className="relative w-full h-full rounded-[40px] overflow-hidden shadow-2xl">
-                            <Image 
-                                src={game.screenshots[lightboxIndex]} 
-                                alt="Gallery Preview" 
-                                fill 
-                                className="object-contain"
+                        {/* Gambar */}
+                        <div className="w-full h-full rounded-[20px] overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.9)]">
+                            <Image
+                                src={game.screenshots![lightboxIndex]}
+                                alt="Gallery Preview"
+                                fill
+                                className="object-cover"
                                 priority
                             />
                         </div>
-                        
-                        {/* Counter */}
-                        <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 text-white/40 text-[10px] font-black tracking-[0.3em] uppercase">
-                            {lightboxIndex + 1} <span className="text-white/10">/</span> {game.screenshots.length}
-                        </div>
-                    </div>
 
-                    {/* Navigation - Next */}
-                    <button 
-                        className="absolute right-6 top-1/2 -translate-y-1/2 z-[10000] w-14 h-14 flex items-center justify-center bg-white/5 hover:bg-[#FF6B35] text-white rounded-full transition-all group"
-                        onClick={(e) => { e.stopPropagation(); nextLightboxImage(); }}
-                    >
-                        <i className="ti ti-chevron-right text-3xl group-hover:translate-x-1 transition-transform"></i>
-                    </button>
-                </div>
+                        {/* Tombol Prev — kiri dalam gambar */}
+                        {game.screenshots!.length > 1 && (
+                            <button
+                                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full transition-all"
+                                style={{
+                                    background: 'rgba(0,0,0,0.6)',
+                                    border: '1px solid rgba(255,255,255,0.12)',
+                                    backdropFilter: 'blur(8px)',
+                                }}
+                                onClick={prevLightboxImage}
+                                onMouseEnter={e => (e.currentTarget.style.background = '#FF6B35')}
+                                onMouseLeave={e => (e.currentTarget.style.background = 'rgba(0,0,0,0.6)')}
+                            >
+                                <i className="ti ti-chevron-left text-white text-xl"></i>
+                            </button>
+                        )}
+
+                        {/* Tombol Next — kanan dalam gambar */}
+                        {game.screenshots!.length > 1 && (
+                            <button
+                                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full transition-all"
+                                style={{
+                                    background: 'rgba(0,0,0,0.6)',
+                                    border: '1px solid rgba(255,255,255,0.12)',
+                                    backdropFilter: 'blur(8px)',
+                                }}
+                                onClick={nextLightboxImage}
+                                onMouseEnter={e => (e.currentTarget.style.background = '#FF6B35')}
+                                onMouseLeave={e => (e.currentTarget.style.background = 'rgba(0,0,0,0.6)')}
+                            >
+                                <i className="ti ti-chevron-right text-white text-xl"></i>
+                            </button>
+                        )}
+
+                        {/* Counter — bawah tengah dalam gambar */}
+                        {game.screenshots!.length > 1 && (
+                            <div
+                                className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/70 text-[10px] font-bold tracking-[0.3em] uppercase px-4 py-1.5 rounded-full"
+                                style={{
+                                    background: 'rgba(0,0,0,0.7)',
+                                    border: '1px solid rgba(255,255,255,0.15)',
+                                    backdropFilter: 'blur(8px)',
+                                }}
+                            >
+                                {lightboxIndex + 1} / {game.screenshots!.length}
+                            </div>
+                        )}
+                    </div>
+                </div>,
+                document.body
             )}
         </article>
     );
