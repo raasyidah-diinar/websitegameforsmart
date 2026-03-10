@@ -131,6 +131,8 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
     const [reviewText, setReviewText] = useState('');
     const [submitted, setSubmitted] = useState(false);
     const [focusedField, setFocusedField] = useState<string | null>(null);
+    const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+    const [lightboxIndex, setLightboxIndex] = useState(0);
 
     const scrollRef = useRef<HTMLDivElement>(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -168,6 +170,29 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
             if (sortBy === 'terendah') return a.rating - b.rating;
             return 0;
         });
+
+    const openLightbox = (index: number) => {
+        setLightboxIndex(index);
+        setIsLightboxOpen(true);
+        document.body.style.overflow = 'hidden';
+    };
+
+    const closeLightbox = () => {
+        setIsLightboxOpen(false);
+        document.body.style.overflow = 'auto';
+    };
+
+    const nextLightboxImage = () => {
+        if (game.screenshots) {
+            setLightboxIndex((prev) => (prev + 1) % game.screenshots!.length);
+        }
+    };
+
+    const prevLightboxImage = () => {
+        if (game.screenshots) {
+            setLightboxIndex((prev) => (prev - 1 + game.screenshots!.length) % game.screenshots!.length);
+        }
+    };
 
     return (
         <article className="main-content mt-4 animate-fade-in-up flex-1 min-w-0">
@@ -291,28 +316,47 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                     <div className="relative mt-8 gallery-wrapper overflow-visible">
                                         <button
                                             onClick={() => { if (scrollRef.current) scrollRef.current.scrollBy({ left: -300, behavior: 'smooth' }); }}
-                                            className={`absolute left-2 top-1/2 -translate-y-1/2 z-50 w-14 h-14 flex items-center justify-center text-black transition-all hover:bg-[#FF6B35] hover:text-white border-0 cursor-pointer bg-white shadow-2xl rounded-full ${canScrollLeft ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}
+                                            className={`absolute left-4 top-1/2 -translate-y-1/2 z-50 w-12 h-12 flex items-center justify-center transition-all cursor-pointer group gallery-nav-btn ${canScrollLeft ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}
+                                            style={{ 
+                                                background: 'transparent',
+                                                border: '1px solid rgba(255, 255, 255, 0.4)',
+                                                borderRadius: '50%',
+                                                color: 'white'
+                                            }}
                                         >
-                                            <i className="ti ti-chevron-left text-3xl"></i>
+                                            <i className="ti ti-chevron-left text-2xl"></i>
                                         </button>
                                         <button
                                             onClick={() => { if (scrollRef.current) scrollRef.current.scrollBy({ left: 300, behavior: 'smooth' }); }}
-                                            className={`absolute right-2 top-1/2 -translate-y-1/2 z-50 w-14 h-14 flex items-center justify-center text-black transition-all hover:bg-[#FF6B35] hover:text-white border-0 cursor-pointer bg-white shadow-2xl rounded-full ${canScrollRight ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}
+                                            className={`absolute right-4 top-1/2 -translate-y-1/2 z-50 w-12 h-12 flex items-center justify-center transition-all cursor-pointer group gallery-nav-btn ${canScrollRight ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}
+                                            style={{ 
+                                                background: 'transparent',
+                                                border: '1px solid rgba(255, 255, 255, 0.4)',
+                                                borderRadius: '50%',
+                                                color: 'white'
+                                            }}
                                         >
-                                            <i className="ti ti-chevron-right text-3xl"></i>
+                                            <i className="ti ti-chevron-right text-2xl"></i>
                                         </button>
+                                        <style jsx>{`
+                                            .gallery-nav-btn:hover {
+                                                background-color: #FF6B35 !important;
+                                                border-color: #FF6B35 !important;
+                                            }
+                                        `}</style>
                                         <div
                                             ref={scrollRef}
-                                            className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory"
+                                            className="flex gap-3 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory"
                                             style={{ scrollBehavior: 'smooth' }}
                                         >
                                             {game.screenshots.map((ss: string, idx: number) => (
                                                 <div
                                                     key={idx}
-                                                    className="flex-shrink-0 w-[220px] relative rounded-[32px] overflow-hidden group cursor-pointer shadow-lg snap-start transition-all duration-300"
-                                                    style={{ aspectRatio: '9/16' }}
+                                                    className="flex-shrink-0 w-[420px] relative rounded-[32px] overflow-hidden group cursor-pointer shadow-lg snap-start transition-all duration-300 border-0"
+                                                    style={{ aspectRatio: '16/9' }}
+                                                    onClick={() => openLightbox(idx)}
                                                 >
-                                                    <Image src={ss} alt={`Screenshot ${idx + 1}`} fill className="object-cover" />
+                                                    <Image src={ss} alt={`Screenshot ${idx + 1}`} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                                                 </div>
                                             ))}
                                         </div>
@@ -767,6 +811,58 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                     </div>
                 )}
             </div>
+            {/* LIGHTBOX MODAL */}
+            {isLightboxOpen && game.screenshots && (
+                <div 
+                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-xl animate-zoom-in"
+                    onClick={closeLightbox}
+                >
+                    {/* Close Button */}
+                    <button 
+                        className="absolute top-8 left-8 z-[10000] w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-[#FF6B35] text-white rounded-full transition-all group"
+                        onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
+                    >
+                        <i className="ti ti-x text-2xl group-hover:rotate-90 transition-transform"></i>
+                    </button>
+
+                    {/* Navigation - Prev */}
+                    <button 
+                        className="absolute left-6 top-1/2 -translate-y-1/2 z-[10000] w-14 h-14 flex items-center justify-center bg-white/5 hover:bg-[#FF6B35] text-white rounded-full transition-all group"
+                        onClick={(e) => { e.stopPropagation(); prevLightboxImage(); }}
+                    >
+                        <i className="ti ti-chevron-left text-3xl group-hover:-translate-x-1 transition-transform"></i>
+                    </button>
+
+                    {/* Image Container */}
+                    <div 
+                        className="relative w-[90vw] h-[80vh] flex items-center justify-center"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="relative w-full h-full rounded-[40px] overflow-hidden shadow-2xl">
+                            <Image 
+                                src={game.screenshots[lightboxIndex]} 
+                                alt="Gallery Preview" 
+                                fill 
+                                className="object-contain"
+                                priority
+                            />
+                        </div>
+                        
+                        {/* Counter */}
+                        <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 text-white/40 text-[10px] font-black tracking-[0.3em] uppercase">
+                            {lightboxIndex + 1} <span className="text-white/10">/</span> {game.screenshots.length}
+                        </div>
+                    </div>
+
+                    {/* Navigation - Next */}
+                    <button 
+                        className="absolute right-6 top-1/2 -translate-y-1/2 z-[10000] w-14 h-14 flex items-center justify-center bg-white/5 hover:bg-[#FF6B35] text-white rounded-full transition-all group"
+                        onClick={(e) => { e.stopPropagation(); nextLightboxImage(); }}
+                    >
+                        <i className="ti ti-chevron-right text-3xl group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </div>
+            )}
         </article>
     );
 }

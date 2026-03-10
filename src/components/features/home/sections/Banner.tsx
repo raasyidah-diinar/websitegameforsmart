@@ -44,10 +44,6 @@ export default function Banner() {
                     loop: true,
                     speed: 800,
                     parallax: true,
-                    mousewheel: {
-                        invert: false,
-                        releaseOnEdges: true,
-                    },
                     autoplay: {
                         delay: 3200,
                         disableOnInteraction: false,
@@ -87,7 +83,7 @@ export default function Banner() {
             <div className="container-fluid px-lg-15 px-md-10 px-6">
                 <div className="row g-3 align-items-stretch" style={{ height: '405px' }}>
                     <div className="col-xxl-9 col-xl-8 col-lg-7 d-flex">
-                        <div className="swiper banner-swiper position-relative w-100 h-100 overflow-hidden shadow-lg border border-secondary border-opacity-10 flex-fill" style={{ borderRadius: '40px', backgroundColor: '#0b1117', height: '100% !important' }} data-observer="true" data-observe-parents="true">
+                        <div className="swiper banner-swiper position-relative w-100 h-100 overflow-hidden shadow-lg border border-secondary border-opacity-10 flex-fill" style={{ borderRadius: '40px', backgroundColor: '#000000', height: '100% !important' }} data-observer="true" data-observe-parents="true">
                             <div className="banner-bg-img position-absolute w-100 h-100" style={{ opacity: '0.4' }}>
                                 <img className="w-100 h-100 object-fit-cover" src="/assets/img/hero-banner-bg.png" alt="banner" style={{ objectPosition: 'center top', transform: 'translateY(25%) scale(1.2)' }} />
                             </div>
@@ -271,7 +267,7 @@ export default function Banner() {
                         </div>
                     </div>
                     <div className="col-xxl-3 col-xl-4 col-lg-5 d-flex">
-                        <div className="card-area w-100 h-100 d-flex flex-column overflow-hidden shadow-lg border border-secondary border-opacity-10 px-0" style={{ backgroundColor: '#0b1117', borderRadius: '40px' }}>
+                        <div className="card-area w-100 h-100 d-flex flex-column overflow-hidden shadow-lg border border-secondary border-opacity-10 px-0" style={{ backgroundColor: '#000000', borderRadius: '40px' }}>
                             <div className="card-header pt-4 px-4 pb-2">
                                 <h3 className="tcn-1 dot-icon mb-0 fs-six fw-bold text-uppercase d-flex align-items-center">
                                     <span className="d-flex gap-1 me-2">

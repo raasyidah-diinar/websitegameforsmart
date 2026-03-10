@@ -1,5 +1,6 @@
 "use client";
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 function AgreeCheckbox() {
     const [checked, setChecked] = useState(false);
@@ -34,6 +35,13 @@ function AgreeCheckbox() {
 }
 
 export default function CTA() {
+    const pathname = usePathname();
+    
+    // Hapus CTA pada halaman detail game atau kompetisi
+    const isDetailPage = pathname.includes('/competitions/') || pathname.includes('/games/');
+    
+    if (isDetailPage) return null;
+
     return (
         <>
             <style>{`
@@ -95,10 +103,9 @@ export default function CTA() {
                 #cta-card {
                     position: relative;
                     overflow: hidden;
+                    width: 100%;
                     margin: 0;
-                    margin-left: -110px;
                     margin-bottom: -100px;
-                    width: 100vw;
                     padding: 80px 40px 160px 40px;
                     border-radius: 0;
                     background: rgb(14, 16, 18);
@@ -120,10 +127,10 @@ export default function CTA() {
                     background: radial-gradient(ellipse at center, rgba(255, 100, 0, 0.12) 0%, transparent 70%);
                     pointer-events: none;
                 }
-                @media (max-width: 768px) {
+                @media (max-width: 991px) {
                     #cta-card {
                         margin-left: 0;
-                        width: 100%;
+                        width: 100vw;
                         padding: 60px 24px 120px;
                     }
                 }

@@ -24,6 +24,11 @@ export default function ScriptInitializer() {
         if ((window as any).ScrollTrigger) {
           (window as any).ScrollTrigger.refresh();
         }
+
+        // Fix scroll position by forcefully scrolling to top on route change or initial load
+        setTimeout(() => {
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        }, 50);
       }
     }, 100);
 

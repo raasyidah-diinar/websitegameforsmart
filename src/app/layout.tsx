@@ -14,6 +14,7 @@ import UserAccountPopup from "@/components/shared/UserAccountPopup";
 import ScriptInitializer from "@/components/shared/ScriptInitializer";
 import Header from "@/components/shared/Header";
 import Sidebar from "@/components/shared/Sidebar";
+import CTA from "@/components/shared/CTA";
 import Footer from "@/components/shared/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -49,6 +50,7 @@ export default function RootLayout({
                                 <Sidebar />
                                 {children}
                             </div>
+                            <CTA />
                         </main>
                         <Footer />
                     </SearchProvider>

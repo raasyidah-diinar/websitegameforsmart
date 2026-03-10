@@ -69,6 +69,29 @@
   text-transform: uppercase;
 }
 
+body, html {
+  background-color: #000000 !important;
+  color: #ffffff;
+}
+
+*:focus, *:focus-visible, *:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Hide global scrollbar but keep scroll functionality */
+::-webkit-scrollbar {
+  display: none;
+}
+* {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

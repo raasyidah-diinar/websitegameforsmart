@@ -91,19 +91,35 @@ export default function GamesCarousel() {
           {/* Navigation Buttons */}
           <button
             onClick={handlePrev}
-            className="absolute left-10 z-30 w-12 h-12 flex items-center justify-center border border-white/10 bg-black/60 text-white backdrop-blur-md transition-all hover:bg-[#FF6B35] hover:border-[#FF6B35] group"
-            style={{ borderRadius: '50%' }}
+            className="absolute left-10 z-30 w-12 h-12 flex items-center justify-center transition-all cursor-pointer group carousel-nav-btn"
+            style={{ 
+              background: 'transparent',
+              border: '1px solid rgba(255, 255, 255, 0.4)',
+              borderRadius: '50%',
+              color: 'white'
+            }}
           >
             <FaChevronLeft className="text-xl group-hover:scale-110 transition-transform" />
           </button>
 
           <button
             onClick={handleNext}
-            className="absolute right-10 z-30 w-12 h-12 flex items-center justify-center border border-white/10 bg-black/60 text-white backdrop-blur-md transition-all hover:bg-[#FF6B35] hover:border-[#FF6B35] group"
-            style={{ borderRadius: '50%' }}
+            className="absolute right-10 z-30 w-12 h-12 flex items-center justify-center transition-all cursor-pointer group carousel-nav-btn"
+            style={{ 
+              background: 'transparent',
+              border: '1px solid rgba(255, 255, 255, 0.4)',
+              borderRadius: '50%',
+              color: 'white'
+            }}
           >
             <FaChevronRight className="text-xl group-hover:scale-110 transition-transform" />
           </button>
+          <style jsx>{`
+            .carousel-nav-btn:hover {
+              background-color: #FF6B35 !important;
+              border-color: #FF6B35 !important;
+            }
+          `}</style>
 
           {/* Cards Track */}
           <div
