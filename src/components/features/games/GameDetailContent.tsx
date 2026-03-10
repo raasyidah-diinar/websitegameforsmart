@@ -252,7 +252,14 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                     {game.description}
                                 </p>
                                 <div className="flex items-center gap-4 mt-16">
-                                    <button className="flex-shrink-0 bg-gradient-to-r from-[#FF4D00] to-[#FF8C00] text-white px-8 !h-[48px] !rounded-full font-black text-[10px] uppercase tracking-widest transition-all duration-300 shadow-[0_10px_25px_rgba(255,77,0,0.25)] hover:shadow-[0_15px_35px_rgba(255,77,0,0.45)] hover:-translate-y-1 flex items-center gap-2">
+                                    <button 
+                                        onClick={() => {
+                                            if (game.gameUrl) {
+                                                window.open(game.gameUrl, '_blank');
+                                            }
+                                        }}
+                                        className="flex-shrink-0 bg-gradient-to-r from-[#FF4D00] to-[#FF8C00] text-white px-8 !h-[48px] !rounded-full font-black text-[10px] uppercase tracking-widest transition-all duration-300 shadow-[0_10px_25px_rgba(255,77,0,0.25)] hover:shadow-[0_15px_35px_rgba(255,77,0,0.45)] hover:-translate-y-1 flex items-center gap-2"
+                                    >
                                         <i className="ti ti-player-play-filled text-lg"></i>
                                         MAIN SEKARANG
                                     </button>
@@ -312,7 +319,7 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
 
                             {game.screenshots && game.screenshots.length > 0 && (
                                 <section className="space-y-10 group/gallery relative">
-                                    <h2 className="text-lg font-bold text-white tracking-wide border-l-4 border-[#FF6B35] pl-4">Tampilan Permainan</h2>
+                                    <h2 className="text-lg font-bold text-white border-l-4 border-[#FF6B35] pl-4" style={{ fontSize: '30px' }}>Tampilan Permainan</h2>
                                     <div className="relative mt-8 gallery-wrapper overflow-visible">
                                         <button
                                             onClick={() => { if (scrollRef.current) scrollRef.current.scrollBy({ left: -300, behavior: 'smooth' }); }}
@@ -365,7 +372,7 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                             )}
 
                             <section className="space-y-6">
-                                <h2 className="text-lg font-bold text-white tracking-wide border-l-4 border-[#FF6B35] pl-4">Tentang Game Ini</h2>
+                                <h2 className="text-lg font-bold text-white border-l-4 border-[#FF6B35] pl-4" style={{ fontSize: '30px' }}>Tentang Game Ini</h2>
                                 <p className="text-white/70 text-base leading-relaxed max-w-3xl pl-5 mt-4">{game.description}</p>
                                 {game.features && game.features.length > 0 && (
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 pl-5">
@@ -386,7 +393,7 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
 
                             <section className="space-y-8">
                                 <div className="flex items-center gap-4">
-                                    <h2 className="text-lg font-bold text-white tracking-wide border-l-4 border-[#FF6B35] pl-4">Aturan & Cara Bermain</h2>
+                                    <h2 className="text-lg font-bold text-white border-l-4 border-[#FF6B35] pl-4" style={{ fontSize: '30px' }}>Aturan & Cara Bermain</h2>
                                     <div className="flex-1 h-px bg-gradient-to-r from-white/10 to-transparent"></div>
                                     <span className="text-[10px] font-bold tracking-widest text-[#FF6B35] bg-[#FF6B35]/10 border border-[#FF6B35]/20 px-3 py-1 rounded-full uppercase">{game.rules.length} Aturan</span>
                                 </div>
@@ -437,7 +444,7 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                         <aside className="lg:col-span-3 space-y-10 animate-fade-in-right flex flex-col items-end">
                             <div className="w-full max-w-[320px]">
                                 <div className="flex items-center justify-between mb-10">
-                                    <h2 className="text-lg font-bold text-white tracking-wide">Game serupa</h2>
+                                    <h2 className="text-lg font-bold text-white" style={{ fontSize: '25px' }}>Game serupa</h2>
                                     <Link href="/games" className="text-white/40 hover:text-[#FF6B35] transition-colors">
                                         <i className="ti ti-arrow-right text-xl"></i>
                                     </Link>
@@ -452,8 +459,8 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                                     <Image src={rg.image} alt={rg.title} fill className="object-cover" />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <h4 className="text-white font-bold text-[13px] truncate group-hover/item:text-[#FF6B35] transition-colors leading-tight mb-1">{rg.title}</h4>
-                                                    <p className="text-white/40 text-[10px] uppercase font-black tracking-widest truncate">{rg.subtitle || rg.genre}</p>
+                                                    <h5 className="text-white font-bold text-[11px] truncate group-hover/item:text-[#FF6B35] transition-colors leading-tight mb-1">{rg.title}</h5>
+                                                    <p className="text-white/40 text-[8px] font-black tracking-widest truncate">{rg.subtitle || rg.genre}</p>
                                                     <div className="flex items-center gap-1.5 mt-1.5">
                                                         <span className="text-white/60 text-[11px] font-black">{rg.rating}</span>
                                                         <i className="ti ti-star-filled text-yellow-500 text-[10px]"></i>

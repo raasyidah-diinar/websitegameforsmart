@@ -16,6 +16,7 @@ const games = [
     badge: "RACING",
     badgeColor: "#22c55e",
     href: "/games/1",
+    gameUrl: "https://crazy-race-next.vercel.app",
   },
   {
     id: 2,
@@ -27,6 +28,7 @@ const games = [
     badge: "ACTION",
     badgeColor: "#3b82f6",
     href: "/games/2",
+    gameUrl: "https://quizrun.vercel.app",
   },
   {
     id: 3,
@@ -38,6 +40,7 @@ const games = [
     badge: "TRIVIA",
     badgeColor: "#10b981",
     href: "/games/3",
+    gameUrl: "https://spacequizv1.vercel.app",
   },
   {
     id: 4,
@@ -49,6 +52,7 @@ const games = [
     badge: "PUZZLE",
     badgeColor: "#9333ea",
     href: "/games/4",
+    gameUrl: "https://memorygame-quiz.vercel.app",
   }
 ];
 
@@ -192,7 +196,12 @@ export default function GamesCarousel() {
                           <span className={`text-xs font-bold ${isActive ? 'text-white/90' : 'text-white/20'}`}>Played {game.played}</span>
                         </div>
                         <button
-                          onClick={(e) => { e.stopPropagation(); if (isActive) router.push(game.href); }}
+                          onClick={(e) => { 
+                            e.stopPropagation(); 
+                            if (isActive) {
+                              router.push(game.href);
+                            }
+                          }}
                           className={`w-10 h-10 flex items-center justify-center text-white transition-all overflow-hidden
                             ${isActive ? 'bg-[#FF6B35] hover:scale-110 hover:shadow-[0_0_25px_rgba(255,107,53,0.5)]' : 'bg-transparent text-white/10 cursor-default'}
                           `}

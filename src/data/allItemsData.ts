@@ -22,6 +22,7 @@ export interface TournamentInfo {
     competitionAttempts?: number;
     finalRound?: string;
     videoUrl?: string;
+    gameUrl?: string;
     screenshots?: string[];
     features?: { icon: string; title: string; description: string }[];
 }
@@ -42,6 +43,7 @@ export const allItemsData: TournamentInfo[] = [
         status: "Racing",
         slug: "1",
         href: "/games/1",
+        gameUrl: "https://crazy-race-next.vercel.app",
         rules: [
             "Any form of cheating or software manipulation will result in an immediate ban.",
             "Each match consists of 3 rounds; the winner proceeds to the next bracket.",
@@ -73,6 +75,7 @@ export const allItemsData: TournamentInfo[] = [
         status: "Action",
         slug: "2",
         href: "/games/2",
+        gameUrl: "https://quizrun.vercel.app",
         rules: [
             "30 detik per pertanyaan untuk bertahan hidup.",
             "Kesalahan jawaban akan mempercepat pergerakan zombie.",
@@ -111,6 +114,7 @@ export const allItemsData: TournamentInfo[] = [
         status: "Trivia",
         slug: "3",
         href: "/games/3",
+        gameUrl: "https://spacequizv1.vercel.app",
         rules: [
             "Points are awarded based on difficulty and speed.",
             "Bonus rounds are included for the top 10%",
@@ -142,6 +146,7 @@ export const allItemsData: TournamentInfo[] = [
         status: "Puzzle",
         slug: "4",
         href: "/games/4",
+        gameUrl: "https://memorygame-quiz.vercel.app",
         rules: [
             "Strict non-distraction environment recommended.",
             "Pattern recognition speed is the primary metric.",
