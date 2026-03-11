@@ -41,11 +41,12 @@ export default function Header() {
             <div className="py-sm-6 py-3 px-lg-15 px-md-10 px-6">
                 <div className="d-between gap-lg-4 gap-2">
                     <div className="top-bar alt d-flex align-items-center gap-4">
-                        <button 
-                            className={`sidebar-toggle-btn d-lg-none d-block ${isSidebarOpen ? 'active' : ''}`} 
-                            type="button" 
-                            aria-label="Toggle sidebar" 
+                        <button
+                            className={`sidebar-toggle-btn ${isSidebarOpen ? 'active' : ''}`}
+                            type="button"
+                            aria-label="Toggle sidebar"
                             onClick={handleSidebarToggle}
+                            style={{ display: 'none' }} // Managed by CSS media query below
                         >
                             <span></span>
                             <span></span>
@@ -73,7 +74,7 @@ export default function Header() {
                         </div>
 
                         <div className="header-btns d-flex align-items-center justify-content-end gap-lg-6 gap-sm-4 gap-2 w-100">
-                            <button 
+                            <button
                                 className="search-toggle-btn toggle-btn box-style fs-2xl d-block d-lg-none"
                                 onClick={() => setSearchOpen(!isSearchOpen)}
                             >
@@ -81,7 +82,7 @@ export default function Header() {
                             </button>
 
                             <div className="position-relative">
-                                <button 
+                                <button
                                     className={`ntf-btn box-style fs-2xl ${isNotificationOpen ? 'active' : ''}`}
                                     onClick={() => {
                                         setNotificationOpen(!isNotificationOpen);
@@ -94,7 +95,7 @@ export default function Header() {
                             </div>
 
                             <div className="position-relative">
-                                <div className={`header-profile pointer ${isProfileOpen ? 'open' : ''}`} 
+                                <div className={`header-profile pointer ${isProfileOpen ? 'open' : ''}`}
                                     onClick={() => {
                                         setProfileOpen(!isProfileOpen);
                                         setNotificationOpen(false);
@@ -123,9 +124,15 @@ export default function Header() {
                     background: transparent;
                     border: none;
                     padding: 0;
-                    display: flex;
+                    display: flex !important; /* Forces it to show when display: none is removed by media query */
                     flex-direction: column;
                     justify-content: space-between;
+                }
+
+                @media (min-width: 1301px) {
+                    .sidebar-toggle-btn {
+                        display: none !important;
+                    }
                 }
 
                 .sidebar-toggle-btn span {

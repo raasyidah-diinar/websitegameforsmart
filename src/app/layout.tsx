@@ -45,10 +45,12 @@ export default function RootLayout({
                         <div className="cursor"></div>
                         <ConnectWalletModal />
                         <Header />
-                        <main className="main-container container-fluid d-flex flex-column pt-32 px-0 position-relative" style={{ overflow: 'visible' }}>
-                            <div className="d-flex w-100 flex-wrap" style={{ alignItems: 'flex-start', flex: 1 }}>
+                        <main className="main-container container-fluid d-flex flex-column pt-32 px-0 position-relative" style={{ overflow: 'visible', minHeight: '100vh' }}>
+                            <div className="d-flex w-100" style={{ alignItems: 'flex-start', flex: 1, position: 'relative' }}>
                                 <Sidebar />
-                                {children}
+                                <div className="flex-1" style={{ minWidth: 0 }}>
+                                    {children}
+                                </div>
                             </div>
                             <CTA />
                         </main>
