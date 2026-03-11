@@ -89,10 +89,14 @@ export default function Banner() {
                     }
                     .banner-swiper-col {
                         height: 340px !important;
+                        order: 1;
                     }
                     .winners-col {
                         height: auto !important;
-                        min-height: 260px;
+                        min-height: 220px;
+                        order: 2;
+                        margin-top: 0.5rem;
+                        margin-bottom: 0.5rem;
                     }
                 }
 
@@ -176,7 +180,7 @@ export default function Banner() {
                             data-observe-parents="true"
                         >
                             <div className="banner-bg-img position-absolute w-100 h-100" style={{ opacity: '0.4' }}>
-                                <img className="w-100 h-100 object-fit-cover" src="/assets/img/hero-banner-bg.png" alt="banner" style={{ objectPosition: 'center top', transform: 'translateY(25%) scale(1.2)' }} />
+                                <img className="w-100 h-100 object-fit-cover" src="/assets/img/hero-banner-bg.png" alt="banner" style={{ objectPosition: 'center top', transform: 'translateY(0%) scale(1.2)' }} />
                             </div>
                             <div className="banner-swiper-pagination"></div>
                             <div className="swiper-wrapper h-100">
@@ -296,7 +300,7 @@ export default function Banner() {
                         </div>
                     </div>
                     {/* Winners card – hidden on mobile (xs/sm), visible from md+ */}
-                    <div className="col-lg-5 col-xl-4 col-xxl-3 d-none d-lg-flex winners-col">
+                    <div className="col-12 col-lg-5 col-xl-4 col-xxl-3 d-flex winners-col">
                         <div className="winners-card-wrap card-area w-100 h-100 d-flex flex-column overflow-hidden shadow-lg border border-secondary border-opacity-10 px-0" style={{ backgroundColor: '#000000', borderRadius: '40px' }}>
                             <div className="card-header pt-4 px-4 pb-2">
                                 <h3 className="tcn-1 dot-icon mb-0 fs-six fw-bold text-uppercase d-flex align-items-center">
