@@ -29,7 +29,7 @@ export default function Sidebar() {
       {/* SIDEBAR CONTENT */}
       <div className={`sidebar-wrapper ${isSidebarOpen ? "show-menu" : ""}`}>
         <div className="sidebar-menu-capsule py-xxl-20 py-sm-15 py-10 px-6">
-          <div className="d-grid gap-sm-12 gap-8 sidebar-menu-items text-center">
+          <div className="d-grid gap-sm-10 gap-6 sidebar-menu-items text-center">
             {menuItems.map((item) => (
               <div key={item.href} className="p-1">
                 <Link
@@ -40,9 +40,8 @@ export default function Sidebar() {
                 >
                   {isActive(item.href) && <div className="active-circle"></div>}
                   <i
-                    className={`ti ${item.icon}`}
+                    className={`ti ${item.icon} menu-icon`}
                     style={{
-                      fontSize: "36px",
                       position: "relative",
                       zIndex: 2,
                       color: isActive(item.href)
@@ -106,6 +105,10 @@ export default function Sidebar() {
           height: 100%;
         }
 
+        .menu-icon {
+          font-size: 36px;
+        }
+
         .menu-link {
           display: flex;
           align-items: center;
@@ -150,43 +153,60 @@ export default function Sidebar() {
 
         @media (max-width: 1280px) {
           .sidebar {
-            position: sticky;
-            top: 40px;
-            left: 0;
-            width: fit-content;
-            height: fit-content;
-            z-index: 1000;
+            position: fixed !important;
+            top: 70px !important; /* Start below header */
+            left: 0 !important;
+            width: 0 !important;
+            min-width: 0 !important;
+            flex-basis: 0 !important;
+            margin: 0 !important;
+            height: 0 !important;
+            z-index: 1000 !important; /* Keep below header's 1100 */
+            overflow: visible !important;
           }
 
           .sidebar-wrapper {
-            position: absolute;
-            top: 0;
-            left: -120px; 
-            height: auto;
-            min-height: calc(100vh - 40px);
-            background: rgba(0, 0, 0, 0.1); 
-            width: 100vw;
-            display: none !important;
-            justify-content: flex-start;
-            align-items: flex-start;
-            backdrop-filter: blur(1.5px);
-            z-index: 1000;
-          }
-
-          .sidebar.show-menu {
-            position: sticky !important;
-            z-index: 1000;
+            position: fixed !important;
+            top: 70px !important; /* Start below header */
+            left: -100vw !important; 
+            height: calc(100vh - 70px) !important;
+            min-height: calc(100vh - 70px) !important;
+            background: rgba(0, 0, 0, 0.6) !important; 
+            width: 100vw !important;
+            display: flex !important;
+            justify-content: flex-start !important;
+            align-items: center !important;
+            backdrop-filter: blur(4px) !important;
+            z-index: 10000 !important;
+            transition: left 0.3s ease-in-out !important;
+            visibility: hidden !important;
           }
 
           .sidebar-wrapper.show-menu {
-            display: flex !important;
-            left: 0;
+            left: 0 !important;
+            visibility: visible !important;
           }
 
           .sidebar-menu-capsule {
-            margin-left: 10px;
-            margin-top: 0px;
-            border-radius: 40px;
+            margin-left: 20px !important;
+            margin-top: 0px !important;
+            border-radius: 40px !important;
+            padding-top: 24px !important;
+            padding-bottom: 24px !important;
+          }
+
+          .menu-link {
+            width: 50px;
+            height: 50px;
+          }
+
+          .active-circle {
+            width: 44px;
+            height: 44px;
+          }
+
+          .menu-icon {
+            font-size: 24px;
           }
         }
 

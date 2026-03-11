@@ -37,10 +37,13 @@ function AgreeCheckbox() {
 export default function CTA() {
     const pathname = usePathname();
     
-    // Hapus CTA pada halaman detail game atau kompetisi
-    const isDetailPage = pathname.includes('/competitions/') || pathname.includes('/games/');
+    // Hapus CTA pada halaman detail game, kompetisi, atau kontak
+    const shouldHideCTA = 
+        pathname.includes('/competitions/') || 
+        pathname.includes('/games/') || 
+        pathname === '/contact';
     
-    if (isDetailPage) return null;
+    if (shouldHideCTA) return null;
 
     return (
         <>
@@ -87,16 +90,16 @@ export default function CTA() {
                 }
                 .stay-title {
                     font-weight: 800 !important;
-                    font-size: 3.5rem !important;
+                    font-size: clamp(2rem, 5vw, 3.5rem) !important;
                     color: white;
                 }
                 .stay-subtitle {
                     color: #999;
-                    font-size: 1.1rem;
+                    font-size: clamp(0.9rem, 2vw, 1.1rem);
                     line-height: 1.6;
                 }
                 @media (max-width: 768px) {
-                    .stay-title { font-size: 2.5rem !important; }
+                    .stay-title { font-size: clamp(1.75rem, 6vw, 2.5rem) !important; }
                     .cta-pill-container { flex-direction: column; border-radius: 20px; padding: 15px; }
                     .cta-submit-btn { width: 100%; margin-top: 10px; }
                 }

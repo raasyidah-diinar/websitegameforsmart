@@ -626,14 +626,6 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                                         <span className="text-white font-bold text-sm block leading-tight">{review.name}</span>
                                                         <div className="flex items-center gap-2 mt-0.5 flex-wrap">
                                                             <span className="text-white/35 text-[10px]">{review.date}</span>
-                                                            <span className="text-white/15">·</span>
-                                                            <span className="text-white/35 text-[10px] flex items-center gap-1">
-                                                                <i className="ti ti-device-gamepad-2 text-[9px]"></i>{review.platform}
-                                                            </span>
-                                                            <span className="text-white/15">·</span>
-                                                            <span className="text-white/35 text-[10px] flex items-center gap-1">
-                                                                <i className="ti ti-clock text-[9px]"></i>{review.playtime}
-                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>

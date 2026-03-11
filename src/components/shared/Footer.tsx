@@ -2,8 +2,8 @@ import Link from 'next/link';
 
 export default function Footer() {
     return (
-        <footer className="footer bgn-4 bt position-relative" style={{ overflow: 'visible' }}>
-            <div className="container-fluid position-relative" style={{ zIndex: 2 }}>
+        <footer className="footer bgn-4 bt position-relative" style={{ overflow: 'hidden' }}>
+            <div className="container-fluid position-relative px-lg-15 px-md-10 px-6" style={{ zIndex: 2 }}>
                 <div className="row justify-content-between">
                     <div className="col-lg-3 col-sm-6 br py-lg-12 pt-sm-10 pt-6 footer-card-area">
                         <div className="py-lg-10">
@@ -74,11 +74,12 @@ export default function Footer() {
                 <img
                     src="/assets/img/astronaut-mascot.png"
                     alt="Astronaut"
+                    className="d-none d-lg-block"
                     style={{
                         position: "absolute",
                         bottom: "0",
                         right: "0",
-                        height: "clamp(400px, 50vh, 700px)",
+                        height: "clamp(300px, 40vh, 600px)",
                         transform: "translateX(35%)",
                         zIndex: 10,
                         pointerEvents: "none",

@@ -182,7 +182,7 @@ export default function StatisticsSection() {
                     color: #FFD700 !important;
                 }
             `}</style>
-            <div className="container-fluid pt-120">
+            <div className="container-fluid pt-120 px-lg-15 px-md-10 px-6">
                 <div className="row mb-lg-15 mb-sm-10 mb-8">
                     <div className="col-lg-6 text-start">
                         <h2 className="display-four tcn-1 cursor-scale growUp title-anim">Statistics</h2>
@@ -190,7 +190,7 @@ export default function StatisticsSection() {
                 </div>
                 <div className="row g-6">
                     {statistics.map((stat) => (
-                        <div key={stat.id} className="col-xl-4 col-md-6">
+                        <div key={stat.id} className="col-xl-4 col-md-6 col-12">
                             <TiltCard
                                 className={`stat-card p-6 rounded-4 d-flex align-items-center gap-4`}
                                 style={{

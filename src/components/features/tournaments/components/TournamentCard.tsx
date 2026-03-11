@@ -72,16 +72,16 @@ export default function TournamentCard({
             <div className="tournament-content px-xxl-2 flex-grow-1 d-flex flex-column">
                 <div className="tournament-info mb-4">
                     <div className="d-flex align-items-center mb-3 mt-1">
-                        <span className="py-1 px-3 tcn-1 d-flex align-items-center gap-2" style={{ 
-                            backgroundColor: 'rgba(114, 255, 0, 0.1)', 
-                            border: '1px solid #72ff00', 
-                            borderRadius: '20px' 
+                        <span className="py-1 px-3 tcn-1 d-flex align-items-center gap-2" style={{
+                            backgroundColor: 'rgba(114, 255, 0, 0.1)',
+                            border: '1px solid #72ff00',
+                            borderRadius: '20px'
                         }}>
-                            <span style={{ 
-                                width: '6px', 
-                                height: '6px', 
-                                backgroundColor: '#72ff00', 
-                                borderRadius: '50%' 
+                            <span style={{
+                                width: '6px',
+                                height: '6px',
+                                backgroundColor: '#72ff00',
+                                borderRadius: '50%'
                             }}></span>
                             <span className="fs-xs text-nowrap fw-bold" style={{ fontSize: '10px', textTransform: 'capitalize' }}>{status}</span>
                         </span>
@@ -96,10 +96,10 @@ export default function TournamentCard({
                     <span className="tcn-6 fs-sm d-block mb-4">{type}</span>
 
                     <div className="hr-line opacity-10 mb-4"></div>
-                    
+
                     <p
                         className="tcn-6 fs-sm mb-0 overflow-hidden"
-                        style={{ 
+                        style={{
                             display: '-webkit-box',
                             WebkitLineClamp: 2,
                             WebkitBoxOrient: 'vertical',

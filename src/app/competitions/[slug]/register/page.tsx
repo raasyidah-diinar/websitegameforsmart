@@ -2,8 +2,7 @@ import { Metadata } from 'next';
 import { allItemsData } from '@/data/allItemsData';
 import { notFound } from 'next/navigation';
 import RegistrationView from '@/components/features/registration/RegistrationView';
-import Header from '@/components/shared/Header';
-import Footer from '@/components/shared/Footer';
+
 
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const params = await props.params;
@@ -35,16 +34,12 @@ export default async function RegistrationPage(props: { params: Promise<{ slug: 
     }
 
     return (
-        <div className="registration-page-wrapper">
-            <Header />
-            <main className="main-content pt-20 pb-12">
-                <RegistrationView
-                    competitionTitle={item.title}
-                    competitionSlug={item.slug}
-                    fee={item.ticketFee || 'Free Entry'}
-                />
-            </main>
-            <Footer />
-        </div>
+        <main className="main-content pt-20 pb-12">
+            <RegistrationView
+                competitionTitle={item.title}
+                competitionSlug={item.slug}
+                fee={item.ticketFee || 'Free Entry'}
+            />
+        </main>
     );
 }
