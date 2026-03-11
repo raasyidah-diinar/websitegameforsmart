@@ -27,7 +27,7 @@ export default function Sidebar() {
       {/* SIDEBAR CONTENT */}
 
       {/* SIDEBAR CONTENT */}
-      <div className={`sidebar-wrapper ${isSidebarOpen ? "show-menu" : ""} d-lg-flex`}>
+      <div className={`sidebar-wrapper ${isSidebarOpen ? "show-menu" : ""}`}>
         <div className="sidebar-menu-capsule py-xxl-20 py-sm-15 py-10 px-6">
           <div className="d-grid gap-sm-12 gap-8 sidebar-menu-items text-center">
             {menuItems.map((item) => (
@@ -68,7 +68,7 @@ export default function Sidebar() {
 
         .sidebar {
           position: sticky !important;
-          top: 130px !important;
+          top: 90px !important;
           align-self: flex-start !important;
           height: fit-content !important;
           z-index: 1000 !important;
@@ -77,7 +77,7 @@ export default function Sidebar() {
           flex-shrink: 0 !important;
           display: block !important;
           background: transparent !important;
-          margin-bottom: 0 !important; /* Forces it to stick until the very bottom */
+          margin-bottom: 0 !important;
         }
 
         .sidebar-menu-capsule {
@@ -87,9 +87,9 @@ export default function Sidebar() {
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
           display: inline-block;
           margin-left: 15px;
-          margin-top: 15px;
-          margin-bottom: 20px;
-          max-height: calc(100vh - 180px);
+          margin-top: 10px;
+          margin-bottom: 10px;
+          max-height: calc(100vh - 115px); /* 90px top + 10px margin-top + 15px bottom = 115px */
           overflow-y: auto;
           scrollbar-width: none; /* Firefox */
         }
@@ -148,10 +148,10 @@ export default function Sidebar() {
         /* MOBILE OVERLAY */
         /* ============================= */
 
-        @media (max-width: 991px) {
+        @media (max-width: 1280px) {
           .sidebar {
             position: sticky;
-            top: 40px; /* Even closer to header */
+            top: 40px;
             left: 0;
             width: fit-content;
             height: fit-content;
@@ -159,7 +159,7 @@ export default function Sidebar() {
           }
 
           .sidebar-wrapper {
-            position: absolute; /* Relative to sticky .sidebar */
+            position: absolute;
             top: 0;
             left: -120px; 
             height: auto;
@@ -178,10 +178,6 @@ export default function Sidebar() {
             z-index: 1000;
           }
 
-          .sidebar.show-menu {
-            position: sticky !important;
-          }
-
           .sidebar-wrapper.show-menu {
             display: flex !important;
             left: 0;
@@ -189,7 +185,7 @@ export default function Sidebar() {
 
           .sidebar-menu-capsule {
             margin-left: 10px;
-            margin-top: 0px; /* Removed margin-top for maximum proximity */
+            margin-top: 0px;
             border-radius: 40px;
           }
         }
@@ -198,7 +194,7 @@ export default function Sidebar() {
         /* DESKTOP */
         /* ============================= */
 
-        @media (min-width: 992px) {
+        @media (min-width: 1281px) {
           .sidebar-wrapper {
             display: flex !important;
             position: static !important;
@@ -210,7 +206,7 @@ export default function Sidebar() {
             display: block !important;
             transform: none !important;
             position: sticky !important;
-            top: 130px !important;
+            top: 90px !important;
             height: fit-content !important;
             align-self: flex-start !important;
             width: 110px !important;

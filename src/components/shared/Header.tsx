@@ -129,7 +129,7 @@ export default function Header() {
                     justify-content: space-between;
                 }
 
-                @media (min-width: 1301px) {
+                @media (min-width: 1281px) {
                     .sidebar-toggle-btn {
                         display: none !important;
                     }
