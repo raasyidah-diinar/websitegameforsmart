@@ -194,11 +194,10 @@ export default function CompetitionDetailView({ tournament }: CompetitionDetailV
                                 {isFull ? (
                                     <button className="cta cta--full" disabled>Kuota Penuh</button>
                                 ) : (
-                                    <Link href={`/competitions/${tournament.slug}/register`} className="cta cta--open">
-                                        Daftar Sekarang →
+                                    <Link href={`/competitions/${tournament.slug}/register`} className="btn-daftar" style={{ position: 'relative', zIndex: 10 }}>
+                                        Daftar Sekarang
                                     </Link>
                                 )}
-                                <p className="cta-hint">Gratis · Tanpa biaya tersembunyi</p>
                             </div>
                         </div>
                     </div>
@@ -234,11 +233,13 @@ export default function CompetitionDetailView({ tournament }: CompetitionDetailV
                     color: #e0e0e0;
                     font-family: 'DM Sans', 'Segoe UI', sans-serif;
                     min-height: 100vh;
-                    margin-left: 72px;
+                    margin-top: -104px; /* Slightly offset so it leaves a small gap below the header */
+                    margin-left: -110px; /* Offset the sidebar width to stretch background to left */
                 }
-                @media (max-width: 900px) {
+                @media (max-width: 1280px) {
                     .page-root { margin-left: 0; }
                 }
+                
                 .grad-text {
                     background: linear-gradient(90deg, #ff8c00, #ff4500);
                     -webkit-background-clip: text;
@@ -268,14 +269,17 @@ export default function CompetitionDetailView({ tournament }: CompetitionDetailV
                 }
                 .hero-inner {
                     max-width: 1600px; margin: 0 auto;
-                    padding: 64px 56px 60px;
+                    padding: 100px 40px 48px 150px; /* 40px + 110px sidebar offset = 150px left */
                     display: grid;
                     grid-template-columns: 1fr 1fr;
                     gap: 72px; align-items: center;
                     position: relative; z-index: 1;
                 }
+                @media (max-width: 1280px) {
+                    .hero-inner { padding-left: 40px; }
+                }
                 @media (max-width: 900px) {
-                    .hero-inner { grid-template-columns: 1fr; padding: 40px 24px; gap: 40px; }
+                    .hero-inner { grid-template-columns: 1fr; padding: 100px 20px 40px 20px; gap: 40px; }
                 }
 
                 .hero-left { display: flex; flex-direction: column; gap: 24px; }
@@ -321,10 +325,13 @@ export default function CompetitionDetailView({ tournament }: CompetitionDetailV
                 /* ── BODY ─────────────────── */
                 .body-wrap {
                     max-width: 1600px; margin: 0 auto;
-                    padding: 44px 56px 40px;
+                    padding: 44px 40px 40px 150px; /* 40px + 110px sidebar offset = 150px left */
                     display: flex; flex-direction: column; gap: 36px;
                 }
-                @media (max-width: 900px) { .body-wrap { padding: 32px 24px 100px; } }
+                @media (max-width: 1280px) {
+                    .body-wrap { padding-left: 40px; }
+                }
+                @media (max-width: 900px) { .body-wrap { padding: 32px 20px 100px 20px; } }
 
                 /* Highlight grid */
                 .hl-grid {
@@ -478,21 +485,25 @@ export default function CompetitionDetailView({ tournament }: CompetitionDetailV
                 }
                 .quota-note { font-size: .7rem; color: #333; }
 
-                .cta {
+                :global(.btn-daftar) {
+                    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+                    width: 100%; padding: 12px 20px;
+                    border-radius: 99px; font-size: .84rem; font-weight: 800;
+                    letter-spacing: .04em; text-transform: uppercase;
+                    text-decoration: none; cursor: pointer; border: none;
+                    background: linear-gradient(135deg, #ff8c00, #ff4500);
+                    color: #fff;
+                    box-shadow: 0 6px 22px rgba(255,100,0,.28);
+                    margin-bottom: 10px; transition: all .25s;
+                }
+                :global(.btn-daftar:hover) { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,100,0,.4); color: #fff; }
+                .cta--full { 
                     display: flex; align-items: center; justify-content: center;
                     width: 100%; padding: 12px 20px;
                     border-radius: 12px; font-size: .84rem; font-weight: 800;
                     letter-spacing: .04em; text-transform: uppercase;
-                    text-decoration: none; cursor: pointer; border: none;
-                    margin-bottom: 10px; transition: all .25s;
+                    background: rgba(255,255,255,.03); color: #333; cursor: not-allowed; border: none; margin-bottom: 10px;
                 }
-                .cta--open {
-                    background: linear-gradient(135deg, #ff8c00, #ff4500);
-                    color: #fff; box-shadow: 0 6px 22px rgba(255,100,0,.28);
-                }
-                .cta--open:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,100,0,.4); color: #fff; }
-                .cta--full { background: rgba(255,255,255,.03); color: #333; cursor: not-allowed; }
-                .cta-hint { text-align: center; font-size: .7rem; color: #2e2e2e; letter-spacing: .04em; }
 
                 /* Prizes */
                 .prizes-section { padding-bottom: 20px; margin-bottom: 0px; border-bottom: 1px solid rgba(255,255,255,.04); }

@@ -63,19 +63,15 @@ export default function RegistrationView({ competitionTitle, competitionSlug, fe
                         {/* Team Info Section */}
                         <div className="form-section">
                             <h4 className="tcn-1 fs-six fw-bold mb-4 d-flex align-items-center gap-2">
-                                <i className="ti ti-users tcp-1"></i> Informasi Tim
+                                <i className="ti ti-users tcp-1"></i> Informasi Peserta
                             </h4>
                             <div className="row g-4">
-                                <div className="col-12">
-                                    <label className="tcn-1 fs-sm fw-medium mb-2 d-block">Nama Tim / Peserta <span className="tcp-1">*</span></label>
-                                    <input type="text" className="w-100 py-3 px-4 bgn-3 rounded-3 tcn-1 border border-secondary border-opacity-10 focus-neon" placeholder="Masukkan nama tim" required />
+                                <div className="col-md-6">
+                                    <label className="tcn-1 fs-sm fw-medium mb-2 d-block">Nama Peserta <span className="tcp-1">*</span></label>
+                                    <input type="text" className="w-100 py-3 px-4 bgn-3 rounded-3 tcn-1 border border-secondary border-opacity-10 focus-neon" placeholder="Masukkan nama peserta" required />
                                 </div>
                                 <div className="col-md-6">
-                                    <label className="tcn-1 fs-sm fw-medium mb-2 d-block">Nama Ketua <span className="tcp-1">*</span></label>
-                                    <input type="text" className="w-100 py-3 px-4 bgn-3 rounded-3 tcn-1 border border-secondary border-opacity-10 focus-neon" placeholder="Nama lengkap ketua" required />
-                                </div>
-                                <div className="col-md-6">
-                                    <label className="tcn-1 fs-sm fw-medium mb-2 d-block">Asal Sekolah / Institusi <span className="tcp-1">*</span></label>
+                                    <label className="tcn-1 fs-sm fw-medium mb-2 d-block">Asal Sekolah <span className="tcp-1">*</span></label>
                                     <input type="text" className="w-100 py-3 px-4 bgn-3 rounded-3 tcn-1 border border-secondary border-opacity-10 focus-neon" placeholder="Nama instansi" required />
                                 </div>
                             </div>

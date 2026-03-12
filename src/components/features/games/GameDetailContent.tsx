@@ -506,7 +506,7 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                         <button key={opt} onClick={() => setSortBy(opt)}
                                             className="px-3 sm:px-4 py-1.5 rounded-full text-[10px] font-semibold tracking-wider uppercase transition-all duration-200"
                                             style={sortBy === opt
-                                                ? { background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.9)' }
+                                                ? { background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.9)', borderRadius: '100px' }
                                                 : { color: 'rgba(255,255,255,0.3)' }
                                             }>
                                             {opt}

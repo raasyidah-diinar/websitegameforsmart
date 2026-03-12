@@ -112,7 +112,7 @@ export default function TournamentCard({
                 </div>
 
                 <div className="card-more-info mt-auto pt-4 d-flex align-items-center justify-content-between">
-                    <Link href={link || `/competitions/${slug || id}`} className="px-6 py-2 rounded-pill bgp-1 text-white fw-bold transition-all hover-scale shadow-sm" style={{ fontSize: '14px', background: 'linear-gradient(90deg, #FF6B35 0%, #FF8C42 100%)' }}>
+                    <Link href={link ? `${link}/register` : `/competitions/${slug || id}/register`} className="px-6 py-2 rounded-pill bgp-1 text-white fw-bold transition-all hover-scale shadow-sm" style={{ fontSize: '14px', background: 'linear-gradient(90deg, #FF6B35 0%, #FF8C42 100%)' }}>
                         Daftar
                     </Link>
                     <Link href={link || `/competitions/${slug || id}`} className="d-center p-2 rounded-circle transition-all hover-scale" style={{ width: '38px', height: '38px', border: '1px solid #72ff00', background: 'transparent' }}>

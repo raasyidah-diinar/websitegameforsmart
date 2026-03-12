@@ -34,12 +34,12 @@ export default async function RegistrationPage(props: { params: Promise<{ slug: 
     }
 
     return (
-        <main className="main-content pt-20 pb-12">
+        <div className="main-content animate-fade-in-up flex-1" style={{ minWidth: 0 }}>
             <RegistrationView
                 competitionTitle={item.title}
                 competitionSlug={item.slug}
                 fee={item.ticketFee || 'Free Entry'}
             />
-        </main>
+        </div>
     );
 }
