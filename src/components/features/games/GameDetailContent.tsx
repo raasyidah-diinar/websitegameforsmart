@@ -14,7 +14,7 @@ const dummyReviews = [
     {
         name: 'Olivia Sanchez',
         avatar: 'OS',
-        color: '#FF6B35',
+        color: '#c084fc',
         rating: 4,
         date: '2 hari lalu',
         platform: 'Android',
@@ -26,7 +26,7 @@ const dummyReviews = [
     {
         name: 'Kevin Robinson',
         avatar: 'KR',
-        color: '#4A90D9',
+        color: '#60a5fa',
         rating: 5,
         date: '1 minggu lalu',
         platform: 'iOS',
@@ -38,7 +38,7 @@ const dummyReviews = [
     {
         name: 'Samantha Jones',
         avatar: 'SJ',
-        color: '#9B59B6',
+        color: '#34d399',
         rating: 5,
         date: '20 hari lalu',
         platform: 'PC',
@@ -50,7 +50,7 @@ const dummyReviews = [
     {
         name: 'Budi Santoso',
         avatar: 'BS',
-        color: '#2ECC71',
+        color: '#fb923c',
         rating: 4,
         date: '3 minggu lalu',
         platform: 'Android',
@@ -62,7 +62,7 @@ const dummyReviews = [
     {
         name: 'Rina Maharani',
         avatar: 'RM',
-        color: '#E74C3C',
+        color: '#f472b6',
         rating: 3,
         date: '1 bulan lalu',
         platform: 'iOS',
@@ -97,26 +97,49 @@ function getStepIcon(idx: number): string {
     return icons[idx % icons.length];
 }
 
-const cardStyle: React.CSSProperties = {
-    background: 'rgba(255,255,255,0.03)',
-    border: '1px solid rgba(255,255,255,0.12)',
-    boxShadow: '0 1px 0 0 rgba(255,255,255,0.06) inset',
+const reviewCardBase: React.CSSProperties = {
+    background: 'rgba(255,255,255,0.025)',
+    border: '1px solid rgba(255,255,255,0.07)',
+    borderRadius: '20px',
+    transition: 'all 0.25s ease',
 };
 
-const cardHoverStyle: React.CSSProperties = {
-    background: 'rgba(255,255,255,0.055)',
-    border: '1px solid rgba(255,255,255,0.22)',
-    boxShadow: '0 1px 0 0 rgba(255,255,255,0.08) inset',
+const reviewCardHover: React.CSSProperties = {
+    background: 'rgba(255,255,255,0.045)',
+    border: '1px solid rgba(255,255,255,0.13)',
+    borderRadius: '20px',
+    transition: 'all 0.25s ease',
 };
 
-const inputStyle: React.CSSProperties = {
-    background: 'rgba(0,0,0,0.25)',
-    border: '1px solid rgba(255,255,255,0.1)',
+const inputBase: React.CSSProperties = {
+    background: 'rgba(255,255,255,0.04)',
+    border: '1px solid rgba(255,255,255,0.08)',
+    borderRadius: '12px',
+    color: 'white',
+    fontSize: '13px',
+    outline: 'none',
+    transition: 'all 0.2s ease',
+    width: '100%',
+    padding: '10px 14px',
 };
 
-const inputFocusStyle: React.CSSProperties = {
-    background: 'rgba(0,0,0,0.3)',
-    border: '1px solid rgba(255,107,53,0.4)',
+const inputFocused: React.CSSProperties = {
+    background: 'rgba(255,255,255,0.06)',
+    border: '1px solid rgba(255, 107, 53, 0.35)',
+    borderRadius: '12px',
+    color: 'white',
+    fontSize: '13px',
+    outline: 'none',
+    transition: 'all 0.2s ease',
+    width: '100%',
+    padding: '10px 14px',
+};
+
+const sideCardStyle: React.CSSProperties = {
+    background: 'rgba(255,255,255,0.025)',
+    border: '1px solid rgba(255,255,255,0.07)',
+    borderRadius: '20px',
+    padding: '24px',
 };
 
 export default function GameDetailContent({ game }: GameDetailContentProps) {
@@ -137,20 +160,15 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
     const [lightboxIndex, setLightboxIndex] = useState(0);
     const [mounted, setMounted] = useState(false);
 
-    useEffect(() => {
-        setMounted(true);
-    }, []);
+    useEffect(() => { setMounted(true); }, []);
 
-    // Body scroll lock for lightbox
     useEffect(() => {
         if (isLightboxOpen) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = '';
         }
-        return () => {
-            document.body.style.overflow = '';
-        };
+        return () => { document.body.style.overflow = ''; };
     }, [isLightboxOpen]);
 
     const scrollRef = useRef<HTMLDivElement>(null);
@@ -190,30 +208,11 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
             return 0;
         });
 
-    const openLightbox = (index: number) => {
-        setLightboxIndex(index);
-        setIsLightboxOpen(true);
-    };
+    const openLightbox = (index: number) => { setLightboxIndex(index); setIsLightboxOpen(true); };
+    const closeLightbox = () => { setIsLightboxOpen(false); };
+    const nextLightboxImage = () => { if (game.screenshots) setLightboxIndex((prev) => (prev + 1) % game.screenshots!.length); };
+    const prevLightboxImage = () => { if (game.screenshots) setLightboxIndex((prev) => (prev - 1 + game.screenshots!.length) % game.screenshots!.length); };
 
-    const closeLightbox = () => {
-        setIsLightboxOpen(false);
-    };
-
-    const nextLightboxImage = () => {
-        const screenshots = game.screenshots;
-        if (screenshots) {
-            setLightboxIndex((prev) => (prev + 1) % screenshots.length);
-        }
-    };
-
-    const prevLightboxImage = () => {
-        const screenshots = game.screenshots;
-        if (screenshots) {
-            setLightboxIndex((prev) => (prev - 1 + screenshots.length) % screenshots.length);
-        }
-    };
-
-    // Keyboard navigation for lightbox
     useEffect(() => {
         if (!isLightboxOpen) return;
         const handleKey = (e: KeyboardEvent) => {
@@ -225,27 +224,37 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
         return () => window.removeEventListener('keydown', handleKey);
     }, [isLightboxOpen]);
 
+    const renderStars = (count: number, size = 'text-sm') => (
+        <div className="flex items-center gap-0.5">
+            {[1,2,3,4,5].map(s => (
+                <i key={s} className={`ti ${s <= count ? 'ti-star-filled text-amber-400' : 'ti-star text-white/10'} ${size}`}></i>
+            ))}
+        </div>
+    );
+
     return (
         <article className="main-content mt-4 animate-fade-in-up flex-1 min-w-0">
 
             {/* HERO */}
-            <div className="container-fluid px-lg-15 px-md-10 px-6">
+            <div className="container-fluid px-3 px-md-6 px-lg-10">
                 <div className="row g-3 hover-none">
                     <div className="col-12 d-flex align-items-stretch">
                         <section
-                            className="relative w-full h-[550px] overflow-hidden shadow-lg border border-secondary border-opacity-10 flex-fill"
-                            style={{ borderRadius: '40px' }}
+                            className="relative w-full overflow-hidden shadow-lg border border-secondary border-opacity-10 flex-fill"
+                            style={{ borderRadius: '24px', height: 'clamp(320px, 55vw, 550px)' }}
                         >
-                            <div className="absolute top-6 left-10 z-20">
+                            {/* Back Button */}
+                            <div className="absolute top-4 left-4 z-20">
                                 <Link
                                     href="/games"
-                                    className="inline-flex items-center gap-2 text-white/60 hover:text-[#FF6B35] transition-colors group px-4 py-2 bg-black/40 backdrop-blur-md rounded-full border border-white/5"
+                                    className="inline-flex items-center gap-2 text-white/60 hover:text-[#FF6B35] transition-colors group px-3 py-1.5 bg-black/40 backdrop-blur-md rounded-full border border-white/5"
                                 >
-                                    <i className="ti ti-arrow-left text-xl group-hover:-translate-x-1 transition-transform"></i>
-                                    <span className="font-bold uppercase tracking-widest text-[9px]">Kembali</span>
+                                    <i className="ti ti-arrow-left text-base group-hover:-translate-x-1 transition-transform"></i>
+                                    <span className="font-bold uppercase tracking-widest text-[9px] hidden sm:inline">Kembali</span>
                                 </Link>
                             </div>
 
+                            {/* Background media */}
                             <div className="absolute inset-0 z-0 overflow-hidden">
                                 {game.videoUrl ? (
                                     <iframe
@@ -255,13 +264,7 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                         })()}
                                         allow="autoplay; encrypted-media"
                                         className="absolute"
-                                        style={{
-                                            top: '50%', left: '50%',
-                                            width: '177.78vh', height: '100%',
-                                            minWidth: '100%', minHeight: '56.25vw',
-                                            transform: 'translate(-50%, -50%)',
-                                            border: 'none', pointerEvents: 'none', opacity: 0.55,
-                                        }}
+                                        style={{ top: '50%', left: '50%', width: '177.78vh', height: '100%', minWidth: '100%', minHeight: '56.25vw', transform: 'translate(-50%, -50%)', border: 'none', pointerEvents: 'none', opacity: 0.55 }}
                                         title={game.title}
                                         frameBorder="0"
                                     />
@@ -272,40 +275,56 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                 <div className="absolute inset-0 bg-gradient-to-r from-[#000000]/80 via-[#000000]/20 to-transparent"></div>
                             </div>
 
-                            <div className="relative z-10 h-full flex flex-col justify-center ps-lg-15 px-md-10 px-6 pt-14">
-                                <h1
-                                    className="hero-title tcn-1 mb-lg-5 mb-4"
-                                    style={{ fontSize: '3.5rem', lineHeight: '100%', fontWeight: '900', letterSpacing: '-1.5px' }}
-                                >
-                                    {game.title}
-                                </h1>
-                                <p className="tcn-1 mb-lg-6 mb-5 opacity-75 fs-six fw-normal" style={{ maxWidth: '600px' }}>
-                                    {game.description}
-                                </p>
-                                <div className="flex items-center gap-4 mt-16">
-                                    <button 
-                                        onClick={() => {
-                                            if (game.gameUrl) {
-                                                window.open(game.gameUrl, '_blank');
-                                            }
+                            {/* ✅ FIX 1: justify-center agar teks berada di tengah vertikal hero. Tambahkan padding kiri yang lebih besar agar tidak menempel ke pinggir */}
+                            <div className="relative z-10 h-full flex flex-col justify-center px-6 sm:px-12 lg:pl-20 lg:pr-12">
+                                <div className="ml-0 sm:ml-8 lg:ml-16 max-w-[800px]">
+                                    <h1
+                                        className="hero-title tcn-1 mb-2 sm:mb-3"
+                                        style={{
+                                            fontSize: 'clamp(1.6rem, 5vw, 3.5rem)',
+                                            lineHeight: '1.05',
+                                            fontWeight: '900',
+                                            letterSpacing: '-1px',
                                         }}
-                                        className="flex-shrink-0 bg-gradient-to-r from-[#FF4D00] to-[#FF8C00] text-white px-8 !h-[48px] !rounded-full font-black text-[10px] uppercase tracking-widest transition-all duration-300 shadow-[0_10px_25px_rgba(255,77,0,0.25)] hover:shadow-[0_15px_35px_rgba(255,77,0,0.45)] hover:-translate-y-1 flex items-center gap-2"
                                     >
-                                        <i className="ti ti-player-play-filled text-lg"></i>
-                                        MAIN SEKARANG
-                                    </button>
-                                    <div className="flex-shrink-0 flex items-center bg-white/[0.03] backdrop-blur-md border border-white/10 !rounded-full h-[48px] px-8 gap-8">
-                                        <div className="flex items-center gap-2 border-r border-white/10 pr-8 h-1/2">
-                                            <i className="ti ti-device-gamepad-2 text-[#FF6B35] text-lg"></i>
-                                            <span className="text-white/90 font-bold text-[9px] uppercase tracking-wide whitespace-nowrap">{game.platform.replace('Mobile & ', '')}</span>
-                                        </div>
-                                        <div className="flex items-center gap-2 border-r border-white/10 pr-8 h-1/2">
-                                            <i className="ti ti-star-filled text-[#FFB800] text-md"></i>
-                                            <span className="text-white/90 font-bold text-[9px] uppercase tracking-wide whitespace-nowrap">{game.rating}</span>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <i className="ti ti-user-circle text-lg text-white/40"></i>
-                                            <span className="text-white/90 font-bold text-[9px] uppercase tracking-wide whitespace-nowrap">{game.players}</span>
+                                        {game.title}
+                                    </h1>
+
+                                    {/* ✅ FIX 2: mb-16/20 agar jarak deskripsi ke button lebih lapang (space banyak) */}
+                                    <p
+                                        className="tcn-1 mb-16 sm:mb-20 opacity-75 fs-six fw-normal line-clamp-2 sm:line-clamp-none"
+                                        style={{ maxWidth: '600px', fontSize: 'clamp(12px, 2vw, 15px)' }}
+                                    >
+                                        {game.description}
+                                    </p>
+
+                                    {/* ✅ FIX 3: gap-6 untuk space antar button, rounded-full pada kedua button agar sedikit melengkung tapi tidak bulat penuh */}
+                                    <div className="flex flex-wrap items-center gap-6">
+                                        <button
+                                            onClick={() => { if (game.gameUrl) window.open(game.gameUrl, '_blank'); }}
+                                            className="flex-shrink-0 bg-gradient-to-r from-[#FF6B35] to-[#FF8C00] text-white px-8 sm:px-10 h-[38px] sm:h-[42px] rounded-full font-bold text-[11px] sm:text-[12px] uppercase tracking-wider transition-all duration-300 shadow-[0_10px_25px_rgba(255,107,53,0.3)] hover:shadow-[0_15px_35px_rgba(255,107,53,0.5)] hover:-translate-y-1 flex items-center justify-center gap-2"
+                                            style={{ borderRadius: '9999px' }}
+                                        >
+                                            <i className="ti ti-player-play-filled text-sm sm:text-base"></i>
+                                            <span>MAIN SEKARANG</span>
+                                        </button>
+
+                                        {/* Info Panel — rounded-full, ekstra panjang */}
+                                        <div className="flex items-center bg-black/20 backdrop-blur-md border border-white/20 rounded-full h-[38px] sm:h-[42px] px-2 sm:px-4">
+                                            <div className="flex items-center gap-2 px-6 sm:px-12">
+                                                <i className="ti ti-device-gamepad-2 text-[#FF6B35] text-sm sm:text-base"></i>
+                                                <span className="text-white/90 font-bold text-[10px] sm:text-[12px] uppercase tracking-wide whitespace-nowrap">{game.platform.replace('Mobile & ', '')}</span>
+                                            </div>
+                                            <div className="w-[1px] h-4 sm:h-5 bg-white/10"></div>
+                                            <div className="flex items-center gap-2 px-6 sm:px-12">
+                                                <i className="ti ti-star-filled text-[#FFB800] text-sm sm:text-base"></i>
+                                                <span className="text-white/90 font-bold text-[10px] sm:text-[12px] uppercase tracking-wide">{game.rating}</span>
+                                            </div>
+                                            <div className="w-[1px] h-4 sm:h-5 bg-white/10 hidden sm:block"></div>
+                                            <div className="hidden sm:flex items-center gap-2 px-6 sm:px-12">
+                                                <i className="ti ti-user-circle text-sm sm:text-base text-white/50"></i>
+                                                <span className="text-white/90 font-bold text-[10px] sm:text-[12px] uppercase tracking-wide whitespace-nowrap">{game.players}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -316,86 +335,52 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
             </div>
 
             {/* TABS */}
-            <div className="pl-lg-15 pl-md-10 pl-6 pr-0 mt-12 border-b border-white/5">
-                <div className="flex justify-center gap-10">
-                    {[
-                        { id: 'detail', label: 'Detail' },
-                        { id: 'ulasan', label: 'Ulasan' },
-                    ].map((tab) => (
-                        <button
-                            key={tab.id}
-                            onClick={() => setActiveTab(tab.id)}
-                            className={`pb-4 text-xs font-bold tracking-widest transition-all relative ${
-                                activeTab === tab.id ? 'text-white' : 'text-white/40 hover:text-white/60'
-                            }`}
-                        >
+            <div className="px-4 sm:px-8 lg:px-16 mt-8 border-b border-white/5">
+                <div className="flex justify-center gap-8 sm:gap-10">
+                    {[{ id: 'detail', label: 'Detail' }, { id: 'ulasan', label: 'Ulasan' }].map((tab) => (
+                        <button key={tab.id} onClick={() => setActiveTab(tab.id)}
+                            className={`pb-4 text-xs font-bold tracking-widest transition-all relative ${activeTab === tab.id ? 'text-white' : 'text-white/40 hover:text-white/60'}`}>
                             {tab.label}
-                            {activeTab === tab.id && (
-                                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#FF6B35]"></div>
-                            )}
+                            {activeTab === tab.id && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#FF6B35]"></div>}
                         </button>
                     ))}
                 </div>
             </div>
 
             {/* CONTENT */}
-            <div className="pl-lg-15 pl-md-10 pl-6 pr-6 pr-lg-20 py-12">
+            <div className="px-4 sm:px-8 lg:px-16 py-8 sm:py-12">
 
                 {/* TAB: DETAIL */}
                 {activeTab === 'detail' && (
-                    <div className="max-w-[1600px] grid grid-cols-1 lg:grid-cols-12 gap-4 animate-fade-in relative">
+                    <div className="max-w-[1600px] grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-4 animate-fade-in relative">
 
-                        {/* Left */}
-                        <div className="lg:col-span-9 space-y-16 pl-lg-10">
+                        {/* Main content */}
+                        <div className="lg:col-span-9 space-y-12 lg:space-y-16">
 
+                            {/* Gallery */}
                             {game.screenshots && game.screenshots.length > 0 && (
-                                <section className="space-y-10 group/gallery relative">
-                                    <h2 className="text-lg font-bold text-white border-l-4 border-[#FF6B35] pl-4" style={{ fontSize: '30px' }}>Tampilan Permainan</h2>
-                                    <div className="relative mt-8 gallery-wrapper overflow-visible">
-                                        <button
-                                            onClick={() => { if (scrollRef.current) scrollRef.current.scrollBy({ left: -300, behavior: 'smooth' }); }}
-                                            className={`absolute left-4 top-1/2 -translate-y-1/2 z-50 w-12 h-12 flex items-center justify-center transition-all cursor-pointer group gallery-nav-btn ${canScrollLeft ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}
-                                            style={{ 
-                                                background: 'transparent',
-                                                border: '1px solid rgba(255, 255, 255, 0.4)',
-                                                borderRadius: '50%',
-                                                color: 'white'
-                                            }}
-                                        >
-                                            <i className="ti ti-chevron-left text-2xl"></i>
+                                <section className="space-y-6 group/gallery relative">
+                                    <h2 className="text-xl sm:text-2xl font-bold text-white border-l-4 border-[#FF6B35] pl-4">Tampilan Permainan</h2>
+                                    <div className="relative mt-4 gallery-wrapper overflow-visible">
+                                        <button onClick={() => { if (scrollRef.current) scrollRef.current.scrollBy({ left: -300, behavior: 'smooth' }); }}
+                                            className={`absolute left-2 top-1/2 -translate-y-1/2 z-50 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center transition-all cursor-pointer group gallery-nav-btn ${canScrollLeft ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}
+                                            style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.4)', borderRadius: '50%', color: 'white' }}>
+                                            <i className="ti ti-chevron-left text-xl"></i>
                                         </button>
-                                        <button
-                                            onClick={() => { if (scrollRef.current) scrollRef.current.scrollBy({ left: 300, behavior: 'smooth' }); }}
-                                            className={`absolute right-4 top-1/2 -translate-y-1/2 z-50 w-12 h-12 flex items-center justify-center transition-all cursor-pointer group gallery-nav-btn ${canScrollRight ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}
-                                            style={{ 
-                                                background: 'transparent',
-                                                border: '1px solid rgba(255, 255, 255, 0.4)',
-                                                borderRadius: '50%',
-                                                color: 'white'
-                                            }}
-                                        >
-                                            <i className="ti ti-chevron-right text-2xl"></i>
+                                        <button onClick={() => { if (scrollRef.current) scrollRef.current.scrollBy({ left: 300, behavior: 'smooth' }); }}
+                                            className={`absolute right-2 top-1/2 -translate-y-1/2 z-50 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center transition-all cursor-pointer group gallery-nav-btn ${canScrollRight ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}
+                                            style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.4)', borderRadius: '50%', color: 'white' }}>
+                                            <i className="ti ti-chevron-right text-xl"></i>
                                         </button>
-                                        <style jsx>{`
-                                            .gallery-nav-btn:hover {
-                                                background-color: #FF6B35 !important;
-                                                border-color: #FF6B35 !important;
-                                            }
-                                        `}</style>
-                                        <div
-                                            ref={scrollRef}
-                                            className="flex gap-3 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory"
-                                            style={{ scrollBehavior: 'smooth' }}
-                                        >
+                                        <style jsx>{`.gallery-nav-btn:hover { background-color: #FF6B35 !important; border-color: #FF6B35 !important; }`}</style>
+                                        <div ref={scrollRef} className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory" style={{ scrollBehavior: 'smooth' }}>
                                             {game.screenshots.map((ss: string, idx: number) => (
-                                                <div
-                                                    key={idx}
-                                                    className="flex-shrink-0 w-[420px] relative rounded-[32px] overflow-hidden group cursor-pointer shadow-lg snap-start transition-all duration-300 border-0"
-                                                    style={{ aspectRatio: '16/9' }}
+                                                <div key={idx}
+                                                    className="flex-shrink-0 relative rounded-2xl sm:rounded-[32px] overflow-hidden group cursor-pointer shadow-lg snap-start transition-all duration-300 border-0"
+                                                    style={{ width: 'clamp(260px, 65vw, 420px)', aspectRatio: '16/9' }}
                                                     onClick={() => openLightbox(idx)}
                                                 >
                                                     <Image src={ss} alt={`Screenshot ${idx + 1}`} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
-                                                    {/* Hover overlay hint */}
                                                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
                                                         <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-12 h-12 rounded-full bg-black/50 border border-white/20 flex items-center justify-center">
                                                             <i className="ti ti-zoom-in text-white text-xl"></i>
@@ -408,15 +393,16 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                 </section>
                             )}
 
-                            <section className="space-y-6">
-                                <h2 className="text-lg font-bold text-white border-l-4 border-[#FF6B35] pl-4" style={{ fontSize: '30px' }}>Tentang Game Ini</h2>
-                                <p className="text-white/70 text-base leading-relaxed max-w-3xl pl-5 mt-4">{game.description}</p>
+                            {/* About */}
+                            <section className="space-y-5">
+                                <h2 className="text-xl sm:text-2xl font-bold text-white border-l-4 border-[#FF6B35] pl-4">Tentang Game Ini</h2>
+                                <p className="text-white/70 text-sm sm:text-base leading-relaxed max-w-3xl pl-4 sm:pl-5">{game.description}</p>
                                 {game.features && game.features.length > 0 && (
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 pl-5">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-2 pl-4 sm:pl-5">
                                         {game.features.map((feature: any, idx: number) => (
-                                            <div key={idx} className="flex items-start gap-4 p-5 bg-white/[0.03] border border-white/5 rounded-2xl hover:border-[#FF6B35]/30 transition-colors">
-                                                <div className="w-10 h-10 flex-shrink-0 bg-[#FF6B35]/10 rounded-xl flex items-center justify-center text-[#FF6B35]">
-                                                    <i className={`${feature.icon || 'ti ti-circle-check'} text-xl`}></i>
+                                            <div key={idx} className="flex items-start gap-4 p-4 sm:p-5 bg-white/[0.03] border border-white/5 rounded-2xl hover:border-[#FF6B35]/30 transition-colors">
+                                                <div className="w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0 bg-[#FF6B35]/10 rounded-xl flex items-center justify-center text-[#FF6B35]">
+                                                    <i className={`${feature.icon || 'ti ti-circle-check'} text-lg sm:text-xl`}></i>
                                                 </div>
                                                 <div>
                                                     <h4 className="text-white font-bold text-sm mb-1">{feature.title}</h4>
@@ -428,155 +414,143 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                 )}
                             </section>
 
-                            <section className="space-y-8">
-                                <div className="flex items-center gap-4">
-                                    <h2 className="text-lg font-bold text-white border-l-4 border-[#FF6B35] pl-4" style={{ fontSize: '30px' }}>Aturan & Cara Bermain</h2>
-                                    <div className="flex-1 h-px bg-gradient-to-r from-white/10 to-transparent"></div>
+                            {/* Rules */}
+                            <section className="space-y-6 sm:space-y-8">
+                                <div className="flex flex-wrap items-center gap-3">
+                                    <h2 className="text-xl sm:text-2xl font-bold text-white border-l-4 border-[#FF6B35] pl-4">Aturan &amp; Cara Bermain</h2>
                                     <span className="text-[10px] font-bold tracking-widest text-[#FF6B35] bg-[#FF6B35]/10 border border-[#FF6B35]/20 px-3 py-1 rounded-full uppercase">{game.rules.length} Aturan</span>
                                 </div>
-                                <div className="relative pl-5 mt-4">
-                                    <div className="absolute left-[19px] top-0 w-px bg-gradient-to-b from-[#FF6B35] via-[#FF6B35]/30 to-transparent" style={{ height: 'calc(100% - 32px)' }}></div>
+                                <div className="relative pl-4 sm:pl-5 mt-4">
+                                    <div className="absolute left-[15px] sm:left-[19px] top-0 w-px bg-gradient-to-b from-[#FF6B35] via-[#FF6B35]/30 to-transparent" style={{ height: 'calc(100% - 32px)' }}></div>
                                     <div className="space-y-3">
                                         {game.rules.map((rule: string, idx: number) => (
-                                            <div key={idx} className="relative flex items-start gap-5 group" style={{ animationDelay: `${idx * 80}ms` }}>
-                                                <div
-                                                    className="relative z-10 flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-[11px] transition-all duration-300"
-                                                    style={{
-                                                        background: idx === 0 ? 'linear-gradient(135deg, #FF4D00, #FF8C00)' : 'rgba(255,255,255,0.04)',
-                                                        border: idx === 0 ? 'none' : '1px solid rgba(255,255,255,0.08)',
-                                                        boxShadow: idx === 0 ? '0 0 20px rgba(255,77,0,0.4)' : 'none',
-                                                        color: idx === 0 ? '#fff' : 'rgba(255,107,53,0.7)',
-                                                    }}
-                                                >
+                                            <div key={idx} className="relative flex items-start gap-3 sm:gap-5 group" style={{ animationDelay: `${idx * 80}ms` }}>
+                                                <div className="relative z-10 flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-[11px] transition-all duration-300"
+                                                    style={{ background: idx === 0 ? 'linear-gradient(135deg, #FF4D00, #FF8C00)' : 'rgba(255,255,255,0.04)', border: idx === 0 ? 'none' : '1px solid rgba(255,255,255,0.08)', boxShadow: idx === 0 ? '0 0 20px rgba(255,77,0,0.4)' : 'none', color: idx === 0 ? '#fff' : 'rgba(255,107,53,0.7)' }}>
                                                     {String(idx + 1).padStart(2, '0')}
                                                 </div>
-                                                <div
-                                                    className="flex-1 p-4 rounded-2xl border transition-all duration-300 group-hover:border-[#FF6B35]/30 group-hover:bg-white/[0.04]"
-                                                    style={{
-                                                        background: idx === 0 ? 'rgba(255,77,0,0.06)' : 'rgba(255,255,255,0.02)',
-                                                        border: idx === 0 ? '1px solid rgba(255,107,53,0.25)' : '1px solid rgba(255,255,255,0.05)',
-                                                    }}
-                                                >
+                                                <div className="flex-1 p-3 sm:p-4 rounded-2xl border transition-all duration-300 group-hover:border-[#FF6B35]/30 group-hover:bg-white/[0.04]"
+                                                    style={{ background: idx === 0 ? 'rgba(255,77,0,0.06)' : 'rgba(255,255,255,0.02)', border: idx === 0 ? '1px solid rgba(255,107,53,0.25)' : '1px solid rgba(255,255,255,0.05)' }}>
                                                     <div className="flex items-start gap-3">
-                                                        <div className="flex-shrink-0 mt-0.5">
-                                                            <i className={`${getStepIcon(idx)} text-base`} style={{ color: idx === 0 ? '#FF6B35' : 'rgba(255,107,53,0.5)' }}></i>
-                                                        </div>
+                                                        <div className="flex-shrink-0 mt-0.5"><i className={`${getStepIcon(idx)} text-base`} style={{ color: idx === 0 ? '#FF6B35' : 'rgba(255,107,53,0.5)' }}></i></div>
                                                         <p className="text-sm leading-relaxed" style={{ color: idx === 0 ? 'rgba(255,255,255,0.90)' : 'rgba(255,255,255,0.60)' }}>{rule}</p>
                                                     </div>
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
-                                    <div className="flex items-center gap-5 mt-6 pl-5">
-                                        <div className="w-10 h-10 flex-shrink-0 rounded-full bg-[#FF6B35]/10 border border-[#FF6B35]/20 flex items-center justify-center">
+                                    <div className="flex items-center gap-4 mt-6 pl-4 sm:pl-5">
+                                        <div className="w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0 rounded-full bg-[#FF6B35]/10 border border-[#FF6B35]/20 flex items-center justify-center">
                                             <i className="ti ti-flag-3-filled text-[#FF6B35] text-sm"></i>
                                         </div>
-                                        <p className="text-[11px] font-bold tracking-widest text-white/30 uppercase">Selamat bermain & jaga sportivitas!</p>
+                                        <p className="text-[11px] font-bold tracking-widest text-white/30 uppercase">Selamat bermain &amp; jaga sportivitas!</p>
                                     </div>
                                 </div>
                             </section>
-
-
                         </div>
 
-                        {/* Right — Sidebar */}
-                        <aside className="lg:col-span-3 space-y-12 animate-fade-in-right flex flex-col items-end">
-
-
-                            <div className="w-full max-w-[320px]">
-                                <div className="flex items-center justify-between mb-10">
-                                    <h2 className="text-lg font-bold text-white" style={{ fontSize: '25px' }}>Game serupa</h2>
-                                    <Link href="/games" className="text-white/40 hover:text-[#FF6B35] transition-colors">
-                                        <i className="ti ti-arrow-right text-xl"></i>
-                                    </Link>
-                                </div>
-                                <div className="flex flex-col gap-8">
-                                    {allItemsData
-                                        .filter(item => item.type === 'game' && item.id !== game.id)
-                                        .slice(0, 6)
-                                        .map((rg) => (
-                                            <Link key={rg.id} href={rg.href} className="flex items-center gap-5 group/item cursor-pointer">
-                                                <div className="relative w-16 h-16 flex-shrink-0 rounded-[22px] overflow-hidden shadow-2xl group-hover/item:scale-110 transition-all duration-500">
-                                                    <Image src={rg.image} alt={rg.title} fill className="object-cover" />
-                                                </div>
-                                                <div className="flex-1 min-w-0">
-                                                    <h5 className="text-white font-bold text-[11px] truncate group-hover/item:text-[#FF6B35] transition-colors leading-tight mb-1">{rg.title}</h5>
-                                                    <p className="text-white/40 text-[8px] font-black tracking-widest truncate">{rg.subtitle || rg.genre}</p>
-                                                    <div className="flex items-center gap-1.5 mt-1.5">
-                                                        <span className="text-white/60 text-[11px] font-black">{rg.rating}</span>
-                                                        <i className="ti ti-star-filled text-yellow-500 text-[10px]"></i>
-                                                    </div>
-                                                </div>
+                        {/* Sidebar — Game Serupa */}
+                        <aside className="lg:col-span-3 order-last lg:order-none animate-fade-in-right">
+                            {(() => {
+                                const similarGames = allItemsData.filter(item => item.type === 'game' && item.id !== game.id).slice(0, 6);
+                                const isTwoCol = similarGames.length >= 4;
+                                return (
+                                    <div className="w-full lg:max-w-[320px] lg:ml-auto">
+                                        <div className="flex items-center justify-between mb-5">
+                                            <h2 className="font-bold text-white" style={{ fontSize: 'clamp(18px, 3vw, 22px)' }}>Game serupa</h2>
+                                            <Link href="/games" className="text-white/40 hover:text-[#FF6B35] transition-colors">
+                                                <i className="ti ti-arrow-right text-xl"></i>
                                             </Link>
-                                        ))}
-                                </div>
-                            </div>
+                                        </div>
+                                        <div className={isTwoCol ? 'grid grid-cols-2 gap-x-4 gap-y-5' : 'flex flex-col gap-5'}>
+                                            {similarGames.map((rg) => (
+                                                <Link key={rg.id} href={rg.href} className="flex items-center gap-3 group/item cursor-pointer">
+                                                    <div className="relative w-14 h-14 flex-shrink-0 rounded-[16px] overflow-hidden shadow-xl group-hover/item:scale-105 transition-all duration-300">
+                                                        <Image src={rg.image} alt={rg.title} fill className="object-cover" />
+                                                    </div>
+                                                    <div className="flex-1 min-w-0">
+                                                        <h5 className="text-white font-bold text-[11px] truncate group-hover/item:text-[#FF6B35] transition-colors leading-tight mb-0.5">{rg.title}</h5>
+                                                        <p className="text-white/40 text-[9px] font-semibold tracking-wide truncate mb-1">{rg.subtitle || rg.genre}</p>
+                                                        <div className="flex items-center gap-1">
+                                                            <span className="text-white/60 text-[11px] font-black">{rg.rating}</span>
+                                                            <i className="ti ti-star-filled text-yellow-500 text-[9px]"></i>
+                                                        </div>
+                                                    </div>
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    </div>
+                                );
+            })()}
                         </aside>
                     </div>
                 )}
 
                 {/* TAB: ULASAN */}
                 {activeTab === 'ulasan' && (
-                    <div className="animate-fade-in grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+                    <div className="animate-fade-in flex flex-col-reverse lg:grid lg:grid-cols-12 gap-6 lg:gap-10 items-start">
 
                         {/* LEFT — Review List */}
-                        <div className="lg:col-span-8 space-y-6">
-
-                            {/* Header */}
-                            <div className="flex items-end justify-between pb-6" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                        <div className="lg:col-span-8 space-y-6 sm:space-y-8">
+                            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 sm:pb-7" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                                 <div>
-                                    <p className="text-[10px] font-black tracking-[0.3em] text-[#FF6B35]/60 uppercase mb-2">Suara Komunitas</p>
-                                    <h2 className="text-2xl font-black text-white tracking-tight leading-none">
-                                        {totalReviews.toLocaleString()}{' '}
-                                        <span className="text-white/20 font-light">Ulasan</span>
+                                    <p className="text-[10px] font-semibold tracking-[0.25em] text-white/25 uppercase mb-1.5">Suara Komunitas</p>
+                                    <h2 className="text-[22px] sm:text-[28px] font-bold text-white tracking-tight leading-none">
+                                        {totalReviews.toLocaleString()}
+                                        {' '}
+                                        <span className="text-white/20 font-light text-xl sm:text-2xl ml-1">ulasan</span>
                                     </h2>
                                 </div>
-                                {/* Sort */}
-                                <div className="flex items-center gap-1 p-1 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                                <div className="flex items-center gap-1 rounded-full p-1 self-start sm:self-auto" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
                                     {(['terbaru', 'tertinggi', 'terendah'] as const).map(opt => (
-                                        <button
-                                            key={opt}
-                                            onClick={() => setSortBy(opt)}
-                                            className={`px-3.5 py-1.5 rounded-lg text-[10px] font-black tracking-widest uppercase transition-all ${
-                                                sortBy === opt ? 'text-white' : 'text-white/30 hover:text-white/60'
-                                            }`}
-                                            style={sortBy === opt ? { background: 'rgba(255,255,255,0.12)' } : {}}
-                                        >
+                                        <button key={opt} onClick={() => setSortBy(opt)}
+                                            className="px-3 sm:px-4 py-1.5 rounded-full text-[10px] font-semibold tracking-wider uppercase transition-all duration-200"
+                                            style={sortBy === opt
+                                                ? { background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.9)' }
+                                                : { color: 'rgba(255,255,255,0.3)' }
+                                            }>
                                             {opt}
                                         </button>
                                     ))}
                                 </div>
                             </div>
 
-                            {/* Filter Pills */}
-                            <div className="flex items-center gap-2 flex-wrap">
-                                <span className="text-[9px] font-black text-white/25 uppercase tracking-[0.2em] mr-1">Filter:</span>
-                                {[5, 4, 3, 2, 1].map(s => (
-                                    <button
-                                        key={s}
-                                        onClick={() => setFilterStar(filterStar === s ? null : s)}
-                                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black transition-all duration-200 ${
-                                            filterStar === s ? 'text-white' : 'text-white/40 hover:text-white/70'
-                                        }`}
-                                        style={filterStar === s
-                                            ? { background: '#FF6B35', border: '1px solid #FF6B35', boxShadow: '0 4px 16px rgba(255,107,53,0.3)' }
-                                            : { background: 'transparent', border: '1px solid rgba(255,255,255,0.18)' }
-                                        }
-                                    >
-                                        <i className="ti ti-star-filled text-[9px]"></i>{s}
-                                    </button>
-                                ))}
-                                {filterStar && (
+                            <div className="flex flex-wrap items-center justify-between gap-3">
+                                <div className="flex items-center flex-wrap gap-2">
+                                    <span className="text-[9px] font-semibold text-white/20 uppercase tracking-[0.2em] mr-1">Bintang</span>
+                                    {[5, 4, 3, 2, 1].map(s => (
+                                        <button key={s} onClick={() => setFilterStar(filterStar === s ? null : s)}
+                                            className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-medium transition-all duration-200"
+                                            style={filterStar === s
+                                                ? { background: 'rgba(255,107,53,0.12)', border: '1px solid rgba(255,107,53,0.4)', color: '#FF6B35', borderRadius: '8px' }
+                                                : { background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.35)', borderRadius: '8px' }
+                                            }>
+                                            <i className="ti ti-star-filled text-[9px]" style={{ color: filterStar === s ? '#FF6B35' : 'rgba(251,191,36,0.5)' }}></i>
+                                            {s}
+                                        </button>
+                                    ))}
+                                </div>
+                                {filterStar !== null && (
                                     <button
                                         onClick={() => setFilterStar(null)}
-                                        className="text-[10px] text-white/25 hover:text-[#FF6B35] transition-colors ml-1 flex items-center gap-1"
+                                        onMouseEnter={e => {
+                                            (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,107,53,0.12)';
+                                            (e.currentTarget as HTMLButtonElement).style.border = '1px solid rgba(255,107,53,0.4)';
+                                            (e.currentTarget as HTMLButtonElement).style.color = '#FF6B35';
+                                        }}
+                                        onMouseLeave={e => {
+                                            (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.04)';
+                                            (e.currentTarget as HTMLButtonElement).style.border = '1px solid rgba(255,255,255,0.08)';
+                                            (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.25)';
+                                        }}
+                                        className="flex items-center gap-1.5 px-3.5 py-1.5 text-[10px] font-medium transition-all duration-200"
+                                        style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', color: 'rgba(255,255,255,0.25)' }}
                                     >
-                                        <i className="ti ti-x text-[10px]"></i> Reset
+                                        <i className="ti ti-x text-[9px]"></i> Reset
                                     </button>
                                 )}
                             </div>
 
-                            {/* Review Cards */}
                             <div className="space-y-3">
                                 {sortedReviews.length === 0 ? (
                                     <div className="text-center py-20 text-white/15 text-sm font-light tracking-wide">
@@ -584,306 +558,158 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                         Tidak ada ulasan untuk filter ini.
                                     </div>
                                 ) : sortedReviews.map((review, idx) => (
-                                    <div
-                                        key={idx}
-                                        className="relative p-6 rounded-3xl overflow-hidden transition-all duration-300"
-                                        style={hoveredCard === idx ? cardHoverStyle : cardStyle}
+                                    <div key={idx}
+                                        className="p-4 sm:p-6 cursor-default"
+                                        style={hoveredCard === idx ? reviewCardHover : reviewCardBase}
                                         onMouseEnter={() => setHoveredCard(idx)}
                                         onMouseLeave={() => setHoveredCard(null)}
                                     >
-                                        <div
-                                            className="absolute inset-0 pointer-events-none transition-opacity duration-500"
-                                            style={{
-                                                opacity: hoveredCard === idx ? 1 : 0,
-                                                background: `radial-gradient(ellipse at top left, ${review.color}0D 0%, transparent 60%)`,
-                                            }}
-                                        ></div>
-                                        <div
-                                            className="absolute top-0 left-8 right-8 h-px"
-                                            style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)' }}
-                                        ></div>
-
-                                        <div className="relative z-10">
-                                            <div className="flex items-start justify-between gap-4 mb-4">
-                                                <div className="flex items-center gap-3.5">
-                                                    <div className="relative flex-shrink-0">
-                                                        <div
-                                                            className="w-10 h-10 rounded-2xl flex items-center justify-center text-white font-black text-[11px]"
-                                                            style={{
-                                                                background: `linear-gradient(135deg, ${review.color}55, ${review.color}22)`,
-                                                                border: `1px solid ${review.color}40`,
-                                                            }}
-                                                        >
-                                                            {review.avatar}
-                                                        </div>
-                                                        {review.verified && (
-                                                            <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-[#0d0d0d] flex items-center justify-center">
-                                                                <i className="ti ti-check text-white" style={{ fontSize: '7px' }}></i>
-                                                            </div>
-                                                        )}
+                                        <div className="flex items-start justify-between gap-3 mb-4">
+                                            <div className="flex items-center gap-3">
+                                                <div className="relative flex-shrink-0">
+                                                    <div className="w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-bold"
+                                                        style={{ background: `${review.color}18`, color: review.color, border: `1.5px solid ${review.color}30` }}>
+                                                        {review.avatar}
                                                     </div>
-                                                    <div>
-                                                        <span className="text-white font-bold text-sm block leading-tight">{review.name}</span>
-                                                        <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                                                            <span className="text-white/35 text-[10px]">{review.date}</span>
+                                                    {review.verified && (
+                                                        <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full flex items-center justify-center"
+                                                            style={{ background: '#10b981', border: '2px solid rgba(0,0,0,0.6)' }}>
+                                                            <i className="ti ti-check text-white" style={{ fontSize: '6px' }}></i>
                                                         </div>
-                                                    </div>
+                                                    )}
                                                 </div>
-
-                                                <div className="flex flex-col items-end gap-1 flex-shrink-0">
-                                                    <div className="flex items-center gap-0.5">
-                                                        {[1, 2, 3, 4, 5].map(s => (
-                                                            <i key={s} className={`ti ${s <= review.rating ? 'ti-star-filled text-yellow-400' : 'ti-star text-white/10'} text-sm`}></i>
-                                                        ))}
-                                                    </div>
-                                                    <span className="text-[9px] font-black text-white/25 tracking-widest">{review.rating}.0 / 5</span>
+                                                <div>
+                                                    <p className="text-white text-[13px] font-semibold leading-none mb-1">{review.name}</p>
+                                                    <p className="text-white/25 text-[10px] tracking-wide">{review.date}</p>
                                                 </div>
                                             </div>
-
-                                            <p className="text-white/65 text-[13px] leading-[1.8] mb-5 pl-[3.375rem]">{review.text}</p>
-
-                                            <div
-                                                className="flex items-center gap-2 pl-[3.375rem] pt-4"
-                                                style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
-                                            >
-                                                <span className="text-[9px] text-white/20 font-black uppercase tracking-[0.2em] mr-2">Membantu?</span>
-                                                <button
-                                                    onClick={() => toggleHelpful(idx)}
-                                                    className="flex items-center gap-1.5 text-[10px] font-bold px-3.5 py-1.5 rounded-full transition-all duration-200"
-                                                    style={helpfulMap[idx]
-                                                        ? { background: 'rgba(255,107,53,0.1)', border: '1px solid rgba(255,107,53,0.4)', color: '#FF6B35' }
-                                                        : { background: 'transparent', border: '1px solid rgba(255,255,255,0.14)', color: 'rgba(255,255,255,0.3)' }
-                                                    }
-                                                >
-                                                    <i className="ti ti-thumb-up text-xs"></i>
-                                                    Ya ({helpfulMap[idx] ? review.likes + 1 : review.likes})
-                                                </button>
-                                                <button
-                                                    className="flex items-center gap-1.5 text-[10px] font-bold px-3.5 py-1.5 rounded-full transition-all"
-                                                    style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.22)' }}
-                                                >
-                                                    <i className="ti ti-thumb-down text-xs"></i> Tidak
-                                                </button>
-                                                <button className="ml-auto flex items-center gap-1.5 text-[9px] font-bold text-white/15 hover:text-white/35 transition-colors">
-                                                    <i className="ti ti-flag text-xs"></i> Laporkan
-                                                </button>
+                                            <div className="flex items-center gap-1.5 flex-shrink-0">
+                                                {renderStars(review.rating, 'text-xs')}
+                                                <span className="text-[11px] font-semibold text-white/30 ml-1">{review.rating}</span>
                                             </div>
+                                        </div>
+                                        <p className="text-[13px] sm:text-[13.5px] text-white/55 leading-[1.75] mb-4 sm:mb-5 pl-0 sm:pl-[3.25rem]">{review.text}</p>
+                                        <div className="flex items-center gap-2 pl-0 sm:pl-[3.25rem]">
+                                            <button onClick={() => toggleHelpful(idx)}
+                                                className="flex items-center gap-1.5 text-[10px] font-medium px-3 py-1.5 rounded-full transition-all duration-200"
+                                                style={helpfulMap[idx]
+                                                    ? { background: 'rgba(255,107,53,0.08)', border: '1px solid rgba(255,107,53,0.25)', color: '#FF6B35' }
+                                                    : { background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.25)' }
+                                                }>
+                                                <i className="ti ti-thumb-up text-[11px]"></i>
+                                                {helpfulMap[idx] ? review.likes + 1 : review.likes}
+                                            </button>
+                                            <button className="flex items-center gap-1.5 text-[10px] font-medium px-3 py-1.5 rounded-full transition-all"
+                                                style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.18)' }}>
+                                                <i className="ti ti-thumb-down text-[11px]"></i>
+                                            </button>
+                                            <button className="ml-auto flex items-center gap-1.5 text-[10px] text-white/15 hover:text-white/30 transition-colors">
+                                                <i className="ti ti-flag text-[10px]"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 ))}
-                            </div>
-
-                            {/* 💬 KOMENTAR & DISKUSI */}
-                            <div className="pt-12 mt-12 border-t border-white/5">
-                                <div className="flex items-center justify-between mb-8">
-                                    <div>
-                                        <h3 className="text-xl font-black text-white tracking-tight">Diskusi Komunitas</h3>
-                                        <p className="text-white/30 text-[11px] mt-1">Bergabung dalam percakapan dengan pemain lain</p>
-                                    </div>
-                                    <button className="px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black tracking-widest text-white/60 uppercase hover:text-white transition-colors">Semua Topik</button>
-                                </div>
-                                
-                                <div className="space-y-4">
-                                    {[
-                                        { user: 'Rian_Gamer', comment: 'Adakah tips buat ngalahin boss di level 5? Susah banget kontrolnya pas lagi lari.', replies: 3, time: '2 jam yang lalu' },
-                                        { user: 'Siska_A', comment: 'Gila sih grafisnya smooth parah buat game web kayak gini. Love it!', replies: 1, time: '5 jam yang lalu' },
-                                    ].map((item, i) => (
-                                        <div key={i} className="p-6 rounded-[28px] bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-all group">
-                                            <div className="flex items-start gap-4">
-                                                <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-white/10 relative">
-                                                    <Image src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${item.user}`} fill alt="user" />
-                                                </div>
-                                                <div className="flex-1">
-                                                    <div className="flex items-center justify-between mb-2">
-                                                        <span className="text-sm font-bold text-white tracking-tight">{item.user}</span>
-                                                        <span className="text-[10px] text-white/20">{item.time}</span>
-                                                    </div>
-                                                    <p className="text-sm text-white/50 leading-relaxed mb-4">{item.comment}</p>
-                                                    <div className="flex items-center gap-6">
-                                                        <button className="flex items-center gap-2 text-[10px] font-black text-[#FF6B35] uppercase tracking-widest hover:brightness-125 transition-all">
-                                                            <i className="ti ti-message-2 text-base"></i> Balas ({item.replies})
-                                                        </button>
-                                                        <button className="flex items-center gap-2 text-[10px] font-black text-white/20 uppercase tracking-widest hover:text-white/40 transition-all">
-                                                            <i className="ti ti-heart text-base"></i> Suka
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                    <button className="w-full py-4 rounded-[28px] border-2 border-dashed border-white/5 text-[11px] font-black text-white/20 uppercase tracking-[0.2em] hover:border-[#FF6B35]/20 hover:text-[#FF6B35]/40 transition-all">
-                                        Muat Lebih Banyak Diskusi
-                                    </button>
-                                </div>
                             </div>
                         </div>
 
                         {/* RIGHT — Rating Summary + Form */}
                         <div className="lg:col-span-4 space-y-4 lg:sticky lg:top-[140px]">
-
-                            {/* Rating Summary */}
-                            <div className="p-6 rounded-3xl space-y-6" style={cardStyle}>
-                                <div className="absolute top-0 left-8 right-8 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent)' }}></div>
-
-                                <div className="flex items-center gap-5">
-                                    <div className="relative">
-                                        <span className="text-[72px] font-black text-white leading-none tracking-tighter">4.5</span>
-                                        <span className="absolute -top-1 -right-5 text-[14px] font-black text-white/25 leading-none">/5</span>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <div className="flex gap-0.5">
-                                            {[1, 2, 3, 4, 5].map(s => (
-                                                <i key={s} className={`ti ${s <= 4 ? 'ti-star-filled' : 'ti-star-half-filled'} text-yellow-400 text-base`}></i>
-                                            ))}
-                                        </div>
-                                        <p className="text-[10px] font-bold text-white/30 tracking-wider">{totalReviews.toLocaleString()} total ulasan</p>
+                            <div style={sideCardStyle}>
+                                <div className="flex items-end gap-3 mb-6">
+                                    <span className="text-[52px] sm:text-[64px] font-bold text-white leading-none tracking-tighter">4.5</span>
+                                    <div className="pb-2 space-y-1.5">
+                                        {renderStars(4, 'text-sm')}
+                                        <p className="text-[10px] text-white/25 font-medium">{totalReviews.toLocaleString()} ulasan</p>
                                     </div>
                                 </div>
-
-                                <div className="space-y-2.5">
+                                <div className="space-y-2.5 mb-6">
                                     {ratingBars.map(({ star, count, percent }) => (
-                                        <button
-                                            key={star}
-                                            onClick={() => setFilterStar(filterStar === star ? null : star)}
-                                            className="w-full flex items-center gap-3 transition-all duration-200"
-                                            style={{ opacity: filterStar === null || filterStar === star ? 1 : 0.35 }}
-                                        >
-                                            <span className="text-[11px] font-black text-white/60 w-2.5 text-right shrink-0">{star}</span>
-                                            <i className="ti ti-star-filled text-yellow-400 text-[9px] shrink-0"></i>
-                                            <div className="flex-1 h-[3px] rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
-                                                <div
-                                                    className="h-full rounded-full transition-all duration-700"
-                                                    style={{
-                                                        width: `${percent}%`,
-                                                        background: filterStar === star ? '#FF6B35' : 'rgba(255,255,255,0.32)',
-                                                    }}
-                                                ></div>
+                                        <div key={star} className="w-full flex items-center gap-3">
+                                            <span className="text-[11px] font-medium text-white/40 w-2.5 text-right shrink-0">{star}</span>
+                                            <i className="ti ti-star-filled text-amber-400/60 text-[9px] shrink-0"></i>
+                                            <div className="flex-1 h-[3px] rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
+                                                <div className="h-full rounded-full" style={{ width: `${percent}%`, background: 'rgba(255,107,53,0.6)' }}></div>
                                             </div>
-                                            <span className="text-[10px] font-bold text-white/25 w-10 text-right shrink-0">
+                                            <span className="text-[10px] font-medium text-white/20 w-10 text-right shrink-0">
                                                 {count >= 1000 ? `${(count / 1000).toFixed(1)}k` : count}
                                             </span>
-                                        </button>
+                                        </div>
                                     ))}
                                 </div>
+                            </div>
 
-                                    {/* Detailed Rating Breakdown (Sosial & Komunitas) */}
-                                    <div className="pt-6 space-y-4" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-                                        <p className="text-[9px] font-black text-white/25 uppercase tracking-[0.2em]">Breakdown Kategori</p>
-                                        {[
-                                            { label: 'Gameplay', score: 4.8, icon: 'ti-device-gamepad-2' },
-                                            { label: 'Grafis', score: 4.2, icon: 'ti-brush' },
-                                            { label: 'Audio', score: 4.5, icon: 'ti-volume' },
-                                            { label: 'Kontrol', score: 4.7, icon: 'ti-target-arrow' },
-                                        ].map((cat) => (
-                                            <div key={cat.label} className="space-y-1.5">
-                                                <div className="flex items-center justify-between">
-                                                    <div className="flex items-center gap-2">
-                                                        <i className={`ti ${cat.icon} text-white/20 text-xs`}></i>
-                                                        <span className="text-[10px] font-bold text-white/60">{cat.label}</span>
-                                                    </div>
-                                                    <span className="text-[10px] font-black text-[#FF6B35]">{cat.score}</span>
-                                                </div>
-                                                <div className="h-[2px] w-full bg-white/5 rounded-full overflow-hidden">
-                                                    <div className="h-full bg-[#FF6B35]/40 rounded-full" style={{ width: `${(cat.score / 5) * 100}%` }}></div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                            {/* Review Form */}
-                            <div className="p-6 rounded-3xl" style={cardStyle}>
-                                <p className="text-[9px] font-black tracking-[0.25em] text-white/30 uppercase mb-5">Tulis Ulasanmu</p>
-
+                            <div style={sideCardStyle}>
+                                <p className="text-[11px] font-semibold tracking-[0.18em] text-white/30 uppercase mb-5">Tulis Ulasan</p>
                                 {submitted ? (
                                     <div className="flex flex-col items-center gap-3 py-10 text-center">
-                                        <div className="w-14 h-14 rounded-2xl bg-[#FF6B35]/10 flex items-center justify-center" style={{ border: '1px solid rgba(255,107,53,0.25)' }}>
-                                            <i className="ti ti-check text-[#FF6B35] text-2xl"></i>
+                                        <div className="w-12 h-12 rounded-2xl bg-[#FF6B35]/10 flex items-center justify-center" style={{ border: '1px solid rgba(255,107,53,0.2)' }}>
+                                            <i className="ti ti-check text-[#FF6B35] text-xl"></i>
                                         </div>
-                                        <p className="text-white font-bold text-sm tracking-tight">Ulasan terkirim!</p>
-                                        <p className="text-white/30 text-xs">Sedang ditinjau oleh tim kami.</p>
-                                        <button
-                                            onClick={() => setSubmitted(false)}
-                                            className="text-[10px] text-white/20 hover:text-[#FF6B35] transition-colors underline underline-offset-4 mt-2"
-                                        >
+                                        <p className="text-white font-semibold text-sm tracking-tight">Ulasan terkirim!</p>
+                                        <p className="text-white/25 text-xs">Sedang ditinjau oleh tim kami.</p>
+                                        <button onClick={() => setSubmitted(false)} className="text-[10px] text-white/20 hover:text-[#FF6B35] transition-colors underline underline-offset-4 mt-2">
                                             Tulis ulasan lain
                                         </button>
                                     </div>
                                 ) : (
                                     <div className="space-y-4">
-                                        <div className="space-y-2">
-                                            <p className="text-[9px] font-black text-white/25 uppercase tracking-[0.2em]">Rating *</p>
-                                            <div className="flex items-center gap-2">
+                                        <div>
+                                            <p className="text-[9px] font-semibold text-white/20 uppercase tracking-[0.2em] mb-2.5">Rating</p>
+                                            <div className="flex items-center gap-2 flex-wrap">
                                                 {[1, 2, 3, 4, 5].map(s => (
-                                                    <button
-                                                        key={s}
+                                                    <button key={s}
                                                         onMouseEnter={() => setHoverRating(s)}
                                                         onMouseLeave={() => setHoverRating(0)}
                                                         onClick={() => setModalRating(s)}
-                                                        className="transition-transform hover:scale-125 active:scale-95"
-                                                    >
-                                                        <i className={`ti ${s <= (hoverRating || modalRating) ? 'ti-star-filled' : 'ti-star'} text-2xl transition-colors ${s <= (hoverRating || modalRating) ? 'text-yellow-400' : 'text-white/10'}`}></i>
+                                                        className="transition-transform hover:scale-125 active:scale-95">
+                                                        <i className={`ti ${s <= (hoverRating || modalRating) ? 'ti-star-filled text-amber-400' : 'ti-star text-white/10'} text-xl transition-colors`}></i>
                                                     </button>
                                                 ))}
                                                 {modalRating > 0 && (
-                                                    <span className="text-[10px] text-[#FF6B35] font-black ml-1">
-                                                        {['', 'Sangat Buruk', 'Kurang', 'Lumayan', 'Bagus', 'Sempurna!'][modalRating]}
+                                                    <span className="text-[10px] text-[#FF6B35]/80 font-medium ml-1">
+                                                        {['', 'Sangat Buruk', 'Kurang', 'Lumayan', 'Bagus', 'Sempurna'][modalRating]}
                                                     </span>
                                                 )}
                                             </div>
                                         </div>
-
                                         {[
-                                            { label: 'Nama *', type: 'text', placeholder: 'Nama kamu', value: reviewName, setter: setReviewName, field: 'name' },
-                                            { label: 'Email *', type: 'email', placeholder: 'mail@example.com', value: reviewEmail, setter: setReviewEmail, field: 'email' },
+                                            { label: 'Nama', type: 'text', placeholder: 'Nama kamu', value: reviewName, setter: setReviewName, field: 'name' },
+                                            { label: 'Email', type: 'email', placeholder: 'mail@example.com', value: reviewEmail, setter: setReviewEmail, field: 'email' },
                                         ].map(({ label, type, placeholder, value, setter, field }) => (
-                                            <div key={field} className="space-y-1.5">
-                                                <p className="text-[9px] font-black text-white/25 uppercase tracking-[0.2em]">{label}</p>
-                                                <input
-                                                    type={type}
-                                                    placeholder={placeholder}
-                                                    value={value}
+                                            <div key={field}>
+                                                <p className="text-[9px] font-semibold text-white/20 uppercase tracking-[0.2em] mb-2">{label}</p>
+                                                <input type={type} placeholder={placeholder} value={value}
                                                     onChange={e => setter(e.target.value)}
                                                     onFocus={() => setFocusedField(field)}
                                                     onBlur={() => setFocusedField(null)}
-                                                    className="w-full rounded-xl px-4 py-2.5 text-[12px] text-white placeholder-white/15 outline-none transition-all"
-                                                    style={focusedField === field ? inputFocusStyle : inputStyle}
+                                                    style={focusedField === field ? inputFocused : inputBase}
+                                                    className="placeholder-white/15"
                                                 />
                                             </div>
                                         ))}
-
-                                        <div className="space-y-1.5">
-                                            <p className="text-[9px] font-black text-white/25 uppercase tracking-[0.2em]">Ulasan *</p>
-                                            <textarea
-                                                placeholder="Ceritakan pengalamanmu..."
-                                                value={reviewText}
+                                        <div>
+                                            <p className="text-[9px] font-semibold text-white/20 uppercase tracking-[0.2em] mb-2">Ulasan</p>
+                                            <textarea placeholder="Ceritakan pengalamanmu..." value={reviewText}
                                                 onChange={e => setReviewText(e.target.value)}
                                                 onFocus={() => setFocusedField('review')}
                                                 onBlur={() => setFocusedField(null)}
                                                 rows={4}
-                                                className="w-full rounded-xl px-4 py-2.5 text-[12px] text-white placeholder-white/15 outline-none transition-all resize-none"
-                                                style={focusedField === 'review' ? inputFocusStyle : inputStyle}
+                                                className="placeholder-white/15 resize-none"
+                                                style={focusedField === 'review' ? inputFocused : inputBase}
                                             />
-                                            <div className="flex justify-end">
-                                                <span className={`text-[9px] font-black tracking-wide ${reviewText.length > 20 ? 'text-white/30' : 'text-white/12'}`}>
-                                                    {reviewText.length}<span className="text-white/12">/500</span>
-                                                </span>
+                                            <div className="flex justify-end mt-1">
+                                                <span className="text-[9px] text-white/15">{reviewText.length}<span className="text-white/8">/500</span></span>
                                             </div>
                                         </div>
-
                                         <button
-                                            onClick={() => {
-                                                if (modalRating && reviewName && reviewEmail && reviewText.length > 10) {
-                                                    setSubmitted(true);
-                                                }
-                                            }}
+                                            onClick={() => { if (modalRating && reviewName && reviewEmail && reviewText.length > 10) setSubmitted(true); }}
                                             disabled={!modalRating || !reviewName || !reviewEmail || reviewText.length <= 10}
-                                            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#FF4D00] to-[#FF8C00] text-white font-black text-[9px] uppercase tracking-[0.2em] transition-all disabled:opacity-20 disabled:cursor-not-allowed hover:shadow-[0_8px_32px_rgba(255,77,0,0.3)] hover:-translate-y-0.5 flex items-center justify-center gap-2"
-                                        >
+                                            className="w-full py-3 rounded-xl text-white font-semibold text-[11px] uppercase tracking-[0.15em] transition-all flex items-center justify-center gap-2 disabled:opacity-20 disabled:cursor-not-allowed hover:-translate-y-0.5"
+                                            style={{ background: 'linear-gradient(135deg, #FF4D00, #FF8C00)', boxShadow: '0 6px 24px rgba(255,77,0,0.2)' }}>
                                             <i className="ti ti-send text-sm"></i>
                                             Kirim Ulasan
                                         </button>
-                                        <p className="text-[9px] text-center text-white/15 tracking-wide">Email tidak akan ditampilkan publik.</p>
+                                        <p className="text-[9px] text-center text-white/12 tracking-wide">Email tidak akan ditampilkan publik.</p>
                                     </div>
                                 )}
                             </div>
@@ -892,90 +718,41 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                 )}
             </div>
 
-            {/* LIGHTBOX MODAL — Rendered via Portal to escape stacking context and cover Sidebar */}
+            {/* LIGHTBOX MODAL */}
             {mounted && isLightboxOpen && game.screenshots && createPortal(
-                <div
-                    className="fixed inset-0 z-[99999999] flex items-center justify-center bg-black/98 backdrop-blur-3xl"
-                    onClick={closeLightbox}
-                >
-                    {/* Tombol Close — pojok kiri atas LAYAR */}
-                    <button
-                        className="fixed top-8 left-8 z-[100000000] w-12 h-12 flex items-center justify-center rounded-full transition-all group shadow-2xl"
-                        style={{
-                            background: 'rgba(255,255,255,0.1)',
-                            border: '1px solid rgba(255,255,255,0.15)',
-                            backdropFilter: 'blur(12px)',
-                        }}
+                <div className="fixed inset-0 z-[99999999] flex items-center justify-center bg-black/98 backdrop-blur-3xl" onClick={closeLightbox}>
+                    <button className="fixed top-4 left-4 sm:top-8 sm:left-8 z-[100000000] w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full transition-all shadow-2xl"
+                        style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)', backdropFilter: 'blur(12px)' }}
                         onClick={closeLightbox}
                         onMouseEnter={e => (e.currentTarget.style.background = '#FF6B35')}
-                        onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.1)')}
-                    >
-                        <i className="ti ti-x text-white text-2xl"></i>
+                        onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.1)')}>
+                        <i className="ti ti-x text-white text-xl sm:text-2xl"></i>
                     </button>
-
-                    {/* Image wrapper */}
-                    <div
-                        className="relative animate-zoom-in"
-                        style={{ width: 'min(92vw, 1100px)', aspectRatio: '16/9' }}
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        {/* Gambar */}
-                        <div className="w-full h-full rounded-[20px] overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.9)]">
-                            <Image
-                                src={game.screenshots![lightboxIndex]}
-                                alt="Gallery Preview"
-                                fill
-                                className="object-cover"
-                                priority
-                            />
+                    <div className="relative animate-zoom-in" style={{ width: 'min(94vw, 1100px)', aspectRatio: '16/9' }} onClick={(e) => e.stopPropagation()}>
+                        <div className="w-full h-full rounded-[16px] sm:rounded-[20px] overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.9)]">
+                            <Image src={game.screenshots![lightboxIndex]} alt="Gallery Preview" fill className="object-cover" priority />
                         </div>
-
-                        {/* Tombol Prev — kiri dalam gambar */}
                         {game.screenshots!.length > 1 && (
-                            <button
-                                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full transition-all"
-                                style={{
-                                    background: 'rgba(0,0,0,0.6)',
-                                    border: '1px solid rgba(255,255,255,0.12)',
-                                    backdropFilter: 'blur(8px)',
-                                }}
-                                onClick={prevLightboxImage}
-                                onMouseEnter={e => (e.currentTarget.style.background = '#FF6B35')}
-                                onMouseLeave={e => (e.currentTarget.style.background = 'rgba(0,0,0,0.6)')}
-                            >
-                                <i className="ti ti-chevron-left text-white text-xl"></i>
-                            </button>
-                        )}
-
-                        {/* Tombol Next — kanan dalam gambar */}
-                        {game.screenshots!.length > 1 && (
-                            <button
-                                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full transition-all"
-                                style={{
-                                    background: 'rgba(0,0,0,0.6)',
-                                    border: '1px solid rgba(255,255,255,0.12)',
-                                    backdropFilter: 'blur(8px)',
-                                }}
-                                onClick={nextLightboxImage}
-                                onMouseEnter={e => (e.currentTarget.style.background = '#FF6B35')}
-                                onMouseLeave={e => (e.currentTarget.style.background = 'rgba(0,0,0,0.6)')}
-                            >
-                                <i className="ti ti-chevron-right text-white text-xl"></i>
-                            </button>
-                        )}
-
-                        {/* Counter — bawah tengah dalam gambar */}
-                        {game.screenshots!.length > 1 && (
-                            <div
-                                className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/70 text-[10px] font-bold tracking-[0.3em] uppercase px-4 py-1.5 rounded-full"
-                                style={{
-                                    background: 'rgba(0,0,0,0.7)',
-                                    border: '1px solid rgba(255,255,255,0.15)',
-                                    backdropFilter: 'blur(8px)',
-                                }}
-                            >
-                                {lightboxIndex + 1} / {game.screenshots!.length}
-                            </div>
+                            <>
+                                <button className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full transition-all"
+                                    style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.12)', backdropFilter: 'blur(8px)' }}
+                                    onClick={prevLightboxImage}
+                                    onMouseEnter={e => (e.currentTarget.style.background = '#FF6B35')}
+                                    onMouseLeave={e => (e.currentTarget.style.background = 'rgba(0,0,0,0.6)')}>
+                                    <i className="ti ti-chevron-left text-white text-lg sm:text-xl"></i>
+                                </button>
+                                <button className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full transition-all"
+                                    style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.12)', backdropFilter: 'blur(8px)' }}
+                                    onClick={nextLightboxImage}
+                                    onMouseEnter={e => (e.currentTarget.style.background = '#FF6B35')}
+                                    onMouseLeave={e => (e.currentTarget.style.background = 'rgba(0,0,0,0.6)')}>
+                                    <i className="ti ti-chevron-right text-white text-lg sm:text-xl"></i>
+                                </button>
+                                <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 text-white/70 text-[10px] font-bold tracking-[0.3em] uppercase px-4 py-1.5 rounded-full"
+                                    style={{ background: 'rgba(0,0,0,0.7)', border: '1px solid rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)' }}>
+                                    {lightboxIndex + 1} / {game.screenshots!.length}
+                                </div>
+                            </>
                         )}
                     </div>
                 </div>,
