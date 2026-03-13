@@ -323,20 +323,20 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                             </button>
                                         </div>
 
-                                        {/* Info Panel — lebih tipis dan font lebih kecil */}
-                                        <div className="flex-[1.5] flex items-center justify-around py-2.5 px-4 bg-black/40 rounded-xl backdrop-blur-md"
+                                        {/* Info Panel — dipersempit lebarnya agar tidak terlalu panjang */}
+                                        <div className="w-fit flex items-center justify-start gap-4 sm:gap-6 py-2 px-5 sm:px-6 bg-black/40 rounded-xl backdrop-blur-md"
                                             style={{ border: '1.5px solid #333333' }}>
-                                            <div className="flex items-center gap-2 sm:gap-3 px-4 sm:px-8">
+                                            <div className="flex items-center gap-2 sm:gap-3 px-2 sm:px-4">
                                                 <i className="ti ti-device-gamepad-2 text-[#FF6B35] text-sm sm:text-base"></i>
                                                 <span className="text-white font-bold text-[11px] sm:text-[12px] uppercase tracking-wider whitespace-nowrap">{game.platform.replace('Mobile & ', '')}</span>
                                             </div>
                                             <div className="w-[1px] h-4 sm:h-5 bg-white/10"></div>
-                                            <div className="flex items-center gap-2 sm:gap-3 px-4 sm:px-8">
+                                            <div className="flex items-center gap-2 sm:gap-3 px-2 sm:px-4">
                                                 <i className="ti ti-star-filled text-[#FFB800] text-sm sm:text-base"></i>
                                                 <span className="text-white font-bold text-[11px] sm:text-[12px] uppercase tracking-wider">{game.rating}</span>
                                             </div>
                                             <div className="w-[1px] h-4 sm:h-5 bg-white/10"></div>
-                                            <div className="flex items-center gap-2 sm:gap-3 px-4 sm:px-8">
+                                            <div className="flex items-center gap-2 sm:gap-3 px-2 sm:px-4">
                                                 <i className="ti ti-eye text-sm sm:text-base text-[#b0b0b0]"></i>
                                                 <span className="text-[#e2e2e2] font-bold text-[11px] sm:text-[12px] uppercase tracking-wider whitespace-nowrap">{game.players}</span>
                                             </div>
