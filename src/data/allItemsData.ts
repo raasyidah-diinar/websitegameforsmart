@@ -56,9 +56,7 @@ export const allItemsData: TournamentInfo[] = [
             "/images/spacequiz.webp",
             "/images/memoryquiz.webp",
             "/images/crazyrace.webp",
-            "/images/quizrush.webp",
-            "/images/spacequiz.webp",
-            "/images/memoryquiz.webp"
+            "/images/quizrush.webp"
         ],
     },
     {

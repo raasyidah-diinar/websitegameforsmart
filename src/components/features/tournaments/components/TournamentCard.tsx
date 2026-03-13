@@ -1,5 +1,6 @@
 "use client";
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
 
 interface TournamentCardProps {
@@ -43,11 +44,13 @@ export default function TournamentCard({
     isDetailed = false,
     link
 }: TournamentCardProps) {
+    const router = useRouter();
     const [showTooltip, setShowTooltip] = useState(false);
     const [isTruncated, setIsTruncated] = useState(false);
     const textRef = useRef<HTMLParagraphElement>(null);
 
     const fullDescription = description || "Kompetisi menguji kemampuan siswa dalam menyelesaikan tantangan yang tersedia sebagai latihan.";
+    const destination = link || `/competitions/${slug || id}`;
 
     useEffect(() => {
         if (textRef.current) {
@@ -56,8 +59,19 @@ export default function TournamentCard({
         }
     }, [fullDescription]);
 
+    const handleCardClick = (e: React.MouseEvent) => {
+        const target = e.target as HTMLElement;
+        if (!target.closest('a') && !target.closest('button')) {
+            router.push(destination);
+        }
+    };
+
     return (
-        <div className="tournament-card p-xl-5 p-4 bgn-4 h-100 d-flex flex-column" style={{ border: 'none', borderRadius: '24px' }}>
+        <div 
+            className="tournament-card p-xl-5 p-4 bgn-4 h-100 d-flex flex-column" 
+            style={{ border: 'none', borderRadius: '24px', cursor: 'pointer' }}
+            onClick={handleCardClick}
+        >
             <div className="tournament-img mb-8 position-relative">
                 <div className="img-area overflow-hidden position-relative rounded-3" style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}>
                     <img className="w-100 h-auto object-fit-contain transition-all" src={image} alt="tournament" style={status === 'Coming Soon' ? { filter: 'blur(4px) brightness(0.4)' } : {}} />

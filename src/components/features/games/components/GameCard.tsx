@@ -46,7 +46,7 @@ export default function GameCard({
           borderRadius: '20px',
           border: (hovered || isActive) 
             ? '1.5px solid rgba(255, 107, 53, 0.6)' 
-            : '1.5px solid rgba(255, 255, 255, 0.05)',
+            : '1.5px solid #333333',
           boxShadow: (hovered || isActive) 
             ? '0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 107, 53, 0.25)' 
             : '0 10px 30px rgba(0, 0, 0, 0.3)',
@@ -113,7 +113,8 @@ export default function GameCard({
           <div className="flex items-center gap-3 mt-5">
             <Link 
               href={href} 
-              className="flex-[0.7] flex items-center justify-center py-2.5 rounded-[100px] border border-white/20 text-white/80 hover:bg-white/10 hover:text-white transition-all text-[11px] font-semibold"
+              className="flex-[0.7] flex items-center justify-center py-2.5 rounded-[100px] text-white/80 hover:bg-white/10 hover:text-white transition-all text-[11px] font-semibold"
+              style={{ border: '1px solid #333333' }}
             >
               Detail
             </Link>

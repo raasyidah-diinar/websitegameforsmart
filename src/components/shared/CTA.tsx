@@ -41,6 +41,7 @@ export default function CTA() {
     const shouldHideCTA = 
         pathname.includes('/competitions/') || 
         pathname.includes('/games/') || 
+        pathname.includes('/about') ||
         pathname === '/contact';
     
     if (shouldHideCTA) return null;
