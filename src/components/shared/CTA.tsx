@@ -40,7 +40,7 @@ export default function CTA() {
     // Hapus CTA pada halaman detail game, kompetisi, atau kontak
     const shouldHideCTA = 
         pathname.includes('/competitions/') || 
-        pathname.includes('/games/') || 
+        pathname.startsWith('/games') || 
         pathname.includes('/about') ||
         pathname === '/contact';
     

@@ -14,7 +14,7 @@ export default function NotificationArea({ isOpen }: NotificationAreaProps) {
                             </div>
                             <div className="card-info">
                                 <span className="card-title d-block tcn-1"> {id === 1 ? 'Cristofer Dorwart' : 'Piter Maio'}</span>
-                                <span className="card-text d-block tcn-1 fs-sm">{id === 1 ? 'Winners The Last Game' : 'Accept your challenge'}</span>
+                                <span className="card-text d-block tcn-1 fs-sm">{id === 1 ? 'Pemain Terakhir' : 'Accept your challenge'}</span>
                             </div>
                         </div>
                     </a>

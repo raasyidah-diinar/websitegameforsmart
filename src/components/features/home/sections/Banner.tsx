@@ -6,16 +6,8 @@ const getInitials = (name: string) => {
     return name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
 };
 
-const formatToRupiah = (amountStr: string) => {
-    const num = parseInt(amountStr.replace(/[+$,]/g, ''));
-    if (isNaN(num)) return amountStr;
-    const idrValue = num * 1000;
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-    }).format(idrValue).replace('IDR', 'Rp');
+const formatPoints = (amountStr: string) => {
+    return amountStr;
 };
 
 export default function Banner() {
@@ -108,8 +100,8 @@ export default function Banner() {
 
                 /* Hero title responsive font */
                 .hero-title {
-                    font-size: clamp(1.8rem, 4.5vw, 3.5rem) !important;
-                    line-height: 110% !important;
+                    font-size: clamp(0.85rem, 8vw, 3.5rem) !important;
+                    line-height: 105% !important;
                     font-weight: 900 !important;
                     letter-spacing: -1px !important;
                 }
@@ -117,8 +109,32 @@ export default function Banner() {
                 /* Hero content padding adjustments */
                 @media (max-width: 575px) {
                     .hero-content {
-                        padding-left: 1.25rem !important;
-                        padding-right: 1.25rem !important;
+                        padding-left: 0.5rem !important;
+                        padding-right: 0.25rem !important;
+                    }
+                    .hero-content p.fs-six {
+                        font-size: 8.5px !important;
+                        margin-bottom: 0.35rem !important;
+                    }
+                    .hero-title {
+                        margin-bottom: 0.5rem !important;
+                    }
+                    .float-mascot {
+                        height: 140px !important;
+                        transform: scale(1.1) translateY(12px) !important;
+                    }
+                    .btn-half-border {
+                        padding: 6px 14px !important;
+                        font-size: 8px !important;
+                    }
+                }
+
+                @media (max-width: 400px) {
+                    .float-mascot {
+                        height: 120px !important;
+                    }
+                    .hero-title {
+                        font-size: 0.8rem !important;
                     }
                 }
 
@@ -147,6 +163,23 @@ export default function Banner() {
 
                 .float-mascot {
                     animation: float 4s ease-in-out infinite;
+                }
+
+                @media (max-width: 575px) {
+                    .float-mascot {
+                        height: 220px !important;
+                        transform: scale(1.1) translateY(10px) !important;
+                    }
+                    .hero-content {
+                        padding-left: 1rem !important;
+                        padding-right: 0.5rem !important;
+                    }
+                }
+
+                @media (max-width: 400px) {
+                    .float-mascot {
+                        height: 180px !important;
+                    }
                 }
 
                 @keyframes float {
@@ -187,13 +220,13 @@ export default function Banner() {
                                 {/* Slide 1 */}
                                 <div className="swiper-slide h-100">
                                     <div className="banner-content h-100 d-flex align-items-center">
-                                        <div className="row justify-content-center gy-3 align-items-center w-100">
-                                            <div className="col-lg-6 col-md-8 col-11">
-                                                <div className="hero-content ps-lg-15 ps-6">
+                                        <div className="row justify-content-center gy-3 align-items-center w-100 gx-0">
+                                            <div className="col-lg-6 col-md-7 col-7">
+                                                <div className="hero-content ps-lg-15 ps-0">
                                                     <p data-swiper-parallax="-200" className="tcn-1 mb-lg-4 mb-3 opacity-75 fw-medium fs-six text-uppercase tracking-wider">
                                                         READY • SET • PLAY
                                                     </p>
-                                                    <h2 data-swiper-parallax="-300" className="hero-title tcn-1 mb-lg-5 mb-4">
+                                                    <h2 data-swiper-parallax="-300" className="hero-title tcn-1 mb-lg-5 mb-3">
                                                         THE ULTIMATE <span className="tcp-1">GAMING ARENA</span>
                                                     </h2>
                                                     <p data-swiper-parallax="-350" className="tcn-1 mb-lg-6 mb-5 opacity-75 fs-six d-none d-md-block" style={{ maxWidth: '600px' }}>
@@ -204,8 +237,8 @@ export default function Banner() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="col-lg-6 position-relative d-none d-lg-block" style={{ zIndex: 10 }}>
-                                                <div data-swiper-parallax="-500" className="banner-characters position-relative d-flex align-items-center justify-content-center" style={{ minHeight: '340px' }}>
+                                            <div className="col-lg-6 col-5 position-relative d-flex align-items-center justify-content-center p-0" style={{ zIndex: 10 }}>
+                                                <div data-swiper-parallax="-500" className="banner-characters position-relative d-flex align-items-center justify-content-center w-100" style={{ minHeight: '180px' }}>
                                                     <img src="/assets/img/astronaut-mascot-transparent.png" alt="Mascot" className="float-mascot" style={{ height: '520px', width: 'auto', zIndex: 20, filter: 'drop-shadow(0 0 60px rgba(0, 209, 255, 0.4))', transform: 'scale(1.4) translateY(5px)', objectFit: 'contain', display: 'block', opacity: 1 }} />
                                                 </div>
                                             </div>
@@ -215,13 +248,13 @@ export default function Banner() {
                                 {/* Slide 2 */}
                                 <div className="swiper-slide h-100">
                                     <div className="banner-content h-100 d-flex align-items-center">
-                                        <div className="row justify-content-center gy-3 align-items-center w-100">
-                                            <div className="col-lg-6 col-md-8 col-11">
-                                                <div className="hero-content ps-lg-15 ps-6">
+                                        <div className="row justify-content-center gy-3 align-items-center w-100 gx-0">
+                                            <div className="col-lg-6 col-md-7 col-7">
+                                                <div className="hero-content ps-lg-15 ps-0">
                                                     <p data-swiper-parallax="-200" className="tcn-1 mb-lg-4 mb-3 opacity-75 fw-medium fs-six text-uppercase tracking-wider">
                                                         LEVEL UP • SKILL ONLY
                                                     </p>
-                                                    <h2 data-swiper-parallax="-300" className="hero-title tcn-1 mb-lg-5 mb-4">
+                                                    <h2 data-swiper-parallax="-300" className="hero-title tcn-1 mb-lg-5 mb-3">
                                                         GAIN THE <span className="tcp-1">WINNING STREAK</span>
                                                     </h2>
                                                     <p data-swiper-parallax="-350" className="tcn-1 mb-lg-6 mb-5 opacity-75 fs-six d-none d-md-block" style={{ maxWidth: '600px' }}>
@@ -232,8 +265,8 @@ export default function Banner() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="col-lg-6 position-relative d-none d-lg-block" style={{ zIndex: 10 }}>
-                                                <div data-swiper-parallax="-500" className="banner-characters position-relative d-flex align-items-center justify-content-center" style={{ minHeight: '340px' }}>
+                                            <div className="col-lg-6 col-5 position-relative d-flex align-items-center justify-content-center p-0" style={{ zIndex: 10 }}>
+                                                <div data-swiper-parallax="-500" className="banner-characters position-relative d-flex align-items-center justify-content-center w-100" style={{ minHeight: '180px' }}>
                                                     <img src="/assets/img/new-boy-mascot.png" alt="Mascot" className="float-mascot" style={{ height: '460px', width: 'auto', zIndex: 20, filter: 'drop-shadow(0 0 30px rgba(255, 140, 0, 0.3))', borderRadius: '30px', transform: 'scale(1.2) translateY(5px)', objectFit: 'contain', display: 'block', opacity: 1 }} />
                                                 </div>
                                             </div>
@@ -243,13 +276,13 @@ export default function Banner() {
                                 {/* Slide 3 */}
                                 <div className="swiper-slide h-100">
                                     <div className="banner-content h-100 d-flex align-items-center">
-                                        <div className="row justify-content-center gy-3 align-items-center w-100">
-                                            <div className="col-lg-6 col-md-8 col-11">
-                                                <div className="hero-content ps-lg-15 ps-6">
+                                        <div className="row justify-content-center gy-3 align-items-center w-100 gx-0">
+                                            <div className="col-lg-6 col-md-7 col-7">
+                                                <div className="hero-content ps-lg-15 ps-0">
                                                     <p data-swiper-parallax="-200" className="tcn-1 mb-lg-4 mb-3 opacity-75 fw-medium fs-six text-uppercase tracking-wider">
                                                         SPEED RUN • NO LAG
                                                     </p>
-                                                    <h2 data-swiper-parallax="-300" className="hero-title tcn-1 mb-lg-5 mb-4">
+                                                    <h2 data-swiper-parallax="-300" className="hero-title tcn-1 mb-lg-5 mb-3">
                                                         FASTEST <span className="tcp-1">REFLEX WINS</span>
                                                     </h2>
                                                     <p data-swiper-parallax="-350" className="tcn-1 mb-lg-6 mb-5 opacity-75 fs-six d-none d-md-block" style={{ maxWidth: '600px' }}>
@@ -260,8 +293,8 @@ export default function Banner() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="col-lg-6 position-relative d-none d-lg-block" style={{ zIndex: 10 }}>
-                                                <div data-swiper-parallax="-500" className="banner-characters position-relative d-flex align-items-center justify-content-center" style={{ minHeight: '340px' }}>
+                                            <div className="col-lg-6 col-5 position-relative d-flex align-items-center justify-content-center p-0" style={{ zIndex: 10 }}>
+                                                <div data-swiper-parallax="-500" className="banner-characters position-relative d-flex align-items-center justify-content-center w-100" style={{ minHeight: '180px' }}>
                                                     <img src="/assets/img/astronaut-mascot-transparent.png" alt="Mascot" className="float-mascot" style={{ height: '520px', width: 'auto', zIndex: 20, filter: 'drop-shadow(0 0 60px rgba(0, 209, 255, 0.4))', transform: 'scale(1.4) rotate(-5deg) translateY(5px)', objectFit: 'contain', display: 'block', opacity: 1 }} />
                                                 </div>
                                             </div>
@@ -271,25 +304,25 @@ export default function Banner() {
                                 {/* Slide 4 */}
                                 <div className="swiper-slide h-100">
                                     <div className="banner-content h-100 d-flex align-items-center">
-                                        <div className="row justify-content-center gy-3 align-items-center w-100">
-                                            <div className="col-lg-6 col-md-8 col-11">
-                                                <div className="hero-content ps-lg-15 ps-6">
+                                        <div className="row justify-content-center gy-3 align-items-center w-100 gx-0">
+                                            <div className="col-lg-6 col-md-7 col-7">
+                                                <div className="hero-content ps-lg-15 ps-0">
                                                     <p data-swiper-parallax="-200" className="tcn-1 mb-lg-4 mb-3 opacity-75 fw-medium fs-six text-uppercase tracking-wider">
                                                         EPIC LOOT • MVP STATUS
                                                     </p>
-                                                    <h2 data-swiper-parallax="-300" className="hero-title tcn-1 mb-lg-5 mb-4">
+                                                    <h2 data-swiper-parallax="-300" className="hero-title tcn-1 mb-lg-5 mb-3">
                                                         BECOME THE <span className="tcp-1">LEGENDARY CHAMPION</span>
                                                     </h2>
                                                     <p data-swiper-parallax="-350" className="tcn-1 mb-lg-6 mb-5 opacity-75 fs-six d-none d-md-block" style={{ maxWidth: '600px' }}>
                                                         Raih trophy eksklusif, sertifikat nasional, dan total hadiah jutaan Rupiah. Inilah saatnya jadi MVP di GameForSmart!
                                                     </p>
                                                     <div data-swiper-parallax="-400" className="d-flex align-items-center flex-wrap gap-xl-4 gap-3 mb-1">
-                                                        <a href="/register" className="btn-half-border position-relative d-inline-block py-2.5 px-8 bgp-1 rounded-pill text-nowrap fs-six shadow-primary fw-bold transition-all hover-scale">Klaim Slotmu</a>
+                                                        <a href="/register" className="btn-half-border position-relative d-inline-block py-2.5 px-8 bgp-1 rounded-pill text-nowrap fs-six shadow-primary fw-bold transition-all hover-scale">Check Leaderboard</a>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="col-lg-6 position-relative d-none d-lg-block" style={{ zIndex: 10 }}>
-                                                <div data-swiper-parallax="-500" className="banner-characters position-relative d-flex align-items-center justify-content-center" style={{ minHeight: '340px' }}>
+                                            <div className="col-lg-6 col-5 position-relative d-flex align-items-center justify-content-center p-0" style={{ zIndex: 10 }}>
+                                                <div data-swiper-parallax="-500" className="banner-characters position-relative d-flex align-items-center justify-content-center w-100" style={{ minHeight: '180px' }}>
                                                     <img src="/assets/img/new-boy-mascot.png" alt="Mascot" className="float-mascot" style={{ height: '460px', width: 'auto', zIndex: 20, filter: 'drop-shadow(0 0 30px rgba(255, 140, 0, 0.3))', borderRadius: '30px', transform: 'scale(1.2) translateY(5px)', objectFit: 'contain', display: 'block', opacity: 1 }} />
                                                 </div>
                                             </div>
@@ -308,7 +341,7 @@ export default function Banner() {
                                         <span className="otp-dots" style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: 'var(--tcp-1)', boxShadow: '0 0 10px var(--tcp-1)' }}></span>
                                         <span className="otp-dots" style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: 'var(--tcp-1)', boxShadow: '0 0 10px var(--tcp-1)' }}></span>
                                     </span>
-                                    Last Winners
+                                    Pemain Terakhir
                                 </h3>
                             </div>
                             <div className="card-items d-flex flex-column flex-grow-1 overflow-auto custom-scrollbar">
@@ -329,7 +362,7 @@ export default function Banner() {
                                                 </div>
                                             </div>
                                             <div className="card-data text-end">
-                                                <p className="card-text fw-bold mb-0" style={{ fontSize: '1.05rem', color: '#00D1FF' }}>{formatToRupiah(winner.amount)}</p>
+                                                <p className="card-text fw-medium mb-0" style={{ fontSize: '0.85rem', color: 'rgba(255,107,53,0.8)', fontStyle: 'italic' }}>{formatPoints(winner.amount)}</p>
                                             </div>
                                         </div>
                                     </div>

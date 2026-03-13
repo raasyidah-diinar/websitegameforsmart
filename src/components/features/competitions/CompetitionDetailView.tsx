@@ -28,9 +28,9 @@ export default function CompetitionDetailView({ tournament }: CompetitionDetailV
     ];
 
     const prizes = [
-        { rank: '01', label: tournament.prizes?.[0]?.place || 'JUARA 1', amount: tournament.prizes?.[0]?.amount || 'Rp 7.500.000', reward: tournament.prizes?.[0]?.reward || 'Trofi Eksklusif & Sertifikat Nasional Gold', tier: 'gold' },
-        { rank: '02', label: tournament.prizes?.[1]?.place || 'JUARA 2', amount: tournament.prizes?.[1]?.amount || 'Rp 5.000.000', reward: tournament.prizes?.[1]?.reward || 'Medali Perak & Sertifikat Nasional Silver', tier: 'silver' },
-        { rank: '03', label: tournament.prizes?.[2]?.place || 'JUARA 3', amount: tournament.prizes?.[2]?.amount || 'Rp 2.500.000', reward: tournament.prizes?.[2]?.reward || 'Medali Perunggu & Sertifikat Nasional Bronze', tier: 'bronze' },
+        { rank: '01', label: tournament.prizes?.[0]?.place || 'JUARA 1', amount: tournament.prizes?.[0]?.amount || '7.500 PTS', reward: tournament.prizes?.[0]?.reward || 'Trofi Eksklusif & Sertifikat Nasional Gold', tier: 'gold' },
+        { rank: '02', label: tournament.prizes?.[1]?.place || 'JUARA 2', amount: tournament.prizes?.[1]?.amount || '5.000 PTS', reward: tournament.prizes?.[1]?.reward || 'Medali Perak & Sertifikat Nasional Silver', tier: 'silver' },
+        { rank: '03', label: tournament.prizes?.[2]?.place || 'JUARA 3', amount: tournament.prizes?.[2]?.amount || '2.500 PTS', reward: tournament.prizes?.[2]?.reward || 'Medali Perunggu & Sertifikat Nasional Bronze', tier: 'bronze' },
     ];
 
     const timelineSteps = [
@@ -58,7 +58,7 @@ export default function CompetitionDetailView({ tournament }: CompetitionDetailV
                                 Lomba Cerdas <span className="grad-text">Cermat</span>
                             </h1>
                             <p className="hero-sub">
-                                Ajang Kompetisi Bergengsi dengan Hadiah Puluhan Juta Rupiah
+                                Ajang Kompetisi Bergengsi dengan Hadiah Ribuan PTS
                             </p>
                             <div className="hero-meta-row">
                                 {[

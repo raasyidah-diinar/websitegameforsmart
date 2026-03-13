@@ -46,7 +46,29 @@ const tournamentsData = [
 export default function TournamentsPage() {
     const [activeTab, setActiveTab] = useState('All');
     const [isVisible, setIsVisible] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = React.useRef<HTMLDivElement>(null);
     const sectionRef = React.useRef<HTMLElement>(null);
+
+    React.useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    React.useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsDropdownOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     React.useEffect(() => {
         const observer = new IntersectionObserver(
@@ -73,40 +95,89 @@ export default function TournamentsPage() {
     return (
         <div className="main-content animate-fade-in-up flex-1" style={{ minWidth: 0, overflow: 'visible' }}>
             <article style={{ flex: 1 }}>
-                <section className="tournament-banner mb-lg-15 mb-sm-10 mb-4 pb-lg-10 pb-sm-6">
-                    <div className="container-fluid">
-                        <div className="parallax-banner-area parallax-container" style={{ height: '450px' }}>
-                            <img className="w-100 h-100 rounded-5 parallax-img object-fit-cover" src="/assets/img/tournament-banner.png" alt="tournament banner" />
-                        </div>
-                    </div>
-                </section>
-
-                <section ref={sectionRef} className="tournament-section pb-120">
+                <section ref={sectionRef} className="tournament-section pb-120 pt-10">
                     <div className="tournament-wrapper alt">
                         <div className="container-fluid px-lg-15 px-md-10 px-6">
-                            <div className="row justify-content-between align-items-end mb-8">
-                                <div className="col">
-                                    <h1 className="display-four tcn-1 cursor-scale growUp title-anim text-uppercase">Competition</h1>
+                            <div className="row justify-content-center align-items-center mb-12">
+                                <div className="col-12 text-center">
+                                    <h1 className="display-four tcn-1 cursor-scale growUp title-anim">Competition</h1>
                                 </div>
                             </div>
                             <div className="singletab tournaments-tab">
-                                <div className="d-between gap-6 flex-wrap mb-lg-15 mb-sm-10 mb-6">
-                                    <ul className="tablinks d-flex flex-wrap align-items-center gap-3">
-                                        {['All', 'Active', 'Upcoming', 'Finished'].map((tab) => (
-                                            <li key={tab} className={`nav-links ${activeTab === tab ? 'active' : ''}`}>
-                                                <button
-                                                    className="tablink py-sm-3 py-2 px-sm-8 px-6 rounded-pill tcn-1"
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        e.stopPropagation();
-                                                        setActiveTab(tab);
+                                <div className="d-center gap-6 flex-wrap mb-lg-15 mb-sm-10 mb-6">
+                                    {isMobile ? (
+                                        <div className="position-relative w-100" style={{ maxWidth: '300px' }} ref={dropdownRef}>
+                                            <button 
+                                                className="d-flex align-items-center justify-content-between bg-black text-white border-secondary rounded-pill py-3 ps-6 pe-5 cursor-pointer w-100 transition-all hover:border-primary active:scale-95"
+                                                style={{ 
+                                                    backgroundColor: '#0a0a0a',
+                                                    borderColor: 'rgba(255, 255, 255, 0.1)',
+                                                    fontSize: '0.9rem',
+                                                    fontWeight: '600',
+                                                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                                                    color: 'white'
+                                                }}
+                                                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                            >
+                                                <span className="text-secondary-cus">Status: <span className="text-white">{activeTab}</span></span>
+                                                <i 
+                                                    className={`ti ti-chevron-down ms-2 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
+                                                    style={{ fontSize: '1.2rem', color: 'rgb(var(--p1))' }}
+                                                ></i>
+                                            </button>
+                                            
+                                            {isDropdownOpen && (
+                                                <div 
+                                                    className="position-absolute start-0 w-100 mt-2 rounded-4 overflow-hidden animate-zoom-in shadow-lg"
+                                                    style={{ 
+                                                        zIndex: 1000,
+                                                        backgroundColor: 'rgba(10, 10, 10, 0.98)',
+                                                        backdropFilter: 'blur(15px)',
+                                                        border: '1px solid rgba(255, 255, 255, 0.15)',
+                                                        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.6)'
                                                     }}
                                                 >
-                                                    {tab}
-                                                </button>
-                                            </li>
-                                        ))}
-                                    </ul>
+                                                    {['All', 'Active', 'Upcoming', 'Finished'].map((tab) => (
+                                                        <button
+                                                            key={tab}
+                                                            className={`w-100 text-start py-3 px-6 transition-all hover:bg-primary-fade ${activeTab === tab ? 'active-option' : ''}`}
+                                                            style={{ 
+                                                                fontSize: '0.9rem',
+                                                                fontWeight: '600',
+                                                                backgroundColor: activeTab === tab ? 'rgba(246, 71, 28, 0.15)' : 'transparent',
+                                                                color: activeTab === tab ? 'rgb(var(--p1))' : 'white',
+                                                                border: 'none',
+                                                                display: 'block'
+                                                            }}
+                                                            onClick={() => {
+                                                                setActiveTab(tab);
+                                                                setIsDropdownOpen(false);
+                                                            }}
+                                                        >
+                                                            {tab}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <ul className="tablinks d-flex flex-wrap align-items-center justify-content-center gap-3">
+                                            {['All', 'Active', 'Upcoming', 'Finished'].map((tab) => (
+                                                <li key={tab} className={`nav-links ${activeTab === tab ? 'active' : ''}`}>
+                                                    <button
+                                                        className="tablink py-sm-3 py-2 px-sm-8 px-6 rounded-pill tcn-1"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            e.stopPropagation();
+                                                            setActiveTab(tab);
+                                                        }}
+                                                    >
+                                                        {tab}
+                                                    </button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
                                 </div>
                                 <div className="tournament-tab-contents">
                                     <div className="tournament-tab-item active">

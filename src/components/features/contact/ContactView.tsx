@@ -105,7 +105,7 @@ export default function ContactView() {
                                 {/* Card 1 */}
                                 <div className="col-sm-6">
                                     <div className="info-card p-6 rounded-4 h-100 d-flex flex-column align-items-start" style={{ backgroundColor: '#111111', border: '1px solid #333' }}>
-                                        <div className="icon-circle mb-4 d-flex align-items-center justify-content-center rounded-circle shadow-sm" style={{ width: '48px', height: '48px', backgroundColor: '#FF8C00' }}>
+                                        <div className="icon-circle mb-4 d-flex align-items-center justify-content-center rounded-circle shadow-sm" style={{ width: '48px', height: '48px', backgroundColor: '#F6471C' }}>
                                             <i className="ti ti-phone text-white fs-4"></i>
                                         </div>
                                         <h4 className="text-white mb-2 fs-5">Call Us</h4>
@@ -118,7 +118,7 @@ export default function ContactView() {
                                 {/* Card 2 */}
                                 <div className="col-sm-6">
                                     <div className="info-card p-6 rounded-4 h-100 d-flex flex-column align-items-start" style={{ backgroundColor: '#111111', border: '1px solid #333' }}>
-                                        <div className="icon-circle mb-4 d-flex align-items-center justify-content-center rounded-circle shadow-sm" style={{ width: '48px', height: '48px', backgroundColor: '#FF8C00' }}>
+                                        <div className="icon-circle mb-4 d-flex align-items-center justify-content-center rounded-circle shadow-sm" style={{ width: '48px', height: '48px', backgroundColor: '#F6471C' }}>
                                             <i className="ti ti-mail text-white fs-4"></i>
                                         </div>
                                         <h4 className="text-white mb-2 fs-5">Email Us</h4>
@@ -129,7 +129,7 @@ export default function ContactView() {
                                 {/* Card 3 */}
                                 <div className="col-sm-6">
                                     <div className="info-card p-6 rounded-4 h-100 d-flex flex-column align-items-start" style={{ backgroundColor: '#111111', border: '1px solid #333' }}>
-                                        <div className="icon-circle mb-4 d-flex align-items-center justify-content-center rounded-circle shadow-sm" style={{ width: '48px', height: '48px', backgroundColor: '#FF8C00' }}>
+                                        <div className="icon-circle mb-4 d-flex align-items-center justify-content-center rounded-circle shadow-sm" style={{ width: '48px', height: '48px', backgroundColor: '#F6471C' }}>
                                             <i className="ti ti-map-pin text-white fs-4"></i>
                                         </div>
                                         <h4 className="text-white mb-2 fs-5">Visit Us</h4>
@@ -140,7 +140,7 @@ export default function ContactView() {
                                 {/* Card 4 */}
                                 <div className="col-sm-6">
                                     <div className="info-card p-6 rounded-4 h-100 d-flex flex-column align-items-start" style={{ backgroundColor: '#111111', border: '1px solid #333' }}>
-                                        <div className="icon-circle mb-4 d-flex align-items-center justify-content-center rounded-circle shadow-sm" style={{ width: '48px', height: '48px', backgroundColor: '#FF8C00' }}>
+                                        <div className="icon-circle mb-4 d-flex align-items-center justify-content-center rounded-circle shadow-sm" style={{ width: '48px', height: '48px', backgroundColor: '#F6471C' }}>
                                             <i className="ti ti-messages text-white fs-4"></i>
                                         </div>
                                         <h4 className="text-white mb-2 fs-5">Live Chat & FAQ</h4>
@@ -219,7 +219,7 @@ export default function ContactView() {
                                     <button 
                                         type="submit" 
                                         className="btn w-100 py-3 rounded-pill fw-bold text-white transition-all hover-scale d-flex align-items-center justify-content-center gap-2" 
-                                        style={{ backgroundColor: '#FF8C00', border: 'none', opacity: isSubmitting ? 0.7 : 1 }}
+                                        style={{ backgroundColor: '#F6471C', border: 'none', opacity: isSubmitting ? 0.7 : 1 }}
                                         disabled={isSubmitting}
                                     >
                                         {isSubmitting ? (
@@ -233,7 +233,7 @@ export default function ContactView() {
                                     </button>
                                     
                                     <p className="tcn-6 mt-4 fs-sm text-center">
-                                        By submitting, I agree to the <a href="#" style={{ color: '#FF8C00' }}>Privacy Policy</a>.
+                                        By submitting, I agree to the <a href="#" style={{ color: '#F6471C' }}>Privacy Policy</a>.
                                     </p>
                                 </form>
                             </div>
@@ -250,7 +250,7 @@ export default function ContactView() {
                         transition: all 0.3s ease;
                     }
                     .custom-input:focus {
-                        border-color: #FF8C00 !important;
+                        border-color: #F6471C !important;
                         box-shadow: 0 0 0 2px rgba(255, 140, 0, 0.2) !important;
                         outline: none;
                     }

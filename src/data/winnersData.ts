@@ -10,42 +10,42 @@ export const winnersData: Winner[] = [
     {
         id: 1,
         name: "Cristofer Dorwart",
-        amount: "+$220",
+        amount: "Crazy Race",
         img: "msg-sender1.png",
         time: "2 minutes ago"
     },
     {
         id: 2,
         name: "Sajin Tamang",
-        amount: "+$180",
+        amount: "Quiz Rush",
         img: "msg-sender2.png",
         time: "5 minutes ago"
     },
     {
         id: 3,
         name: "Junaid Khan",
-        amount: "+$150",
+        amount: "Space Quiz",
         img: "msg-sender3.png",
         time: "12 minutes ago"
     },
     {
         id: 4,
         name: "Alex Thompson",
-        amount: "+$120",
+        amount: "Memory Quiz",
         img: "msg-sender4.png",
         time: "20 minutes ago"
     },
     {
         id: 5,
         name: "Sarah Wilson",
-        amount: "+$90",
+        amount: "Crazy Race",
         img: "msg-sender2.png",
         time: "45 minutes ago"
     },
     {
         id: 6,
         name: "Mike Johnson",
-        amount: "+$70",
+        amount: "Quiz Rush",
         img: "msg-sender3.png",
         time: "1 hour ago"
     }

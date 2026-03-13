@@ -239,7 +239,7 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                     <div className="col-12 d-flex align-items-stretch">
                         <section
                             className="relative w-full overflow-hidden shadow-lg border border-secondary border-opacity-10 flex-fill"
-                            style={{ borderRadius: '24px', height: 'clamp(260px, 45vw, 420px)' }}
+                            style={{ borderRadius: '24px', height: 'clamp(380px, 45vw, 600px)' }}
                         >
                             {/* Back Button */}
                             <div className="absolute top-4 left-4 z-20">
@@ -263,7 +263,19 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                         })()}
                                         allow="autoplay; encrypted-media"
                                         className="absolute"
-                                        style={{ top: '50%', left: '50%', width: '177.78vh', height: '100%', minWidth: '100%', minHeight: '56.25vw', transform: 'translate(-50%, -50%)', border: 'none', pointerEvents: 'none', opacity: 0.55 }}
+                                        style={{ 
+                                            top: '50%', 
+                                            left: '50%', 
+                                            width: '100%', 
+                                            height: '100%', 
+                                            minWidth: '177.77vh', 
+                                            minHeight: '100%',
+                                            transform: 'translate(-50%, -50%) scale(1.1)', 
+                                            border: 'none', 
+                                            pointerEvents: 'none', 
+                                            opacity: 0.55,
+                                            objectFit: 'cover'
+                                        }}
                                         title={game.title}
                                         frameBorder="0"
                                     />
@@ -275,12 +287,12 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                             </div>
 
                             {/* ✅ FIX 1: justify-center agar teks berada di tengah vertikal hero. Tambahkan padding kiri yang lebih besar agar tidak menempel ke pinggir */}
-                            <div className="relative z-10 h-full flex flex-col justify-center px-6 sm:px-12 lg:pl-20 lg:pr-12">
+                            <div className="relative z-10 h-full flex flex-col justify-center px-6 sm:px-12 lg:pl-20 lg:pr-12 py-10">
                                 <div className="ml-0 sm:ml-8 lg:ml-16 max-w-[800px]">
                                     <h1
-                                        className="hero-title tcn-1 mb-2 sm:mb-3"
+                                        className="hero-title tcn-1 mb-2 sm:mb-4"
                                         style={{
-                                            fontSize: 'clamp(1.6rem, 5vw, 3.5rem)',
+                                            fontSize: 'clamp(1.8rem, 6vw, 3.5rem)',
                                             lineHeight: '1.05',
                                             fontWeight: '900',
                                             letterSpacing: '-1px',
@@ -289,23 +301,23 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                         {game.title}
                                     </h1>
 
-                                    {/* ✅ FIX 2: mb-16/20 agar jarak deskripsi ke button lebih lapang (space banyak) */}
+                                    {/* ✅ FIX 2: mb-16/20 agar rarak deskripsi ke button lebih lapang (space banyak) */}
                                     <p
-                                        className="tcn-1 mb-16 sm:mb-20 opacity-75 fs-six fw-normal line-clamp-2 sm:line-clamp-none"
-                                        style={{ maxWidth: '600px', fontSize: 'clamp(12px, 2vw, 15px)' }}
+                                        className="tcn-1 mb-8 sm:mb-20 opacity-75 fs-six fw-normal line-clamp-3 sm:line-clamp-none"
+                                        style={{ maxWidth: '600px', fontSize: 'clamp(13px, 2vw, 15px)' }}
                                     >
                                         {game.description}
                                     </p>
 
                                     {/* ✅ Container vertikal — dikurangi gap & marginnya agar lebih rapat */}
-                                    <div className="flex flex-col gap-4 mt-6 sm:mt-8">
+                                    <div className="flex flex-col gap-4 sm:gap-6 mt-4 sm:mt-8">
                                         <div className="flex flex-wrap items-center gap-3 sm:gap-4">
                                             <button
                                                 onClick={() => { if (game.gameUrl) window.open(game.gameUrl, '_blank'); }}
-                                                className="flex-shrink-0 bg-gradient-to-r from-[#FF6B35] to-[#FF8C00] text-white px-6 sm:px-8 h-[36px] sm:h-[42px] rounded-full font-bold text-[11px] sm:text-[13px] uppercase tracking-wider transition-all duration-300 shadow-[0_10px_25px_rgba(255,107,53,0.3)] hover:shadow-[0_15px_35px_rgba(255,107,53,0.5)] hover:-translate-y-1 flex items-center justify-center gap-2"
+                                                className="flex-shrink-0 bg-gradient-to-r from-[#FF6B35] to-[#FF8C00] text-white px-4 sm:px-8 h-[34px] sm:h-[48px] rounded-full font-bold text-[10px] sm:text-[13px] uppercase tracking-wider transition-all duration-300 shadow-[0_10px_25px_rgba(255,107,53,0.3)] hover:shadow-[0_15px_35px_rgba(255,107,53,0.5)] hover:-translate-y-1 flex items-center justify-center gap-2"
                                                 style={{ borderRadius: '9999px' }}
                                             >
-                                                <i className="ti ti-player-play-filled text-sm sm:text-base"></i>
+                                                <i className="ti ti-player-play-filled text-xs sm:text-base"></i>
                                                 <span>MAIN SEKARANG</span>
                                             </button>
 
@@ -314,31 +326,31 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
                                                     navigator.clipboard.writeText(window.location.href);
                                                     alert('Link berhasil disalin!');
                                                 }}
-                                                className="flex-shrink-0 bg-black/40 backdrop-blur-md text-white px-4 sm:px-6 h-[36px] sm:h-[42px] rounded-full font-bold text-[11px] sm:text-[13px] uppercase tracking-wider transition-all duration-300 hover:bg-white/10 hover:-translate-y-1 flex items-center justify-center gap-2"
+                                                className="flex-shrink-0 bg-black/40 backdrop-blur-md text-white px-3.5 sm:px-6 h-[34px] sm:h-[48px] rounded-full font-bold text-[10px] sm:text-[13px] uppercase tracking-wider transition-all duration-300 hover:bg-white/10 hover:-translate-y-1 flex items-center justify-center gap-2"
                                                 style={{ borderRadius: '9999px', border: '2px solid #333333' }}
                                                 title="Bagikan"
                                             >
-                                                <i className="ti ti-share text-sm sm:text-base"></i>
+                                                <i className="ti ti-share text-xs sm:text-base"></i>
                                                 <span className="hidden sm:inline">Bagikan</span>
                                             </button>
                                         </div>
 
                                         {/* Info Panel — dipersempit lebarnya agar tidak terlalu panjang */}
-                                        <div className="w-fit flex items-center justify-start gap-4 sm:gap-6 py-2 px-5 sm:px-6 bg-black/40 rounded-xl backdrop-blur-md"
+                                        <div className="w-fit flex flex-wrap items-center justify-start gap-y-1 gap-x-2 sm:gap-6 py-2 px-3.5 sm:px-6 bg-black/40 rounded-xl backdrop-blur-md"
                                             style={{ border: '1.5px solid #333333' }}>
-                                            <div className="flex items-center gap-2 sm:gap-3 px-2 sm:px-4">
-                                                <i className="ti ti-device-gamepad-2 text-[#FF6B35] text-sm sm:text-base"></i>
-                                                <span className="text-white font-bold text-[11px] sm:text-[12px] uppercase tracking-wider whitespace-nowrap">{game.platform.replace('Mobile & ', '')}</span>
+                                            <div className="flex items-center gap-1.5 sm:gap-3 px-1 sm:px-4">
+                                                <i className="ti ti-device-gamepad-2 text-[#FF6B35] text-xs sm:text-base"></i>
+                                                <span className="text-white font-bold text-[9px] sm:text-[12px] uppercase tracking-wider whitespace-nowrap">{game.platform.replace('Mobile & ', '')}</span>
                                             </div>
-                                            <div className="w-[1px] h-4 sm:h-5 bg-white/10"></div>
-                                            <div className="flex items-center gap-2 sm:gap-3 px-2 sm:px-4">
-                                                <i className="ti ti-star-filled text-[#FFB800] text-sm sm:text-base"></i>
-                                                <span className="text-white font-bold text-[11px] sm:text-[12px] uppercase tracking-wider">{game.rating}</span>
+                                            <div className="hidden sm:block w-[1px] h-4 sm:h-5 bg-white/10"></div>
+                                            <div className="flex items-center gap-1.5 sm:gap-3 px-1 sm:px-4">
+                                                <i className="ti ti-star-filled text-[#FFB800] text-xs sm:text-base"></i>
+                                                <span className="text-white font-bold text-[9px] sm:text-[12px] uppercase tracking-wider">{game.rating}</span>
                                             </div>
-                                            <div className="w-[1px] h-4 sm:h-5 bg-white/10"></div>
-                                            <div className="flex items-center gap-2 sm:gap-3 px-2 sm:px-4">
-                                                <i className="ti ti-eye text-sm sm:text-base text-[#b0b0b0]"></i>
-                                                <span className="text-[#e2e2e2] font-bold text-[11px] sm:text-[12px] uppercase tracking-wider whitespace-nowrap">{game.players}</span>
+                                            <div className="hidden sm:block w-[1px] h-4 sm:h-5 bg-white/10"></div>
+                                            <div className="flex items-center gap-1.5 sm:gap-3 px-1 sm:px-4">
+                                                <i className="ti ti-eye text-xs sm:text-base text-[#b0b0b0]"></i>
+                                                <span className="text-[#e2e2e2] font-bold text-[9px] sm:text-[12px] uppercase tracking-wider whitespace-nowrap">{game.players}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -534,7 +546,7 @@ export default function GameDetailContent({ game }: GameDetailContentProps) {
 
                 {/* TAB: ULASAN */}
                 {activeTab === 'ulasan' && (
-                    <div className="animate-fade-in flex flex-col-reverse lg:grid lg:grid-cols-12 gap-6 lg:gap-10 items-start">
+                    <div className="animate-fade-in flex flex-col-reverse lg:grid lg:grid-cols-12 gap-6 lg:gap-10">
 
                         {/* LEFT — Review List */}
                         <div className="lg:col-span-8 space-y-6 sm:space-y-8">

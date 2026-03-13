@@ -33,7 +33,7 @@ export default function TournamentCard({
     rating,
     platform,
     players,
-    prizeMoney = "Rp 0",
+    prizeMoney = "1.000 PTS",
     ticketFee = "GRATIS",
     date = "15 April 2026",
     teams = "100 Player",

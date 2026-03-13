@@ -836,7 +836,6 @@ ul li {
   z-index: -1;
   transition: border 0.3s ease-in-out;
   border: 2px solid transparent;
-  border-color: transparent rgb(var(--p1));
 }
 
 .btn-half-border:hover::before {
@@ -2676,7 +2675,17 @@ ul li {
 
 @media (max-width: 991px) {
   .banner-section .banner-swiper-pagination {
-    display: none;
+    display: flex;
+    left: 8px;
+    gap: 6px;
+  }
+  .banner-section .banner-swiper-pagination .swiper-pagination-bullet {
+    width: 4px;
+    height: 4px;
+  }
+  .banner-section .banner-swiper-pagination .swiper-pagination-bullet-active {
+    width: 4px;
+    height: 12px;
   }
 }
 
